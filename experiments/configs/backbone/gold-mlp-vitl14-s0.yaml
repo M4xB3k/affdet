@@ -1,0 +1,10 @@
+name: gold-mlp-vitl14-pad00-s0
+scenes: /scratch/maksym.bek/omni_scenes_merged
+labels: /scratch/maksym.bek/affdet/labels_omni_score
+bbox_source: oracle
+crop_padding: 0.0
+backbone: vitl14
+head: mlp
+epochs: 50
+seed: 0
+resolved_instances: /scratch/maksym.bek/affdet/resolved_instances.json

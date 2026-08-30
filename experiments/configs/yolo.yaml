@@ -1,0 +1,9 @@
+name: yolo-mlp-pad0
+scenes: /scratch/maksym.bek/affdet/scenes_yolo
+labels: /scratch/maksym.bek/affdet/labels_omni_score
+bbox_source: yolo
+crop_padding: 0.0
+head: mlp
+epochs: 50
+seed: 0
+resolved_instances: /scratch/maksym.bek/affdet/resolved_instances.json

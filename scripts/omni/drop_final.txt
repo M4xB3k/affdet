@@ -1,0 +1,28 @@
+# GENERATED from curation.json — do not edit by hand.
+apple: 028 030
+bottle: 030 032 060
+cheese: 001 003 004 005 006 007 008 009 011 012 013 014 016 017 019 020 021 022 025 026 027 032 036 037 038 039 041 043 044 045 049
+cherry: 004 006 010 011 012 013
+china: 001 006 016 018 019 022 023 025
+# china_024 kept but recategorized -> vase
+# china_026 kept but recategorized -> vase
+bread: 033 038 039 041 042 046 053 054 055 059 060 061 062 088 097
+knife: 007 009
+tomato: 001
+teapot: 017
+spanner: 001 002 003 004 005 006
+potato: 027
+peach: 001 007 045 049
+orange: 025 026
+mushroom: 022
+litchi: 031 032
+hot_dog: 089
+hamburger: 027
+ginger: 011
+durian: 012 016 025
+dumpling: 020
+cup: 024
+cucumber: 001
+chili: 001 005 036
+bun: 037
+banana: 037

@@ -1,0 +1,344 @@
+<!--
+  Manual pair-labelling UI. Served by affdet/label/manual_tool.py.
+
+  This page deliberately has no access to the VLM label or the model
+  prediction: the /api/state payload is assembled field-by-field on the server
+  and cannot carry them. Do not add a fetch that joins them in — the labeller
+  must be blind, or experiment E3 measures anchoring instead of agreement.
+  See tools/docs/labeling_protocol.md §2.
+-->
+<meta charset="utf-8">
+<title>Pair labelling</title>
+<style>
+  :root {
+    --actor: #2f6fd0;
+    --recipient: #d2701c;
+    --bg: #14161a;
+    --panel: #1c1f25;
+    --line: #2c313a;
+    --text: #e8eaed;
+    --dim: #9aa1ac;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, sans-serif;
+    height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    padding: 10px 18px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 16px; flex: none;
+  }
+  .count { font-variant-numeric: tabular-nums; color: var(--dim); }
+  .bar { flex: 1; height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--actor); width: 0; transition: width .2s; }
+  .break { color: #e0b341; }
+
+  main { flex: 1; display: flex; align-items: center; justify-content: center;
+         padding: 14px; min-height: 0; }
+  main img { max-width: 100%; max-height: 100%; object-fit: contain;
+             border-radius: 6px; background: #000; }
+  .missing { color: var(--dim); text-align: center; max-width: 40em; }
+  .missing code { color: var(--text); }
+
+  footer { flex: none; border-top: 1px solid var(--line); padding: 12px 18px 16px; }
+  .legend { display: flex; gap: 18px; justify-content: center; margin-bottom: 8px;
+            font-size: 13px; color: var(--dim); }
+  .chip { display: inline-flex; align-items: center; gap: 7px; }
+  .sw { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+  .sw.a { background: var(--actor); }
+  .sw.r { background: var(--recipient); }
+
+  .q { text-align: center; font-size: 25px; margin: 6px 0 14px; }
+  .q .a { color: #7dabf0; font-weight: 600; }
+  .q .r { color: #f0a765; font-weight: 600; }
+  .q .v { text-transform: uppercase; letter-spacing: .05em; }
+
+  .keys { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .key { background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+         padding: 7px 13px; color: var(--dim); font-size: 13px; }
+  .key b { color: var(--text); }
+  .key.on { border-color: var(--actor); color: var(--text); }
+
+  .overlay { position: fixed; inset: 0; background: rgba(8,9,11,.93);
+             padding: 5vh 8vw; overflow: auto; display: none; }
+  .overlay.show { display: block; }
+  .overlay pre { white-space: pre-wrap; font: 14px/1.6 ui-monospace, monospace;
+                 max-width: 78ch; margin: 0 auto; }
+  .overlay h2 { max-width: 78ch; margin: 0 auto 1em; font-size: 17px; }
+
+  #noteBox { position: fixed; left: 50%; bottom: 22%; transform: translateX(-50%);
+             width: min(680px, 88vw); display: none; }
+  #noteBox.show { display: block; }
+  #noteBox textarea { width: 100%; height: 92px; background: var(--panel);
+    color: var(--text); border: 1px solid var(--actor); border-radius: 6px;
+    padding: 10px; font: inherit; resize: none; }
+  #noteBox .hint { color: var(--dim); font-size: 12px; margin-top: 5px; }
+  .done { text-align: center; margin: auto; }
+</style>
+
+<header>
+  <span class="count" id="count">…</span>
+  <span class="bar"><i id="bar"></i></span>
+  <span class="count" id="eta"></span>
+  <span class="count" id="breakMsg"></span>
+</header>
+
+<main id="stage"></main>
+
+<footer>
+  <div class="legend">
+    <span class="chip"><i class="sw a"></i> actor <b id="lgA"></b></span>
+    <span class="chip"><i class="sw r"></i> recipient <b id="lgR"></b></span>
+    <span class="chip" id="angleInfo"></span>
+  </div>
+  <div class="q" id="question"></div>
+  <div class="keys" id="keysBinary">
+    <span class="key"><b>Y</b> yes</span>
+    <span class="key"><b>N</b> no</span>
+    <span class="key"><b>U</b> unsure</span>
+    <span class="key"><b>B</b> back</span>
+    <span class="key" id="k1"><b>1</b></span>
+    <span class="key" id="k2"><b>2</b></span>
+    <span class="key" id="k3"><b>3</b> conf</span>
+    <span class="key"><b>D</b> definition</span>
+    <span class="key"><b>Space</b> note</span>
+    <span class="key"><b>←→</b> angle</span>
+  </div>
+  <div class="keys" id="keysGraded" style="display:none">
+    <span class="key"><b>0</b>-<b>9</b> quality score (0=impossible, 9=perfect fit)</span>
+    <span class="key"><b>U</b> unsure</span>
+    <span class="key"><b>B</b> back</span>
+    <span class="key"><b>D</b> definition</span>
+    <span class="key"><b>Space</b> note</span>
+    <span class="key"><b>←→</b> angle</span>
+  </div>
+</footer>
+
+<div class="overlay" id="defs"><h2 id="defTitle"></h2><pre id="defBody"></pre></div>
+<div id="noteBox">
+  <textarea id="noteText" placeholder="Note for this item — why it was borderline, knife type, render problem…"></textarea>
+  <div class="hint">Enter to save · Esc to cancel</div>
+</div>
+
+<script>
+let S = null, idx = 0, shownAt = 0, angle = -1;
+let conf = null, confExplicit = false, note = "";
+const hist = [];           // pair_ids already answered this run, for `B`
+const BREAK_EVERY = 25;
+
+// Dynamic ETA: rolling average over judgements made THIS session (server
+// restarts reset it — a fresh page load has no history to average yet, so it
+// stays blank until a few items land). Read from /api/judge's own
+// elapsed_ms rather than a second clock, so this never drifts from what's
+// actually being written to the session file.
+const paceWindow = [];     // elapsed_ms of the last N submitted judgements
+const PACE_WINDOW_N = 20;
+//: the eventual uncapped round-4 list size (2143 candidate items across the
+// 500 sampled scenes) -- the current session may be running against a
+// smaller capped list, so this projects the ETA forward to that target too.
+// Set to null if/when there's no larger list pending.
+let fullTotal = 2143;
+
+function fmtDuration(sec) {
+  if (!isFinite(sec) || sec < 0) return "—";
+  const m = Math.round(sec / 60);
+  if (m < 60) return `${m}m`;
+  return `${Math.floor(m / 60)}h${String(m % 60).padStart(2, "0")}m`;
+}
+
+function updateEta() {
+  if (!paceWindow.length) { $("eta").textContent = ""; return; }
+  const avgMs = paceWindow.reduce((a, b) => a + b, 0) / paceWindow.length;
+  const n = S.done + idx;
+  const remainingCurrent = Math.max(S.total - n, 0);
+  const etaCurrent = fmtDuration(remainingCurrent * avgMs / 1000);
+  let extra = "";
+  if (fullTotal && fullTotal > S.total) {
+    const remainingFull = Math.max(fullTotal - n, 0);
+    extra = ` · ${fmtDuration(remainingFull * avgMs / 1000)} to ${fullTotal}`;
+  }
+  $("eta").textContent =
+    `${(avgMs / 1000).toFixed(1)}s/item · ${etaCurrent} left${extra}`;
+}
+
+const $ = id => document.getElementById(id);
+const cur = () => S.items[idx];
+
+function pretty(objId) {           // "knife_011" -> "knife 011"
+  return String(objId).replace(/_/g, " ");
+}
+
+async function boot() {
+  S = await (await fetch("/api/state")).json();
+  $("keysBinary").style.display = S.graded ? "none" : "";
+  $("keysGraded").style.display = S.graded ? "" : "none";
+  render();
+}
+
+function render() {
+  if (idx >= S.items.length) {
+    $("stage").innerHTML = '<div class="done"><h2>Session complete</h2>' +
+      '<p>All judgements saved. You can close this tab.</p></div>';
+    $("question").textContent = "";
+    (S.graded ? $("keysGraded") : $("keysBinary")).style.display = "none";
+    $("count").textContent = `${S.total} / ${S.total}`;
+    $("bar").style.width = "100%";
+    return;
+  }
+  const it = cur();
+  const n = S.done + idx;
+  $("count").textContent = `${n + 1} / ${S.total}`;
+  $("bar").style.width = (100 * n / S.total).toFixed(1) + "%";
+  $("breakMsg").textContent =
+    (n > 0 && n % BREAK_EVERY === 0) ? "· good point for a break" : "";
+  $("breakMsg").className = "count break";
+  updateEta();
+
+  $("lgA").textContent = pretty(it.actor.obj_id);
+  $("lgR").textContent = pretty(it.recipient.obj_id);
+
+  // Actor first, recipient last, verb in caps — the sentence is the third
+  // redundant guard (with the two colours) against judging a reversed pair.
+  const verb = it.predicate.replace(/^can/, "");
+  const lead = S.graded ? "How well can the" : "Can the";
+  const tail = S.graded ? "? (0 = impossible, 9 = perfect fit)" : "?";
+  $("question").innerHTML =
+    `${lead} <span class="a">${it.actor.obj_class}</span> ` +
+    `<span class="v">${verb}</span> ` +
+    `the <span class="r">${it.recipient.obj_class}</span>${tail}`;
+
+  angle = -1;
+  showImage();
+  prefetchNext();
+  conf = null; confExplicit = false; note = "";
+  paintConf();
+  shownAt = performance.now();
+}
+
+function showImage() {
+  const it = cur();
+  const src = angle < 0
+    ? `/img/${it.pair_dir}/${it.image}`
+    : `/img/${it.pair_dir}/${it.angles[angle]}`;
+  $("stage").innerHTML =
+    `<img src="${src}" alt="" onerror="imgFail()">`;
+  $("angleInfo").textContent = angle < 0
+    ? (it.angles.length ? `all angles · ←→ to inspect` : "")
+    : `angle ${angle + 1} / ${it.angles.length} · ←→`;
+}
+
+// Each /img/ hit costs a fresh SSH round-trip in --remote-host mode (no
+// local render tree), which was the visible per-item delay. Kick off a
+// browser-cache-only fetch of the NEXT item's default image while the
+// current one is still on screen -- by the time you judge and advance,
+// it's usually already warm. new Image() (not fetch()) so the browser's
+// own HTTP cache serves it on the real <img> src a moment later, no
+// extra JS-side cache to manage.
+function prefetchNext() {
+  const next = S.items[idx + 1];
+  if (!next) return;
+  new Image().src = `/img/${next.pair_dir}/${next.image}`;
+}
+
+function imgFail() {
+  const it = cur();
+  $("stage").innerHTML =
+    `<div class="missing"><p><b>Render missing.</b></p>` +
+    `<p><code>${it.pair_dir}/${it.image}</code> was not found under the ` +
+    `--renders directory.</p><p>Judge <b>U</b> (unsure) and note it, ` +
+    `or stop and pull the renders.</p></div>`;
+}
+
+function paintConf() {
+  for (const k of [1, 2, 3]) $("k" + k).className = "key" + (conf === k ? " on" : "");
+}
+
+async function judge(verdict) {
+  const it = cur();
+  const body = {
+    pair_id: it.pair_id,
+    confidence: conf, confidence_explicit: confExplicit,
+    note, elapsed_ms: Math.round(performance.now() - shownAt),
+  };
+  if (verdict === "unsure") {
+    // "unsure" stays a verdict even in graded mode -- there is no honest
+    // 0-9 score for "I can't tell", and forcing one would fabricate
+    // precision the labeller doesn't have.
+    body.verdict = "unsure";
+  } else if (S.graded) {
+    body.human_score = verdict;
+  } else {
+    body.verdict = verdict;
+  }
+  if (hist.includes(it.pair_id)) body.revision_of = it.pair_id;
+  const r = await fetch("/api/judge", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) { alert("Save failed — not advancing. Check the terminal."); return; }
+  if (!hist.includes(it.pair_id)) hist.push(it.pair_id);
+  paceWindow.push(body.elapsed_ms);
+  if (paceWindow.length > PACE_WINDOW_N) paceWindow.shift();
+  idx++;
+  render();
+}
+
+let lastKey = 0;
+document.addEventListener("keydown", e => {
+  if ($("noteBox").classList.contains("show")) {
+    if (e.key === "Escape") { $("noteBox").classList.remove("show"); $("stage").focus(); }
+    else if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      note = $("noteText").value;
+      $("noteBox").classList.remove("show");
+    }
+    return;
+  }
+  if ($("defs").classList.contains("show")) {
+    if (e.key === "Escape" || e.key.toLowerCase() === "d")
+      $("defs").classList.remove("show");
+    return;
+  }
+  if (idx >= S.items.length) return;
+
+  const k = e.key.toLowerCase();
+  const isDigit = "0123456789".includes(k);
+  // Debounce: a double-tap must not blow through two items.
+  if (("ynu".includes(k) || (S.graded && isDigit)) && performance.now() - lastKey < 150) return;
+
+  if (S.graded && isDigit) {
+    lastKey = performance.now();
+    judge(Number(k));
+  } else if (k === "u") {
+    lastKey = performance.now();
+    judge("unsure");
+  } else if (!S.graded && (k === "y" || k === "n")) {
+    lastKey = performance.now();
+    judge(k === "y" ? "yes" : "no");
+  } else if (k === "b") {
+    if (idx > 0) { idx--; render(); }
+  } else if (!S.graded && (k === "1" || k === "2" || k === "3")) {
+    conf = Number(k); confExplicit = true; paintConf();
+  } else if (k === "d") {
+    $("defTitle").textContent = cur().predicate + " — " + cur().question;
+    $("defBody").textContent = cur().definition;
+    $("defs").classList.add("show");
+  } else if (e.code === "Space") {
+    e.preventDefault();
+    $("noteText").value = note;
+    $("noteBox").classList.add("show");
+    $("noteText").focus();
+  } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+    const it = cur();
+    if (!it.angles.length) return;
+    const d = e.key === "ArrowRight" ? 1 : -1;
+    angle = angle < 0 ? (d > 0 ? 0 : it.angles.length - 1)
+                      : angle + d;
+    if (angle >= it.angles.length || angle < 0) angle = -1;  // back to the grid
+    showImage();
+  }
+});
+
+boot();
+</script>

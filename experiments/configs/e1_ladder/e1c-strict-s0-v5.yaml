@@ -1,0 +1,12 @@
+name: e1c-strict-s0-v5
+scenes: /scratch/maksym.bek/omni_scenes_all_merged
+labels: /scratch/maksym.bek/affdet/labels_all_merged_v5
+bbox_source: oracle
+crop_padding: 0.0
+backbone: vitb14
+head: mlp
+epochs: 50
+seed: 0
+holdout_mode: strict
+holdout_frac: 0.20
+resolved_instances: /scratch/maksym.bek/affdet/resolved_instances_v2.json

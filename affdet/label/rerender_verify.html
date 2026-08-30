@@ -1,0 +1,209 @@
+<!--
+  E3 re-render verification UI. Served by affdet/label/rerender_verify.py.
+
+  Unlike manual_tool.html, this page is allowed to show the human/VLM scores
+  -- there is no fresh judgment being collected, only a match/mismatch/unsure
+  verdict on whether the re-rendered image still shows the scene those scores
+  were given for.
+-->
+<meta charset="utf-8">
+<title>E3 re-render verification</title>
+<style>
+  :root {
+    --old: #2f6fd0;
+    --new: #d2701c;
+    --bg: #14161a;
+    --panel: #1c1f25;
+    --line: #2c313a;
+    --text: #e8eaed;
+    --dim: #9aa1ac;
+    --match: #3f9d5c;
+    --mismatch: #d0554f;
+    --unsure: #d4a83e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, sans-serif;
+    height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    padding: 10px 18px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 16px; flex: none;
+  }
+  .count { font-variant-numeric: tabular-nums; color: var(--dim); }
+  .bar { flex: 1; height: 6px; background: var(--panel); border-radius: 3px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--old); width: 0; transition: width .2s; }
+
+  main { flex: 1; display: flex; min-height: 0; padding: 14px; gap: 14px; }
+  .panel {
+    flex: 1; display: flex; flex-direction: column; min-width: 0;
+    background: var(--panel); border-radius: 8px; overflow: hidden;
+  }
+  .panel .tag {
+    padding: 6px 12px; font-size: 12px; text-transform: uppercase;
+    letter-spacing: .05em; color: #fff; flex: none;
+  }
+  .panel.old .tag { background: var(--old); }
+  .panel.new .tag { background: var(--new); }
+  .panel .imgbox {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    min-height: 0; padding: 8px;
+  }
+  .panel img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; }
+  .missing { color: var(--dim); text-align: center; padding: 2em; }
+
+  aside {
+    width: 260px; flex: none; background: var(--panel); border-radius: 8px;
+    padding: 14px; overflow-y: auto;
+  }
+  aside h3 { margin: 0 0 10px; font-size: 13px; color: var(--dim); text-transform: uppercase; letter-spacing: .05em; }
+  table.scores { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 4px; }
+  table.scores th { text-align: left; color: var(--dim); font-weight: 500; padding-bottom: 4px; }
+  table.scores td { padding: 3px 0; font-variant-numeric: tabular-nums; }
+  table.scores tr + tr td { border-top: 1px solid var(--line); padding-top: 4px; }
+  .pairname { font-size: 14px; margin-bottom: 10px; word-break: break-word; }
+  .pairname .a { color: #7dabf0; font-weight: 600; }
+  .pairname .r { color: #f0a765; font-weight: 600; }
+
+  footer { flex: none; border-top: 1px solid var(--line); padding: 12px 18px 16px; }
+  .keys { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .key { background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+         padding: 7px 13px; color: var(--dim); font-size: 13px; }
+  .key b { color: var(--text); }
+  .key.match { border-color: var(--match); }
+  .key.mismatch { border-color: var(--mismatch); }
+  .key.unsure { border-color: var(--unsure); }
+
+  #noteBox { position: fixed; left: 50%; bottom: 22%; transform: translateX(-50%);
+             width: min(680px, 88vw); display: none; }
+  #noteBox.show { display: block; }
+  #noteBox textarea { width: 100%; height: 92px; background: var(--panel);
+    color: var(--text); border: 1px solid var(--old); border-radius: 6px;
+    padding: 10px; font: inherit; resize: none; }
+  #noteBox .hint { color: var(--dim); font-size: 12px; margin-top: 5px; }
+  .done { text-align: center; margin: auto; }
+</style>
+
+<header>
+  <span class="count" id="count">…</span>
+  <span class="bar"><i id="bar"></i></span>
+</header>
+
+<main id="stage"></main>
+
+<footer>
+  <div class="keys">
+    <span class="key" id="backKey"><b>B</b> back</span>
+    <span class="key match"><b>M</b> match</span>
+    <span class="key mismatch"><b>X</b> mismatch</span>
+    <span class="key unsure"><b>U</b> unsure</span>
+    <span class="key"><b>Space</b> note</span>
+  </div>
+</footer>
+
+<div id="noteBox">
+  <textarea id="noteText" placeholder="Note — what changed, e.g. pose/mesh/camera…"></textarea>
+  <div class="hint">Enter to save · Esc to cancel</div>
+</div>
+
+<script>
+let S = null, idx = 0, note = "";
+
+const $ = id => document.getElementById(id);
+const cur = () => S.items[idx];
+
+function pretty(objId) { return String(objId).replace(/_/g, " "); }
+
+async function boot() {
+  S = await (await fetch("/api/state")).json();
+  render();
+}
+
+// Only items reached during this running session can be revisited -- items
+// already verified before boot aren't in S.items, so idx can't go below 0.
+function canGoBack() { return idx > 0; }
+
+function scoreRows(judgments) {
+  if (!judgments.length) return "<tr><td colspan=2>(no judgments recorded)</td></tr>";
+  return judgments.map(j =>
+    `<tr><td>${j.predicate}</td><td>H:${j.human_score_0to9} · V:${Number(j.vlm_score_0to9).toFixed(2)}</td></tr>`
+  ).join("");
+}
+
+function render() {
+  if (idx >= S.items.length) {
+    $("stage").innerHTML = '<div class="done"><h2>Session complete</h2><p>All verdicts saved. You can close this tab.</p></div>';
+    $("count").textContent = `${S.total} / ${S.total}`;
+    $("bar").style.width = "100%";
+    return;
+  }
+  const it = cur();
+  const n = S.done + idx;
+  $("count").textContent = `${n + 1} / ${S.total}`;
+  $("bar").style.width = (100 * n / S.total).toFixed(1) + "%";
+  $("backKey").style.opacity = canGoBack() ? "1" : ".35";
+
+  const oldImg = it.old_available
+    ? `<img src="/img/old/${it.pair_id}/angle_00.png" alt="original">`
+    : '<div class="missing">original render not found</div>';
+  const newImg = it.new_available
+    ? `<img src="/img/new/${it.pair_id}/angle_00.png" alt="re-render">`
+    : '<div class="missing">re-render not found</div>';
+
+  $("stage").innerHTML =
+    '<div class="panel old"><span class="tag">original</span><div class="imgbox">' + oldImg + '</div></div>' +
+    '<div class="panel new"><span class="tag">re-render</span><div class="imgbox">' + newImg + '</div></div>' +
+    '<aside>' +
+      '<h3>Pair</h3>' +
+      `<div class="pairname"><span class="a">${pretty(it.actor)}</span> &rarr; <span class="r">${pretty(it.recipient)}</span></div>` +
+      '<h3>Scores</h3>' +
+      `<table class="scores"><tr><th>predicate</th><th>human · vlm</th></tr>${scoreRows(it.judgments)}</table>` +
+    '</aside>';
+
+  note = "";
+}
+
+function back() {
+  if (!canGoBack()) return;
+  idx--;
+  render();
+}
+
+async function verify(verdict) {
+  const it = cur();
+  const r = await fetch("/api/verify", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ pair_id: it.pair_id, verdict, note }),
+  });
+  if (!r.ok) { alert("Save failed — not advancing. Check the terminal."); return; }
+  idx++;
+  render();
+}
+
+document.addEventListener("keydown", e => {
+  if ($("noteBox").classList.contains("show")) {
+    if (e.key === "Escape") { $("noteBox").classList.remove("show"); }
+    else if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      note = $("noteText").value;
+      $("noteBox").classList.remove("show");
+    }
+    return;
+  }
+  if (idx >= S.items.length) return;
+  const k = e.key.toLowerCase();
+  if (k === "m") verify("match");
+  else if (k === "x") verify("mismatch");
+  else if (k === "u") verify("unsure");
+  else if (k === "b") back();
+  else if (e.code === "Space") {
+    e.preventDefault();
+    $("noteText").value = note;
+    $("noteBox").classList.add("show");
+    $("noteText").focus();
+  }
+});
+
+boot();
+</script>
