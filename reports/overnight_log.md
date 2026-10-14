@@ -13,3 +13,5 @@ Started 2026-10-15 00:00. Planned to run about 4 hours without input. Rules: pus
 ## Log
 - 00:00 Wide pair matrix submitted (16 jobs, adaptive 2). Contact-count noise fixed (contacts counted over the last second).
 - 00:01 canSlide prototype (affdet/sim/slide_map.py): tall narrow box topples when pushed high, flat box slides; tests + label export written.
+- 00:02 Wrote scripts/export_labels.py (all maps -> per-vertex .npz + index) and scripts/pair_matrix_report.py.
+- 00:10 Wide matrix v2 (16 cells, adaptive 2) done: 276 pairs, 65k sims, 1.4 job-h. Spot check: pan-on-tray map shows a thin plus-shaped region with speckles: likely adaptive artefact -> launching v3 = full sweeps, 32 cells along the long side.
