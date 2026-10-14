@@ -127,8 +127,10 @@ def _tilt_deg(q0, q1):
     return math.degrees(math.acos(np.clip(z0 @ z1, -1, 1)))
 
 
-def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0):
-    """Build and step the scene. watch(data) is called every step of the last `window` seconds."""
+def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None):
+    """Build and step the scene. watch(data) is called every step of the last `window` seconds.
+
+    If `info` is a dict it receives `initial_penetration_m`: how deeply the last body overlaps anything at t = 0."""
     import mujoco
     with tempfile.TemporaryDirectory() as d:
         for b in bodies:
@@ -141,6 +143,10 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0):
         data.qvel[a:a + 3] = v
         data.qvel[a + 3:a + 6] = w
     mujoco.mj_forward(m, data)
+    if info is not None:
+        last = m.body(bodies[-1].name).id
+        pen = [-c.dist for c in data.contact[: data.ncon] if last in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2])]
+        info["initial_penetration_m"] = float(max(pen, default=0.0))
     q_start = [data.body(b.name).xquat.copy() for b in bodies]
     p_start = [data.body(b.name).xpos.copy() for b in bodies]
     n = int(seconds / m.opt.timestep)
@@ -273,12 +279,16 @@ def surface_height(base: Body, Rb, pb, points) -> float:
 
 
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
-               max_tilt=10.0, max_drift=0.01, seconds=2.0, release="surface") -> dict:
+               max_tilt=10.0, max_drift=0.01, seconds=2.0, release="surface", max_release_penetration=0.003) -> dict:
     """Put `top` at `offset` on `base`'s upward side; does it stay on?
 
     release="surface": lower B until it first touches A under its footprint (what a robot does), so B starts a
     couple of mm above the local surface, inside a cup or tray as well as on a rim. release="top": drop B from the
     height of A's highest point (UTAMP-2's centred placement; B falls into anything concave).
+
+    A placement where B already overlaps A by more than `max_release_penetration` at release (a 9 cm shaker laid
+    down across a 8 cm mug) cannot be made by a robot, and the solver pushes it out in arbitrary directions: it does
+    not count as stable. `seconds=0` runs only this check.
     """
     import mujoco
     Rb = trimesh.transformations.rotation_matrix(FACE_DOWN[base_face][1], FACE_DOWN[base_face][0])
@@ -296,7 +306,8 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     pt = _place(top, Rt[:3, :3], xy=offset, z_base=z_release, gap=0.002)
     qb = trimesh.transformations.quaternion_from_matrix(Rb)
     qt = trimesh.transformations.quaternion_from_matrix(Rt)
-    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds)
+    info = {}
+    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info)
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
     # which says nothing about whether B stays on A
     def _mat(q):
@@ -336,12 +347,13 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     w_end = float(np.linalg.norm(vt[:3] - vb[:3]))
     v_end = float(np.linalg.norm(vt[3:] - vb[3:]))
     settled = w_end < 0.3 and v_end < 0.03
-    on_top = (settled and excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
+    clear = info["initial_penetration_m"] <= max_release_penetration
+    on_top = (clear and settled and excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
               and len(contacts) > 0)
     poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
     return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": len(contacts), "poses": poses,
-            "stable": bool(on_top), "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
+            "stable": bool(on_top), "release_penetration_m": info["initial_penetration_m"], "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
             "surface_depth_m": float(base_top - surface_z), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
             "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}

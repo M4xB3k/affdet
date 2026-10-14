@@ -19,7 +19,7 @@ from __future__ import annotations
 import numpy as np
 import trimesh
 
-from affdet.sim.mujoco_support import FACE_DOWN, Body, face_holds
+from affdet.sim.mujoco_support import FACE_DOWN, Body, face_holds, stack_test
 from affdet.sim.placement_map import placement_map
 
 
@@ -44,17 +44,50 @@ def pair_map(base: Body, top: Body, extent_xy, step=0.01, faces=tuple(FACE_DOWN)
         per_face[f] = reuse[f] if reuse and f in reuse else placement_map(base, top, extent_xy, step=step, top_face=f, procs=procs, **kw)
     if not per_face:
         raise ValueError("no face of the top object holds on a table")
+    return aggregate(per_face, faces, skipped, step)
+
+
+def aggregate(per_face: dict, faces, skipped, step) -> dict:
+    """Combine the per-face placement maps of one pair into the maps on B and on A."""
     any_ = next(iter(per_face.values()))
     shape = any_["stable"].shape
     margin = np.stack([per_face[f]["margin_mm"] if f in per_face else np.zeros(shape) for f in faces])
     best_face = np.where(margin.max(0) > 0, margin.argmax(0), -1)
-    out = {"faces": list(faces), "skipped": skipped, "xs": any_["xs"], "ys": any_["ys"], "step": step,
-           "per_face": per_face,
-           "b_margin_mm": margin.max(0), "b_best_face": best_face, "b_any": margin.max(0) > 0,
-           "b_stable_frac": np.stack([per_face[f]["stable"] if f in per_face else np.zeros(shape, bool) for f in faces]).mean(0),
-           "a_face_margin_mm": {f: (per_face[f]["best_margin_mm"] if f in per_face else 0.0) for f in faces},
-           "a_face_stable_frac": {f: (float(per_face[f]["stable"].mean()) if f in per_face else 0.0) for f in faces}}
-    return out
+    return {"faces": list(faces), "skipped": list(skipped), "xs": any_["xs"], "ys": any_["ys"], "step": step,
+            "per_face": per_face,
+            "b_margin_mm": margin.max(0), "b_best_face": best_face, "b_any": margin.max(0) > 0,
+            "b_stable_frac": np.stack([per_face[f]["stable"] if f in per_face else np.zeros(shape, bool) for f in faces]).mean(0),
+            "a_face_margin_mm": {f: (per_face[f]["best_margin_mm"] if f in per_face else 0.0) for f in faces},
+            "a_face_stable_frac": {f: (float(per_face[f]["stable"].mean()) if f in per_face else 0.0) for f in faces}}
+
+
+def recheck_release(base: Body, top: Body, m: dict, top_face: str, base_face="under", procs=8) -> dict:
+    """Re-apply the release-collision rule to a stored placement map: every cell that was stable is re-checked with a
+    zero-step `stack_test` (no physics, ~0.1 s), and the map is finalised again. Needed for maps made before the rule."""
+    from multiprocessing import Pool
+
+    from affdet.sim.placement_map import finalize
+    ys_i, xs_i = np.nonzero(m["stable"])
+    pts = [(float(m["xs"][i]), float(m["ys"][j])) for j, i in zip(ys_i, xs_i)]
+    pen = np.zeros(m["stable"].shape)
+    if pts:
+        with Pool(procs, initializer=_init_recheck, initargs=(base, top, base_face, top_face)) as p:
+            vals = p.map(_pen, pts, chunksize=4)
+        pen[ys_i, xs_i] = vals
+    m = dict(m)
+    m["release_penetration_m"] = pen
+    return finalize(m)
+
+
+_R = {}
+
+
+def _init_recheck(base, top, base_face, top_face):
+    _R.update(base=base, top=top, base_face=base_face, top_face=top_face)
+
+
+def _pen(xy):
+    return stack_test(_R["base"], _R["top"], _R["base_face"], _R["top_face"], offset=tuple(xy), seconds=0.0)["release_penetration_m"]
 
 
 def patch_heat(vertices: np.ndarray, face_values: dict, eps=0.003) -> np.ndarray:

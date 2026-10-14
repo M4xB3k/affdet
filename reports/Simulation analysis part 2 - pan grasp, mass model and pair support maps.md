@@ -55,28 +55,32 @@ A pair label has a heatmap on each object. The sweep puts A on B with each face 
 
 **Check against the shaker study.** Four shakers (round, tall, square, hexagonal) on 12 bases give 66 pairs in total. The faces that work in the pair maps match the study on all 24 of 24 shaker faces. Two defects were found and fixed first: the pair prefilter let a rolling round shaker through (front face), and it rejected the hexagonal shaker's four side faces because it settles on a neighbouring facet. Before the fix the agreement was 19 of 24.
 
+**Third defect: overlap at release.** A video of the hex shaker on the mug showed a lying shaker (9 cm long) released across a mug with an inner diameter under 9 cm, so it started overlapping the wall by up to 33 mm. The solver pushed it out in arbitrary directions and the map still counted it as stable. `stack_test` now rejects any placement where B overlaps A by more than 3 mm at release (`release_penetration_m`). Stored maps were re-checked without re-running the physics (`scripts/sim_recheck_release.py`, zero-step check of the stable cells only): 29 of the 66 pair maps changed, from 1 % fewer stable cells for most shakers on trays and pans to 50 to 70 % fewer for shakers on mugs and 30 to 74 % fewer for pans on trays. The three part-1 shaker placement maps are unchanged apart from one mug cell (95 to 94). The 24 face agreements are unchanged.
+
+For the hex shaker lying on the mug, 12 front, 8 back, 17 left and 9 right cells survive. The best front-face placement rests across the rim: its contact points are all at rim height (12.1 cm) and it ends 3° tilted, with a 9 mm margin.
+
 **Cost.** The first pass took 4,662 s for 66 pairs on 8 CPU workers, 71 s per pair on average and 253 s at most. The grid had 16 cells along the base's long side. Re-running with the corrected faces reused every sweep that still applied.
 
 | top | base | pairs | B points that can carry A | best margin (mm) | faces that work |
 |---|---|---|---|---|---|
 | tall shaker | board | 3 | 85 % | 145 | under, on |
 | tall shaker | pan | 3 | 27 % | 152 | under, on |
-| tall shaker | mug | 3 | 21 % | 16 | under, on |
+| tall shaker | mug | 3 | 20 % | 16 | under, on |
 | tall shaker | tray | 3 | 56 % | 170 | under, on |
 | round shaker | board | 3 | 82 % | 145 | under |
 | round shaker | pan | 3 | 25 % | 144 | under |
 | round shaker | mug | 3 | 14 % | 18 | under |
 | round shaker | tray | 3 | 56 % | 183 | under |
 | square shaker | board | 3 | 99 % | 145 | all six |
-| square shaker | pan | 3 | 50 % | 152 | all six |
-| square shaker | mug | 3 | 74 % | 26 | all six |
+| square shaker | pan | 3 | 44 % | 144 | all six |
+| square shaker | mug | 3 | 55 % | 18 | all six |
 | square shaker | tray | 3 | 74 % | 170 | all six |
 | hex shaker | board | 3 | 98 % | 145 | under and four sides |
-| hex shaker | pan | 3 | 48 % | 144 | under and four sides |
-| hex shaker | mug | 3 | 56 % | 20 | under and four sides |
+| hex shaker | pan | 3 | 43 % | 144 | under and four sides |
+| hex shaker | mug | 3 | 37 % | 16 | under and four sides |
 | hex shaker | tray | 3 | 74 % | 170 | under and four sides |
 | mug | board | 9 | 90 % | 174 | under, on, front, back |
-| pan | tray | 9 | 80 % | 170 | under, on |
+| pan | tray | 9 | 43 % | 136 | under, on |
 
 Per-pair records: `docs/objaverse/pair_support_maps.jsonl`. Figures: `figures/sim_analysis_2/pair_*.png`. In each, the left panel is the map on B, the middle panel is the per-face robustness on A, and the two right panels are A rendered with those values painted on.
 
