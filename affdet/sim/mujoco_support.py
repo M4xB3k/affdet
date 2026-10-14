@@ -127,10 +127,11 @@ def _tilt_deg(q0, q1):
     return math.degrees(math.acos(np.clip(z0 @ z1, -1, 1)))
 
 
-def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None):
+def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None):
     """Build and step the scene. watch(data) is called every step of the last `window` seconds.
 
-    If `info` is a dict it receives `initial_penetration_m`: how deeply the last body overlaps anything at t = 0."""
+    If `info` is a dict it receives `initial_penetration_m`: how deeply the last body overlaps anything at t = 0.
+    With `skip_if_penetration` set, a start deeper than that returns without stepping (the result is already decided)."""
     import mujoco
     with tempfile.TemporaryDirectory() as d:
         for b in bodies:
@@ -147,6 +148,9 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, inf
         last = m.body(bodies[-1].name).id
         pen = [-c.dist for c in data.contact[: data.ncon] if last in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2])]
         info["initial_penetration_m"] = float(max(pen, default=0.0))
+        if skip_if_penetration is not None and info["initial_penetration_m"] > skip_if_penetration:
+            seconds = 0.0
+            info["skipped"] = True
     q_start = [data.body(b.name).xquat.copy() for b in bodies]
     p_start = [data.body(b.name).xpos.copy() for b in bodies]
     n = int(seconds / m.opt.timestep)
@@ -307,7 +311,7 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     qb = trimesh.transformations.quaternion_from_matrix(Rb)
     qt = trimesh.transformations.quaternion_from_matrix(Rt)
     info = {}
-    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info)
+    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration)
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
     # which says nothing about whether B stays on A
     def _mat(q):

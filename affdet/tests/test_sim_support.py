@@ -61,14 +61,15 @@ def test_face_holds_uses_the_static_disturbance():
 
 
 def test_grasp_swing_grows_with_distance_from_the_centre_of_mass():
-    """A uniform 20 x 3 x 2 cm bar (1.2 kg) pinched across its width: a grasp at the COM lifts it flat, and the
-    further from the COM the pinch is, the more it pivots (0, 16, 38 deg at 0, 4, 9.5 cm)."""
+    """A uniform 20 x 3 x 2 cm bar (1.2 kg) pinched across its width at 30 N: a grasp near the COM lifts it flat, and past
+    the torsional limit of the pads (m g d > 2 mu_t F, about 5 to 7 cm) it pivots: 0.4 to 1.3 deg up to 6 cm, 21 deg at
+    8 cm, 52 deg at 9.5 cm. The squeeze is regulated to 30 N (pads that overshoot give a rigid grip and no cliff)."""
     from affdet.sim.grasp_map import grasp_test
     bar = Body("bar", [_on_table(trimesh.creation.box([0.2, 0.03, 0.02]))], 1.2)
-    res = [grasp_test(bar, d, 0.0, 0.0) for d in (0.0, 0.04, 0.095)]
+    res = [grasp_test(bar, d, 0.0, 0.0) for d in (0.0, 0.05, 0.095)]
     assert res[0]["success"] and res[0]["swing_deg"] < 3
-    assert res[1]["swing_deg"] > res[0]["swing_deg"] + 5
-    assert not res[2]["success"]
+    assert res[1]["swing_deg"] < 3  # inside the limit
+    assert res[2]["swing_deg"] > 30 and not res[2]["success"]  # past it
 
 
 def test_analytic_grasp_model_matches_the_simulated_bar():
@@ -164,3 +165,37 @@ def test_a_placement_that_overlaps_the_base_at_release_is_not_stable():
     assert r["release_penetration_m"] > 0.003 and not r["stable"]
     small = Body("small", [_on_table(trimesh.creation.box([0.03, 0.03, 0.03]))], 0.1)
     assert stack_test(slot, small, "under", "under", offset=(0.0, 0.0), seconds=0.0)["release_penetration_m"] <= 0.003
+
+
+def _fake_pair():
+    from affdet.sim.pair_map import aggregate
+    xs = np.arange(-0.1, 0.1001, 0.05); ys = np.arange(-0.1, 0.1001, 0.05)
+    stable = np.zeros((5, 5), bool); stable[1:4, 1:4] = True
+    margin = np.zeros((5, 5)); margin[2, 2] = 40.0; margin[1:4, 1:4] = np.maximum(margin[1:4, 1:4], 10.0)
+    pf = {"under": {"stable": stable, "margin_mm": margin, "best_margin_mm": 40.0, "xs": xs, "ys": ys}}
+    return aggregate(pf, ["under", "on"], ["on"], 0.05)
+
+
+def test_pair_labels_put_a_heatmap_on_each_object_and_round_trip(tmp_path):
+    from affdet.sim.label_export import CAP_MM, load, pair_labels, save
+    base = _on_table(trimesh.creation.box([0.2, 0.2, 0.02]))
+    top = _on_table(trimesh.creation.box([0.04, 0.04, 0.08]))
+    lab = pair_labels(_fake_pair(), top, base)
+    b, a = lab["B"], lab["A"]
+    assert b["score"].max() == 1.0 and b["score"].min() == 0.0 and b["margin_mm"].max() == 40.0
+    assert b["valid"].sum() > 0 and (b["score"][~b["valid"]] == 0).all()   # only upward faces carry a label
+    assert a["valid"].sum() > 0 and a["face"].max() == 0                   # the 'under' patch only: 'on' cannot rest
+    assert np.allclose(a["margin_mm"][a["face"] == 0], 40.0)
+    save(str(tmp_path / "b.npz"), b, {"object": "slab"})
+    got, meta = load(str(tmp_path / "b.npz"))
+    assert meta["cap_mm"] == CAP_MM and meta["schema_version"] == 1 and np.allclose(got["score"], b["score"])
+
+
+def test_grasp_labels_report_held_and_stable_fractions():
+    from affdet.sim.label_export import grasp_labels
+    xs = ys = np.array([-0.05, 0.0, 0.05])
+    held = np.zeros((3, 3, 2), bool); held[1, 1] = True
+    swing = np.full((3, 3, 2), 50.0); swing[1, 1, 0] = 10.0
+    g = {"xs": xs, "ys": ys, "step": 0.05, "held": held, "swing_deg": swing}
+    lab = grasp_labels(g, _on_table(trimesh.creation.box([0.1, 0.1, 0.02])))
+    assert lab["held_frac"].max() == 1.0 and abs(lab["stable_frac"].max() - 0.5) < 1e-9

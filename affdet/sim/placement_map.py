@@ -56,6 +56,63 @@ def placement_map(base: Body, top: Body, extent_xy, step=0.01, base_face="under"
     return finalize(out, max_tilt, max_drift, max_excess_drop, max_w, max_v, max_release_penetration)
 
 
+def placement_map_adaptive(base: Body, top: Body, extent_xy, step=0.01, factor=3, base_face="under", top_face="under", procs=8,
+                           **kw) -> dict:
+    """Coarse-to-fine version of `placement_map`: the same fine grid, far fewer simulations.
+
+    Every `factor`-th cell is simulated first. A fine cell whose four enclosing coarse cells all agree (all stable or all
+    failing) inherits that value; the rest, the cells near a boundary, are simulated. A stable island narrower than the
+    coarse spacing can be missed, so `factor` trades cost against that risk. `n_simulated` / `n_cells` report the saving.
+    """
+    xs = np.arange(-extent_xy[0] / 2, extent_xy[0] / 2 + 1e-9, step)
+    ys = np.arange(-extent_xy[1] / 2, extent_xy[1] / 2 + 1e-9, step)
+    ny, nx = len(ys), len(xs)
+
+    def coarse_idx(n):
+        c = list(range(0, n, factor))
+        return c if c[-1] == n - 1 else c + [n - 1]
+
+    cx, cy = coarse_idx(nx), coarse_idx(ny)
+    fields = ("n_contacts", "drop_m", "tilt_deg", "drift_m", "surface_depth_m", "excess_drop_m", "w_end", "v_end", "release_penetration_m")
+    arr = {k: np.zeros((ny, nx)) for k in fields}
+    done = np.zeros((ny, nx), bool)
+
+    def run(cells):
+        with Pool(procs, initializer=_init, initargs=(base, top, base_face, top_face)) as p:
+            res = p.map(_one, [(xs[i], ys[j]) for j, i in cells], chunksize=4)
+        for (j, i), r in zip(cells, res):
+            for k, v in zip(fields, r):
+                arr[k][j, i] = v
+            done[j, i] = True
+
+    run([(j, i) for j in cy for i in cx])
+    probe = finalize({"xs": xs, "ys": ys, "step": step, **{k: v.copy() for k, v in arr.items()}}, **kw)["stable"]  # valid on done cells
+    lo_x = np.array([max(c for c in cx if c <= i) for i in range(nx)]); hi_x = np.array([min(c for c in cx if c >= i) for i in range(nx)])
+    lo_y = np.array([max(c for c in cy if c <= j) for j in range(ny)]); hi_y = np.array([min(c for c in cy if c >= j) for j in range(ny)])
+    need = []
+    for j in range(ny):
+        for i in range(nx):
+            if done[j, i]:
+                continue
+            corners = {probe[lo_y[j], lo_x[i]], probe[lo_y[j], hi_x[i]], probe[hi_y[j], lo_x[i]], probe[hi_y[j], hi_x[i]]}
+            if len(corners) > 1:
+                need.append((j, i))
+    run(need)
+    # inherited cells copy the metrics of their nearest simulated corner, so `finalize` gives them the same verdict
+    for j in range(ny):
+        for i in range(nx):
+            if not done[j, i]:
+                jj = lo_y[j] if (j - lo_y[j]) <= (hi_y[j] - j) else hi_y[j]
+                ii = lo_x[i] if (i - lo_x[i]) <= (hi_x[i] - i) else hi_x[i]
+                for k in fields:
+                    arr[k][j, i] = arr[k][jj, ii]
+    out = {"xs": xs, "ys": ys, "step": step, **arr}
+    out["n_contacts"] = arr["n_contacts"].astype(int)
+    out = finalize(out, **kw)
+    out["n_simulated"] = int(done.sum()); out["n_cells"] = int(done.size)
+    return out
+
+
 def finalize(out: dict, max_tilt=10.0, max_drift=0.03, max_excess_drop=0.01, max_w=1.5, max_v=0.1,
              max_release_penetration=RELEASE_PENETRATION_M) -> dict:
     """Turn the raw per-cell metrics into `stable`, `kind`, `margin_mm` and the best point (re-runnable offline)."""

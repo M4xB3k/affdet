@@ -30,6 +30,9 @@ FORCE_N = 30.0
 PAD_BELOW_TOP_M = 0.03  # pad bottom this far below the surface under the grasp centre (squeezing above a handle's widest point wedges the pads off)
 LIFT_M = 0.50  # a 40 cm pan held by its handle hangs below it: the lift must clear its length
 PHASES = dict(close_max=1.2, lift=1.5, hold=0.4)  # seconds
+PAD_MASS_KG = 5.0      # pads are welded to their targets, so their mass only sets how stiff their contacts feel (effective mass); 0.2 kg pads sank into a pan handle and lost it
+PAD_SOLREF = None      # None: the scene default; a string like "0.004 1" makes pad contacts stiffer (a priority-1 geom's value wins)
+SQUEEZE_SPEED = 0.01   # m/s: closing speed once a pad touches (100 um per step), so the force can be regulated to a few N
 PARK_Z = 2.0  # pads start parked above the ray cast start so the height probes only see the object
 PAD_FRICTION = (1.0, 0.01, 0.001)  # sliding, torsional (m), rolling (m)
 
@@ -42,10 +45,22 @@ def _pad_xml(name, x, y, z, yaw):
     return (f'<body name="t{name}" mocap="true" pos="{x:.5f} {y:.5f} {z:.5f}" quat="{q}"/>'
             f'<body name="{name}" pos="{x:.5f} {y:.5f} {z:.5f}" quat="{q}"><freejoint/>'
             f'<geom type="box" size="{hx} {hy} {hz}" pos="0 0 {hz}" friction="{PAD_FRICTION[0]} {PAD_FRICTION[1]} '
-            f'{PAD_FRICTION[2]}" condim="6" mass="0.2" solref="{ms.SIM["solref"]}" rgba="0.3 0.3 0.3 1"/></body>')
+            f'{PAD_FRICTION[2]}" condim="6" mass="{PAD_MASS_KG}" solref="{PAD_SOLREF or ms.SIM["solref"]}" priority="{1 if PAD_SOLREF else 0}" '
+            f'rgba="0.3 0.3 0.3 1"/></body>')
 
 
 _WELD = ('<equality><weld body1="fl" body2="tfl" solref="0.008 1"/><weld body1="fr" body2="tfr" solref="0.008 1"/></equality>')
+
+
+def _regulate(s, force, v, dt):
+    """One step of the squeeze controller for a pad whose target has closed `s` metres: advance while the contact force is
+    below FORCE_N (fast in free air, slowly once touching, so a stiff contact does not overshoot), back off when it is more than
+    15 % above. Without the back-off a pad's hold force is set by how far its target overshot, not by FORCE_N."""
+    if force < FORCE_N:
+        return min(s + (v if force < 3.0 else SQUEEZE_SPEED) * dt, PAD["travel"])
+    if force > 1.15 * FORCE_N:
+        return max(s - SQUEEZE_SPEED * dt, 0.0)
+    return s
 
 
 def _pad_force(m, data, body_id, obj_id):
@@ -131,10 +146,8 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
         fl_, fr_ = _pad_force(m, data, bl, oid), _pad_force(m, data, br, oid)
         if t_start is None and ((fl_ >= FORCE_N and fr_ >= FORCE_N) or t >= t_close_max):
             t_start = t + 0.1  # let the squeeze settle
-        if sl < PAD["travel"] and fl_ < FORCE_N:
-            sl += v * dt
-        if sr < PAD["travel"] and fr_ < FORCE_N:
-            sr += v * dt
+        sl = _regulate(sl, fl_, v, dt)
+        sr = _regulate(sr, fr_, v, dt)
         data.mocap_pos[il][:2] = [x - (c0 - sl) * u[0], y - (c0 - sl) * u[1]]
         data.mocap_pos[ir][:2] = [x + (c0 - sr) * u[0], y + (c0 - sr) * u[1]]
         s_ = 0.0 if t_start is None else np.clip((t - t_start) / t_lift, 0, 1)

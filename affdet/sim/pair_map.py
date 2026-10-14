@@ -13,6 +13,8 @@ A face that does not hold on a flat table (`face_supports`: rests on that face o
 survives a 5 degree tilt and keeps its COM 5 mm inside the patch, the same verdict as the shaker study) is skipped by default: it cannot hold on a flat board
 either, so only concave supports (a cup holding a round cap) could change its answer. Pass prefilter=False to
 sweep it anyway. `face_ok` supplies precomputed verdicts and `reuse` earlier per-face sweeps of the same pair.
+`adaptive=k` (k >= 2) sweeps coarse-to-fine (`placement_map_adaptive`): about half the simulations for 96 to 98 % of cells
+unchanged, at the price of missing a few cells of a narrow stable region (checked in scripts/sim_adaptive_check.py).
 """
 from __future__ import annotations
 
@@ -20,7 +22,7 @@ import numpy as np
 import trimesh
 
 from affdet.sim.mujoco_support import FACE_DOWN, Body, face_holds, stack_test
-from affdet.sim.placement_map import placement_map
+from affdet.sim.placement_map import placement_map, placement_map_adaptive
 
 
 MIN_SETTLED_MARGIN_M = 0.005  # same as the static labeller's min_margin: the settled COM must sit this far inside the contact patch
@@ -33,7 +35,7 @@ def face_supports(top: Body, face: str) -> bool:
 
 
 def pair_map(base: Body, top: Body, extent_xy, step=0.01, faces=tuple(FACE_DOWN), prefilter=True, procs=8,
-             face_ok: dict | None = None, reuse: dict | None = None, **kw) -> dict:
+             face_ok: dict | None = None, reuse: dict | None = None, adaptive: int = 0, **kw) -> dict:
     per_face, skipped = {}, []
     for f in faces:
         if prefilter:
@@ -41,7 +43,12 @@ def pair_map(base: Body, top: Body, extent_xy, step=0.01, faces=tuple(FACE_DOWN)
             if not ok:
                 skipped.append(f)
                 continue
-        per_face[f] = reuse[f] if reuse and f in reuse else placement_map(base, top, extent_xy, step=step, top_face=f, procs=procs, **kw)
+        if reuse and f in reuse:
+            per_face[f] = reuse[f]
+        elif adaptive >= 2:
+            per_face[f] = placement_map_adaptive(base, top, extent_xy, step=step, factor=adaptive, top_face=f, procs=procs, **kw)
+        else:
+            per_face[f] = placement_map(base, top, extent_xy, step=step, top_face=f, procs=procs, **kw)
     if not per_face:
         raise ValueError("no face of the top object holds on a table")
     return aggregate(per_face, faces, skipped, step)
