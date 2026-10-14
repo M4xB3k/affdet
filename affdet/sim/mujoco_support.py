@@ -353,11 +353,17 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     qt = trimesh.transformations.quaternion_from_matrix(Rt)
     info = {}
     touching = [0]  # most base-top contacts seen at any step of the last second: one step can show none while B rests on A (soft contacts jitter)
+    window_pts = []  # world positions of those contacts, every 20th step (the whole contact patch, not one step's few points)
+    step_no = [0]
 
     def watch(data):
         mm = info["model"]
         ids = {mm.body(base.name).id, mm.body(top.name).id}
-        touching[0] = max(touching[0], sum(1 for c in data.contact[: data.ncon] if {mm.geom_bodyid[c.geom1], mm.geom_bodyid[c.geom2]} == ids))
+        here = [c.pos.copy() for c in data.contact[: data.ncon] if {mm.geom_bodyid[c.geom1], mm.geom_bodyid[c.geom2]} == ids]
+        touching[0] = max(touching[0], len(here))
+        step_no[0] += 1
+        if step_no[0] % 20 == 0:
+            window_pts.extend(here)
 
     m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch, descend=descend)
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
@@ -407,7 +413,8 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": max(len(contacts), touching[0]), "poses": poses,
             "stable": bool(on_top), "release_penetration_m": info["initial_penetration_m"], "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
             "surface_depth_m": float(base_top - (np.concatenate([p.vertices for p in top.parts]) @ data.body(top.name).xmat.reshape(3, 3).T + data.body(top.name).xpos)[:, 2].min()) if release == "descend" else float(base_top - surface_z),
-            "release_z": info.get("release_z"), "descent_m": info.get("descent_m"), "contacts_world": contacts,
+            "release_z": info.get("release_z"), "descent_m": info.get("descent_m"),
+            "contacts_window_world": np.array(window_pts).reshape(-1, 3), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
             "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}
 

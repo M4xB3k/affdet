@@ -25,7 +25,8 @@ import affdet.sim.mujoco_support as ms  # noqa: E402
 from affdet.sim.objects import load_body  # noqa: E402
 
 TOP_RGBA = [0.93, 0.55, 0.15, 1.0]
-BASE_RGBA = [0.55, 0.68, 0.88, 0.38]  # see-through, so a shaker inside the mug stays visible
+BASE_RGBA = [0.55, 0.68, 0.88, 1.0]
+BASE_RGBA_SEE_THROUGH = [0.55, 0.68, 0.88, 0.38]  # used when the top goes down inside the base, so it stays visible
 
 
 def clips_from_map(m):
@@ -55,7 +56,7 @@ def clips_from_map(m):
     return out[:4]
 
 
-def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60):
+def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60, elevation=-52.0, azimuth=125.0, distance=0.46, see_through=False):
     Rb = np.eye(3)
     Rt = trimesh.transformations.rotation_matrix(ms.FACE_DOWN[face][1], ms.FACE_DOWN[face][0])[:3, :3]
     pb = ms._place(base, Rb)
@@ -78,15 +79,15 @@ def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60):
         if b == m.body(top.name).id:
             m.geom_rgba[g] = TOP_RGBA
         elif b == m.body(base.name).id:
-            m.geom_rgba[g] = BASE_RGBA
+            m.geom_rgba[g] = BASE_RGBA_SEE_THROUGH if see_through else BASE_RGBA
     data = mujoco.MjData(m)
     mujoco.mj_forward(m, data)
     rend = mujoco.Renderer(m, size, size)
     cam = mujoco.MjvCamera()
     cam.lookat[:] = [0.0, 0.0, 0.085]
-    cam.distance = 0.46
-    cam.azimuth = 125
-    cam.elevation = -52
+    cam.distance = distance
+    cam.azimuth = azimuth
+    cam.elevation = elevation
     frames, every = [], int(1 / fps / m.opt.timestep)
     for k in range(int(seconds / m.opt.timestep) + 1):
         if k % every == 0:
@@ -105,6 +106,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pkl"); ap.add_argument("picks"); ap.add_argument("glb"); ap.add_argument("shaker_csv")
     ap.add_argument("top"); ap.add_argument("base"); ap.add_argument("out")
+    ap.add_argument("--elevation", type=float, default=-52.0); ap.add_argument("--azimuth", type=float, default=125.0); ap.add_argument("--distance", type=float, default=0.46)
     a = ap.parse_args()
     m = pickle.load(open(a.pkl, "rb"))
     reg = Registry(a.picks, a.glb, a.shaker_csv, os.path.join(os.path.dirname(os.path.abspath(a.pkl)), "coacd"))
@@ -122,7 +124,7 @@ def main():
             why = f" (ends {r['tilt_deg']:.0f} deg tilted)" if r["tilt_deg"] >= 10 else ""
         label = f"{label.split(':')[0].split(' (')[0]}: {'stays' if r['stable'] else 'fails'}{why}"
         print(label, round(float(x), 3), round(float(y), 3), flush=True)
-        allf.append((label, make_clip(base, top, face, x, y), bool(r["stable"])))
+        allf.append((label, make_clip(base, top, face, x, y, elevation=a.elevation, azimuth=a.azimuth, distance=a.distance, see_through=bool(r["surface_depth_m"] > 0.03)), bool(r["stable"])))
     hold = 48  # frames of stillness before the release and after the end, so the start and result can be read
     allf = [(lab, [fr[0]] * hold + fr + [fr[-1]] * hold, ok) for lab, fr, ok in allf]
     n = min(len(f) for _, f, _ in allf)

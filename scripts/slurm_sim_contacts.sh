@@ -3,7 +3,7 @@
 #   sbatch scripts/slurm_sim_contacts.sh PAIR_DIR_UNDER_/scratch/maksym.bek/sim OUT_NAME
 #SBATCH --partition=IFIall
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=16G
+#SBATCH --mem=12G
 #SBATCH --time=06:00:00
 #SBATCH --output=/scratch/maksym.bek/sim/logs/%x-%j.out
 set -e
