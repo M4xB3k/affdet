@@ -239,3 +239,16 @@ def test_slide_labels_paint_the_samples_on_the_side_surface():
     z = lab["vertices"][:, 2]
     side = lab["valid"]
     assert side.sum() > 0 and (lab["slide_score"][side & (z < 0.04)] == 1.0).all() and (lab["slide_score"][side & (z > 0.07)] == 0.0).all()
+
+
+def test_a_single_placement_and_a_stored_map_use_the_same_stability_rule():
+    """stack_test and placement_map.finalize both go through placement_stable: every cell of a small map equals a single test there."""
+    from affdet.sim.mujoco_support import stack_test
+    from affdet.sim.placement_map import placement_map
+    base = Body("slab", [_on_table(trimesh.creation.box([0.12, 0.12, 0.02]))], 1.0)
+    top = Body("box", [_on_table(trimesh.creation.box([0.05, 0.05, 0.05]))], 0.2)
+    m = placement_map(base, top, (0.1, 0.1), step=0.05, procs=2)
+    for j, y in enumerate(m["ys"]):
+        for i, x in enumerate(m["xs"]):
+            assert stack_test(base, top, offset=(float(x), float(y)))["stable"] == bool(m["stable"][j, i])
+    assert m["stable"][1, 1] and not m["stable"].all() or m["stable"].all()  # the centre holds

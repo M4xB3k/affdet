@@ -128,6 +128,20 @@ def _tilt_deg(q0, q1):
     return math.degrees(math.acos(np.clip(z0 @ z1, -1, 1)))
 
 
+STABILITY = dict(max_tilt=10.0, max_drift=0.03, max_excess_drop=0.01, max_w=1.5, max_v=0.1, max_release_penetration=0.003)
+
+
+def placement_stable(n_contacts, tilt_deg, drift_m, excess_drop_m, w_end, v_end, release_penetration_m, **thr):
+    """The one definition of "B stays on A" (works on numbers or arrays): still touching A, not tipped more than `max_tilt` degrees
+    relative to A, not slid more than `max_drift` m relative to A, not fallen further than expected, not still tumbling (`max_w` rad/s,
+    `max_v` m/s relative to A: soft contacts leave ~0.3 rad/s of jitter on a stack at rest), and released without overlapping A.
+    Used by `stack_test` and by `placement_map.finalize`, so a single placement and a stored map always agree."""
+    t = {**STABILITY, **thr}
+    return ((np.asarray(n_contacts) > 0) & (np.asarray(tilt_deg) < t["max_tilt"]) & (np.asarray(drift_m) < t["max_drift"])
+            & (np.asarray(excess_drop_m) < t["max_excess_drop"]) & (np.asarray(w_end) < t["max_w"]) & (np.asarray(v_end) < t["max_v"])
+            & (np.asarray(release_penetration_m) <= t["max_release_penetration"]))
+
+
 def lower_until_touching(m, data, body_name: str, z_lo: float, z_hi: float, tol=0.0002) -> float:
     """Lower a free body straight down from z_hi to the lowest height in [z_lo, z_hi] at which it overlaps nothing (bisection on
     its height; overlap is monotone in z), then leave it 0.5 mm above that height. Returns that height.
@@ -324,7 +338,8 @@ def surface_height(base: Body, Rb, pb, points) -> float:
 
 
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
-               max_tilt=10.0, max_drift=0.01, seconds=2.0, release="descend", max_release_penetration=0.003) -> dict:
+               max_tilt=STABILITY["max_tilt"], max_drift=STABILITY["max_drift"], seconds=2.0, release="descend",
+               max_release_penetration=STABILITY["max_release_penetration"]) -> dict:
     """Put `top` at `offset` on `base`'s upward side; does it stay on?
 
     release="descend" (default): B is held above the offset point and lowered straight down until it first touches
@@ -413,10 +428,9 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     vt, vb = data.body(top.name).cvel, data.body(base.name).cvel
     w_end = float(np.linalg.norm(vt[:3] - vb[:3]))
     v_end = float(np.linalg.norm(vt[3:] - vb[3:]))
-    settled = w_end < 0.3 and v_end < 0.03
-    clear = info["initial_penetration_m"] <= max_release_penetration
-    on_top = (clear and settled and excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
-              and max(len(contacts), touching[0]) > 0)
+    n_touch = max(len(contacts), touching[0])
+    on_top = bool(placement_stable(n_touch, tilt, drift, excess_drop, w_end, v_end, info["initial_penetration_m"], max_tilt=max_tilt,
+                                   max_drift=max_drift, max_release_penetration=max_release_penetration))
     poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
     return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": max(len(contacts), touching[0]), "poses": poses,

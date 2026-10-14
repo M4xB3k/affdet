@@ -15,7 +15,7 @@ from multiprocessing import Pool
 import numpy as np
 from scipy.ndimage import distance_transform_edt
 
-from affdet.sim.mujoco_support import Body, stack_test
+from affdet.sim.mujoco_support import Body, placement_stable, stack_test
 
 RELEASE_PENETRATION_M = 0.003  # B may overlap A by at most this much at the moment it is let go
 ON_TOP_DEPTH_M = 0.015  # B resting this far or less below A's highest point is 'on' A (a rim, a board); deeper is 'in' A
@@ -125,9 +125,9 @@ def finalize(out: dict, max_tilt=10.0, max_drift=0.03, max_excess_drop=0.01, max
     shape = contacts.shape
     # B stays if it keeps touching A, does not tip, does not slide relative to A and does not fall further than the
     # surface under it requires. The slide limit is generous: soft contacts creep ~1 cm in 2 s; sliding off is metres.
-    stable = ((contacts > 0) & (out["tilt_deg"] < max_tilt) & (out["drift_m"] < max_drift)
-              & (out["excess_drop_m"] < max_excess_drop) & (out["w_end"] < max_w) & (out["v_end"] < max_v)
-              & (out["release_penetration_m"] <= max_release_penetration))
+    stable = placement_stable(contacts, out["tilt_deg"], out["drift_m"], out["excess_drop_m"], out["w_end"], out["v_end"],
+                              out["release_penetration_m"], max_tilt=max_tilt, max_drift=max_drift, max_excess_drop=max_excess_drop,
+                              max_w=max_w, max_v=max_v, max_release_penetration=max_release_penetration)
     out["stable"] = stable
     # soft contacts leave ~0.3 rad/s / 1 cm/s of residual jitter on a stack at rest; only violent motion at the end
     # (an object still tumbling off) is rejected by max_w / max_v
