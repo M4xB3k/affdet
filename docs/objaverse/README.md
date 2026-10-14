@@ -58,3 +58,45 @@ when it is plausible for the tier (shaker 6–14 cm, mill 12–25 cm, jar 8–14
 otherwise the tier default (9 / 18 / 10 cm). Picks are from thumbnails only —
 open the meshes before rendering. In total: 46 objects (28 shakers, 11 mills, 7 jars). Five objects have no licence in ObjaTHOR;
 check them in the Objaverse metadata.
+
+## Per-face labels for the salt-shaker set
+
+`salt_shaker_face_labels.csv` holds geometry-derived UTAMP-2 labels for the 46
+salt-shaker objects. It was built with `scripts/label_faces.py`, which uses
+`affdet/geometry/` (install with `pip install -e .[geometry]`).
+`salt_shaker_face_labels_overview.jpg` shows every object as it was labelled.
+Per object, the script:
+
+1. **Loads the GLB** from Hugging Face Objaverse. For two-object models it
+   loads only the half that the `note` column names.
+2. **Uprights it.** The glTF +Y axis becomes up. The `up_axis` column
+   overrides this; `-x` is set for the two crank grinders modelled lying down.
+3. **Levels it** onto its largest near-horizontal hull facet, which fixes
+   scans that are tilted a few degrees.
+4. **Aligns the yaw** of the footprint's minimum-area rectangle with x/y.
+5. **Scales it** to `target_height_cm`.
+6. **Labels the six box faces.** `on`/`under` are ±z, `front` is −y (the glTF
+   front), `back` is +y, `left` is −x and `right` is +x.
+
+| Column | Meaning |
+|---|---|
+| `supportable_<face>` | The object rests stably with that face down. The COM must lie ≥ 5 mm inside the contact polygon, and tipping it must need ≥ 5°. Resting directions up to 20° from the face count, because a ridged side settles onto a facet. |
+| `tip_deg_<face>` | The tilt needed to tip the object over in that rest. |
+| `supportive_on` | The flat region on top is ≥ 3 cm across and the object stands on `under`. |
+| `top_flat_width_cm` | The narrowest width of that flat region. |
+| `grasps` | `palm:finger1-finger2` for a Franka Hand (80 mm opening). The fingers reach 4 cm past the palm face, and all material in that reach must fit between the open fingers. Grasps from every face are listed, including `under`. |
+| `review` | Faces that are supportable on geometry but rest on a few smooth-shaded facets. The low-poly model is probably meant to be round; the VLM or a person decides. |
+
+The COM is the centroid of the solid convex hull, which suits a filled shaker.
+Mugs and pans will need a better estimate.
+
+Results: all 46 stand on `under`. 23 can stand upside down (flat cap). 19 can
+lie on at least one side (square, octagonal or faceted bodies). 8 can support
+something on top. 4 are flagged for review. Every object except the two widest
+mills can be grasped from the top and the sides.
+
+Several rows share one mesh with a different texture: d8e2236b/270b9b45,
+05308bf4/76fcdf15, 1f4e8a33/a991699c and 3437607e/f71db294. Keep each pair in
+the same split. d8e2236b and 270b9b45 differ only in target height (12 vs
+10 cm), and their side labels differ too, because the margin sits at the 5 mm
+threshold.

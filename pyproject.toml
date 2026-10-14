@@ -28,6 +28,15 @@ dev = [
 teacher = [
     "openai>=1.0",
 ]
+# Per-face UTAMP-2 labels from meshes (affdet/geometry) and their check renders
+# (pyrender: set PYOPENGL_PLATFORM=osmesa or egl on a headless machine).
+geometry = [
+    "trimesh>=4.0",
+    "scipy>=1.11",
+    "shapely>=2.0",
+    "networkx>=3.0",
+    "pyrender>=0.1.45",
+]
 
 [project.scripts]
 affdet = "affdet.cli:app"

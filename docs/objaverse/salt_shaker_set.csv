@@ -1,45 +1,45 @@
-object_uid,tier,sources,objathor_category,objathor_height_cm,target_height_cm,height_from,objathor_mass_kg,target_mass_kg,license,sketchfab,note
-86450daa072d402b9bd41b927cb37d0a,shaker,deepmind:shaker;lvis:shaker,bottle,25,9,tier default,0.2,0.2,by,https://sketchfab.com/3d-models/86450daa072d402b9bd41b927cb37d0a,"glass with faceted metal cap, may be a sugar dispenser"
-c442c91673a24b3798065d76fda3b4e0,shaker,deepmind:saltshaker;lvis:saltshaker,bottle,20,9,tier default,0.1,0.1,by,https://sketchfab.com/3d-models/c442c91673a24b3798065d76fda3b4e0,
-5ba5959ecc044c5fa44dded4c75ea25a,shaker,lvis:saltshaker;objathor-cat:container,container,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/5ba5959ecc044c5fa44dded4c75ea25a,
-9336ba99aeea42eaa4837567ab70af03,shaker,deepmind:saltshaker,container,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/9336ba99aeea42eaa4837567ab70af03,
-d00ef0263b6b47378c6904801ce84adf,shaker,deepmind:saltshaker,container,20,9,tier default,0.3,0.3,by,https://sketchfab.com/3d-models/d00ef0263b6b47378c6904801ce84adf,
-b1e7f11f513649058b4de8567f581d43,shaker,deepmind:pepper mill;objathor-cat:pepper shaker,pepper shaker,25,9,tier default,0.5,0.15,by,https://sketchfab.com/3d-models/b1e7f11f513649058b4de8567f581d43,
-05308bf4da874a63b040399dca39489b,shaker,deepmind:saltshaker;lvis:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/05308bf4da874a63b040399dca39489b,
-77a7cef9019c4a50b982e315b38a90df,shaker,deepmind:saltshaker;lvis:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/77a7cef9019c4a50b982e315b38a90df,
-c994f981028e4c4187d666e7c2620e4a,shaker,deepmind:saltshaker;lvis:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/c994f981028e4c4187d666e7c2620e4a,
-d8e2236b427c4539a496f152bbc65d4d,shaker,deepmind:pepper mill;objathor-cat:salt shaker,salt shaker,12,12,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/d8e2236b427c4539a496f152bbc65d4d,
-e0b380d2819249ecbb75c2552bedd0a1,shaker,deepmind:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/e0b380d2819249ecbb75c2552bedd0a1,
-1e74c88055b748cbbef0c92a1d02a4c2,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,12,12,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/1e74c88055b748cbbef0c92a1d02a4c2,
-1f4e8a3363f945b9b0c858a0c83c3dd1,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,12,12,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/1f4e8a3363f945b9b0c858a0c83c3dd1,
-270b9b4574e242d782f70a8043e6b17f,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/270b9b4574e242d782f70a8043e6b17f,
-3437607e6a1e4f20a3ae6d323f6db673,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,15,9,tier default,0.5,0.15,by,https://sketchfab.com/3d-models/3437607e6a1e4f20a3ae6d323f6db673,"same faceted shape as 181/222, different texture"
-76fcdf15d166452a94ec5fec385d907e,shaker,objathor-cat:shaker,shaker,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/76fcdf15d166452a94ec5fec385d907e,
-f71db2942af34f44ab70ae0ce8fdce8e,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,15,9,tier default,0.5,0.15,by,https://sketchfab.com/3d-models/f71db2942af34f44ab70ae0ce8fdce8e,same faceted shape as 179/222
-a991699c4a6f4d969af4eb46d9296957,shaker,deepmind:saltshaker;lvis:shaker;objathor-cat:spice shaker,spice shaker,12,12,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/a991699c4a6f4d969af4eb46d9296957,
-12a6366c033245eb97551a615317c12e,shaker,deepmind:saltshaker,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/12a6366c033245eb97551a615317c12e,same faceted shape as 179/181
-c70225db3dd34e8ba2f53b13bf93411a,shaker,lvis:pepper_mill,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/c70225db3dd34e8ba2f53b13bf93411a,"copper, ornate"
-cf8640d4e4624bb4940850631ee6bb1c,shaker,deepmind:saltshaker,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/cf8640d4e4624bb4940850631ee6bb1c,
-38f7cb1a7d964959b44d4a2c09b2a2a2,pepper_mill,deepmind:pepper mill;lvis:pepper_mill,coffee grinder,20,20,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/38f7cb1a7d964959b44d4a2c09b2a2a2,
-23a809f734f24ff6b817b77bd9bf0541,pepper_mill,objathor-cat:pepper mill,pepper mill,20,20,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/23a809f734f24ff6b817b77bd9bf0541,
-3b9067f190494fc293adef48be5d487f,pepper_mill,objathor-cat:pepper mill,pepper mill,25,25,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/3b9067f190494fc293adef48be5d487f,crank grinder
-84430c48635d4fb1917ed177107a83ac,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,20,20,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/84430c48635d4fb1917ed177107a83ac,
-88067fa666d746928bc59af924eb62fe,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,30,18,tier default,0.5,0.5,by,https://sketchfab.com/3d-models/88067fa666d746928bc59af924eb62fe,
-a121f6c17bdd4818970cd642e74c2fd2,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,20,20,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/a121f6c17bdd4818970cd642e74c2fd2,"crank grinder, rendered lying down"
-a7ebb51ccafe4bf0a97fcdcc1a877ec6,pepper_mill,lvis:pepper_mill;objathor-cat:pepper mill,pepper mill,25,25,objathor,1.2,0.3,by,https://sketchfab.com/3d-models/a7ebb51ccafe4bf0a97fcdcc1a877ec6,
-b9e4fbb225bc48f5bd1bba2bc8a70a78,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,30,18,tier default,0.5,0.5,by,https://sketchfab.com/3d-models/b9e4fbb225bc48f5bd1bba2bc8a70a78,
-e07a892b7ea3497ebe98f5d9ea30abc7,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,15,15,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/e07a892b7ea3497ebe98f5d9ea30abc7,"crank grinder, rendered lying down"
-e2e86e27014c4aa7a1fa708db44cebda,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,25,25,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/e2e86e27014c4aa7a1fa708db44cebda,
-c1b8dde2d2d9480285d50924cc19245f,pepper_mill,deepmind:pepper mill,,,18,tier default,,0.3,,https://sketchfab.com/3d-models/c1b8dde2d2d9480285d50924cc19245f,
-e83afd6ddaa34928af8f1f28a87e6f6f,spice_jar,lvis:saltshaker,bottle,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/e83afd6ddaa34928af8f1f28a87e6f6f,
-8ba8b8ba80d14ffe844cfb4e977e491b,spice_jar,deepmind:shaker,container,15,10,tier default,0.1,0.1,by,https://sketchfab.com/3d-models/8ba8b8ba80d14ffe844cfb4e977e491b,
-9e4437be65e94d2e81a7161a48117c62,spice_jar,objathor-cat:container,container,20,10,tier default,0.3,0.3,by,https://sketchfab.com/3d-models/9e4437be65e94d2e81a7161a48117c62,
-b8a406f85d84423e925b6ebf804bf63b,spice_jar,deepmind:shaker,container,15,10,tier default,0.2,0.2,by,https://sketchfab.com/3d-models/b8a406f85d84423e925b6ebf804bf63b,
-1c1efeac664a4ce8a8288941567bce9d,spice_jar,deepmind:pepper mill,spice container,12,12,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/1c1efeac664a4ce8a8288941567bce9d,
-af0dd47801b54e82aea218885c65ea1c,spice_jar,deepmind:shaker;objathor-cat:spice jar,spice jar,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/af0dd47801b54e82aea218885c65ea1c,
-af16623741714b90846a1a1f9e4fa19c,spice_jar,lvis:condiment;objathor-cat:spice jar,spice jar,12,12,objathor,0.15,0.15,by,https://sketchfab.com/3d-models/af16623741714b90846a1a1f9e4fa19c,
-241e33f3a5d2411d83dfac5901b8c018,shaker_from_pair,deepmind:saltshaker;objathor-cat:salt and pepper shakers,salt and pepper shakers,12,12,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/241e33f3a5d2411d83dfac5901b8c018,split with scripts/split_pairs.py; use half 0 (both halves identical)
-5f2adebdda754e40915d1330a61fa70c,shaker_from_pair,deepmind:saltshaker;objathor-cat:salt and pepper shakers,salt and pepper shakers,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/5f2adebdda754e40915d1330a61fa70c,split with scripts/split_pairs.py; use half 0 and 1 (salt and pepper halves differ)
-95ac8f0526b941bab654912be35e33b0,shaker_from_pair,deepmind:saltshaker;objathor-cat:salt and pepper shakers,salt and pepper shakers,10,10,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/95ac8f0526b941bab654912be35e33b0,split with scripts/split_pairs.py; use half 0 (both halves identical)
-9ef6c018a8ce4d41824ec40b9870e412,shaker_from_pair,objathor-cat:salt and pepper shakers,salt and pepper shakers,10,10,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/9ef6c018a8ce4d41824ec40b9870e412,split with scripts/split_pairs.py; use half 0 (both halves identical; novelty rocket shape)
-e42ebf2ca31a4b86b0293661f1e34a71,shaker_from_pair,deepmind:saltshaker,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/e42ebf2ca31a4b86b0293661f1e34a71,split with scripts/split_pairs.py; use half 0 and 1 (salt and pepper halves differ)
+object_uid,tier,sources,objathor_category,objathor_height_cm,target_height_cm,height_from,objathor_mass_kg,target_mass_kg,license,sketchfab,up_axis,note
+86450daa072d402b9bd41b927cb37d0a,shaker,deepmind:shaker;lvis:shaker,bottle,25,9,tier default,0.2,0.2,by,https://sketchfab.com/3d-models/86450daa072d402b9bd41b927cb37d0a,,"glass with faceted metal cap, may be a sugar dispenser"
+c442c91673a24b3798065d76fda3b4e0,shaker,deepmind:saltshaker;lvis:saltshaker,bottle,20,9,tier default,0.1,0.1,by,https://sketchfab.com/3d-models/c442c91673a24b3798065d76fda3b4e0,,
+5ba5959ecc044c5fa44dded4c75ea25a,shaker,lvis:saltshaker;objathor-cat:container,container,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/5ba5959ecc044c5fa44dded4c75ea25a,,
+9336ba99aeea42eaa4837567ab70af03,shaker,deepmind:saltshaker,container,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/9336ba99aeea42eaa4837567ab70af03,,
+d00ef0263b6b47378c6904801ce84adf,shaker,deepmind:saltshaker,container,20,9,tier default,0.3,0.3,by,https://sketchfab.com/3d-models/d00ef0263b6b47378c6904801ce84adf,,
+b1e7f11f513649058b4de8567f581d43,shaker,deepmind:pepper mill;objathor-cat:pepper shaker,pepper shaker,25,9,tier default,0.5,0.15,by,https://sketchfab.com/3d-models/b1e7f11f513649058b4de8567f581d43,,
+05308bf4da874a63b040399dca39489b,shaker,deepmind:saltshaker;lvis:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/05308bf4da874a63b040399dca39489b,,
+77a7cef9019c4a50b982e315b38a90df,shaker,deepmind:saltshaker;lvis:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/77a7cef9019c4a50b982e315b38a90df,,
+c994f981028e4c4187d666e7c2620e4a,shaker,deepmind:saltshaker;lvis:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/c994f981028e4c4187d666e7c2620e4a,,
+d8e2236b427c4539a496f152bbc65d4d,shaker,deepmind:pepper mill;objathor-cat:salt shaker,salt shaker,12,12,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/d8e2236b427c4539a496f152bbc65d4d,,
+e0b380d2819249ecbb75c2552bedd0a1,shaker,deepmind:saltshaker;objathor-cat:salt shaker,salt shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/e0b380d2819249ecbb75c2552bedd0a1,,
+1e74c88055b748cbbef0c92a1d02a4c2,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,12,12,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/1e74c88055b748cbbef0c92a1d02a4c2,,
+1f4e8a3363f945b9b0c858a0c83c3dd1,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,12,12,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/1f4e8a3363f945b9b0c858a0c83c3dd1,,
+270b9b4574e242d782f70a8043e6b17f,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/270b9b4574e242d782f70a8043e6b17f,,
+3437607e6a1e4f20a3ae6d323f6db673,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,15,9,tier default,0.5,0.15,by,https://sketchfab.com/3d-models/3437607e6a1e4f20a3ae6d323f6db673,,"same faceted shape as 181/222, different texture"
+76fcdf15d166452a94ec5fec385d907e,shaker,objathor-cat:shaker,shaker,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/76fcdf15d166452a94ec5fec385d907e,,
+f71db2942af34f44ab70ae0ce8fdce8e,shaker,deepmind:saltshaker;objathor-cat:shaker,shaker,15,9,tier default,0.5,0.15,by,https://sketchfab.com/3d-models/f71db2942af34f44ab70ae0ce8fdce8e,,same faceted shape as 179/222
+a991699c4a6f4d969af4eb46d9296957,shaker,deepmind:saltshaker;lvis:shaker;objathor-cat:spice shaker,spice shaker,12,12,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/a991699c4a6f4d969af4eb46d9296957,,
+12a6366c033245eb97551a615317c12e,shaker,deepmind:saltshaker,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/12a6366c033245eb97551a615317c12e,,same faceted shape as 179/181
+c70225db3dd34e8ba2f53b13bf93411a,shaker,lvis:pepper_mill,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/c70225db3dd34e8ba2f53b13bf93411a,,"copper, ornate"
+cf8640d4e4624bb4940850631ee6bb1c,shaker,deepmind:saltshaker,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/cf8640d4e4624bb4940850631ee6bb1c,,
+38f7cb1a7d964959b44d4a2c09b2a2a2,pepper_mill,deepmind:pepper mill;lvis:pepper_mill,coffee grinder,20,20,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/38f7cb1a7d964959b44d4a2c09b2a2a2,,
+23a809f734f24ff6b817b77bd9bf0541,pepper_mill,objathor-cat:pepper mill,pepper mill,20,20,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/23a809f734f24ff6b817b77bd9bf0541,,
+3b9067f190494fc293adef48be5d487f,pepper_mill,objathor-cat:pepper mill,pepper mill,25,25,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/3b9067f190494fc293adef48be5d487f,,crank grinder
+84430c48635d4fb1917ed177107a83ac,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,20,20,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/84430c48635d4fb1917ed177107a83ac,,
+88067fa666d746928bc59af924eb62fe,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,30,18,tier default,0.5,0.5,by,https://sketchfab.com/3d-models/88067fa666d746928bc59af924eb62fe,,
+a121f6c17bdd4818970cd642e74c2fd2,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,20,20,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/a121f6c17bdd4818970cd642e74c2fd2,-x,"crank grinder, rendered lying down"
+a7ebb51ccafe4bf0a97fcdcc1a877ec6,pepper_mill,lvis:pepper_mill;objathor-cat:pepper mill,pepper mill,25,25,objathor,1.2,0.3,by,https://sketchfab.com/3d-models/a7ebb51ccafe4bf0a97fcdcc1a877ec6,,
+b9e4fbb225bc48f5bd1bba2bc8a70a78,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,30,18,tier default,0.5,0.5,by,https://sketchfab.com/3d-models/b9e4fbb225bc48f5bd1bba2bc8a70a78,,
+e07a892b7ea3497ebe98f5d9ea30abc7,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,15,15,objathor,0.5,0.5,by,https://sketchfab.com/3d-models/e07a892b7ea3497ebe98f5d9ea30abc7,-x,"crank grinder, rendered lying down"
+e2e86e27014c4aa7a1fa708db44cebda,pepper_mill,deepmind:pepper mill;objathor-cat:pepper mill,pepper mill,25,25,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/e2e86e27014c4aa7a1fa708db44cebda,,
+c1b8dde2d2d9480285d50924cc19245f,pepper_mill,deepmind:pepper mill,,,18,tier default,,0.3,,https://sketchfab.com/3d-models/c1b8dde2d2d9480285d50924cc19245f,,
+e83afd6ddaa34928af8f1f28a87e6f6f,spice_jar,lvis:saltshaker,bottle,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/e83afd6ddaa34928af8f1f28a87e6f6f,,
+8ba8b8ba80d14ffe844cfb4e977e491b,spice_jar,deepmind:shaker,container,15,10,tier default,0.1,0.1,by,https://sketchfab.com/3d-models/8ba8b8ba80d14ffe844cfb4e977e491b,,
+9e4437be65e94d2e81a7161a48117c62,spice_jar,objathor-cat:container,container,20,10,tier default,0.3,0.3,by,https://sketchfab.com/3d-models/9e4437be65e94d2e81a7161a48117c62,,
+b8a406f85d84423e925b6ebf804bf63b,spice_jar,deepmind:shaker,container,15,10,tier default,0.2,0.2,by,https://sketchfab.com/3d-models/b8a406f85d84423e925b6ebf804bf63b,,
+1c1efeac664a4ce8a8288941567bce9d,spice_jar,deepmind:pepper mill,spice container,12,12,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/1c1efeac664a4ce8a8288941567bce9d,,
+af0dd47801b54e82aea218885c65ea1c,spice_jar,deepmind:shaker;objathor-cat:spice jar,spice jar,10,10,objathor,0.05,0.05,by,https://sketchfab.com/3d-models/af0dd47801b54e82aea218885c65ea1c,,
+af16623741714b90846a1a1f9e4fa19c,spice_jar,lvis:condiment;objathor-cat:spice jar,spice jar,12,12,objathor,0.15,0.15,by,https://sketchfab.com/3d-models/af16623741714b90846a1a1f9e4fa19c,,
+241e33f3a5d2411d83dfac5901b8c018,shaker_from_pair,deepmind:saltshaker;objathor-cat:salt and pepper shakers,salt and pepper shakers,12,12,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/241e33f3a5d2411d83dfac5901b8c018,,split with scripts/split_pairs.py; use half 0 (both halves identical)
+5f2adebdda754e40915d1330a61fa70c,shaker_from_pair,deepmind:saltshaker;objathor-cat:salt and pepper shakers,salt and pepper shakers,10,10,objathor,0.2,0.2,by,https://sketchfab.com/3d-models/5f2adebdda754e40915d1330a61fa70c,,split with scripts/split_pairs.py; use half 0 and 1 (salt and pepper halves differ)
+95ac8f0526b941bab654912be35e33b0,shaker_from_pair,deepmind:saltshaker;objathor-cat:salt and pepper shakers,salt and pepper shakers,10,10,objathor,0.3,0.3,by,https://sketchfab.com/3d-models/95ac8f0526b941bab654912be35e33b0,,split with scripts/split_pairs.py; use half 0 (both halves identical)
+9ef6c018a8ce4d41824ec40b9870e412,shaker_from_pair,objathor-cat:salt and pepper shakers,salt and pepper shakers,10,10,objathor,0.1,0.1,by,https://sketchfab.com/3d-models/9ef6c018a8ce4d41824ec40b9870e412,,split with scripts/split_pairs.py; use half 0 (both halves identical; novelty rocket shape)
+e42ebf2ca31a4b86b0293661f1e34a71,shaker_from_pair,deepmind:saltshaker,,,9,tier default,,0.15,,https://sketchfab.com/3d-models/e42ebf2ca31a4b86b0293661f1e34a71,,split with scripts/split_pairs.py; use half 0 and 1 (salt and pepper halves differ)
