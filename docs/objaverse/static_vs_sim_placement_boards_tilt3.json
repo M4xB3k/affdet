@@ -1,0 +1,276 @@
+{
+ "cells": 88847,
+ "agree": 79133,
+ "agreement": 0.8907,
+ "both_stable": 50188,
+ "both_fail": 28945,
+ "sim_only": 6762,
+ "static_only": 2952,
+ "pairs": 48,
+ "face_maps": 123,
+ "margin_mm": 5.0,
+ "by_top_face": {
+  "bowl:0 on": {
+   "both_stable": 1771,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 233
+  },
+  "bowl:1 under": {
+   "both_stable": 1950,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 54
+  },
+  "bowl:1 on": {
+   "both_stable": 1476,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 528
+  },
+  "bowl:2 under": {
+   "both_stable": 1984,
+   "both_fail": 162,
+   "sim_only": 1,
+   "static_only": 20
+  },
+  "bowl:2 on": {
+   "both_stable": 1690,
+   "both_fail": 164,
+   "sim_only": 0,
+   "static_only": 313
+  },
+  "frying_pan:0 under": {
+   "both_stable": 1698,
+   "both_fail": 416,
+   "sim_only": 35,
+   "static_only": 18
+  },
+  "frying_pan:0 on": {
+   "both_stable": 0,
+   "both_fail": 1103,
+   "sim_only": 1064,
+   "static_only": 0
+  },
+  "frying_pan:1 under": {
+   "both_stable": 1704,
+   "both_fail": 429,
+   "sim_only": 29,
+   "static_only": 5
+  },
+  "frying_pan:1 on": {
+   "both_stable": 0,
+   "both_fail": 1576,
+   "sim_only": 591,
+   "static_only": 0
+  },
+  "frying_pan:2 under": {
+   "both_stable": 1371,
+   "both_fail": 759,
+   "sim_only": 36,
+   "static_only": 1
+  },
+  "frying_pan:2 on": {
+   "both_stable": 0,
+   "both_fail": 1755,
+   "sim_only": 412,
+   "static_only": 0
+  },
+  "mug:0 under": {
+   "both_stable": 1931,
+   "both_fail": 235,
+   "sim_only": 0,
+   "static_only": 1
+  },
+  "mug:0 on": {
+   "both_stable": 1824,
+   "both_fail": 267,
+   "sim_only": 0,
+   "static_only": 76
+  },
+  "mug:0 front": {
+   "both_stable": 1267,
+   "both_fail": 558,
+   "sim_only": 1,
+   "static_only": 341
+  },
+  "mug:1 under": {
+   "both_stable": 2002,
+   "both_fail": 162,
+   "sim_only": 0,
+   "static_only": 3
+  },
+  "mug:1 on": {
+   "both_stable": 1903,
+   "both_fail": 165,
+   "sim_only": 0,
+   "static_only": 99
+  },
+  "mug:1 front": {
+   "both_stable": 0,
+   "both_fail": 1064,
+   "sim_only": 1103,
+   "static_only": 0
+  },
+  "mug:1 left": {
+   "both_stable": 0,
+   "both_fail": 2068,
+   "sim_only": 99,
+   "static_only": 0
+  },
+  "mug:2 under": {
+   "both_stable": 1847,
+   "both_fail": 265,
+   "sim_only": 0,
+   "static_only": 55
+  },
+  "mug:2 on": {
+   "both_stable": 0,
+   "both_fail": 891,
+   "sim_only": 1276,
+   "static_only": 0
+  },
+  "mug:2 back": {
+   "both_stable": 0,
+   "both_fail": 2162,
+   "sim_only": 5,
+   "static_only": 0
+  },
+  "plate:0 under": {
+   "both_stable": 2002,
+   "both_fail": 128,
+   "sim_only": 35,
+   "static_only": 2
+  },
+  "plate:0 on": {
+   "both_stable": 0,
+   "both_fail": 635,
+   "sim_only": 1532,
+   "static_only": 0
+  },
+  "shaker:270b9b45 under": {
+   "both_stable": 1968,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 36
+  },
+  "shaker:270b9b45 on": {
+   "both_stable": 1970,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 34
+  },
+  "shaker:86450daa under": {
+   "both_stable": 1940,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 64
+  },
+  "shaker:c442c916 under": {
+   "both_stable": 1973,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 31
+  },
+  "shaker:c442c916 on": {
+   "both_stable": 1964,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 40
+  },
+  "shaker:c442c916 front": {
+   "both_stable": 1752,
+   "both_fail": 413,
+   "sim_only": 0,
+   "static_only": 2
+  },
+  "shaker:c442c916 back": {
+   "both_stable": 1797,
+   "both_fail": 331,
+   "sim_only": 0,
+   "static_only": 39
+  },
+  "shaker:c442c916 left": {
+   "both_stable": 1757,
+   "both_fail": 383,
+   "sim_only": 0,
+   "static_only": 27
+  },
+  "shaker:c442c916 right": {
+   "both_stable": 1828,
+   "both_fail": 311,
+   "sim_only": 0,
+   "static_only": 28
+  },
+  "shaker:d00ef026 under": {
+   "both_stable": 1970,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 34
+  },
+  "shaker:d00ef026 front": {
+   "both_stable": 0,
+   "both_fail": 2167,
+   "sim_only": 0,
+   "static_only": 0
+  },
+  "shaker:d00ef026 back": {
+   "both_stable": 0,
+   "both_fail": 2159,
+   "sim_only": 8,
+   "static_only": 0
+  },
+  "shaker:d00ef026 left": {
+   "both_stable": 0,
+   "both_fail": 2166,
+   "sim_only": 1,
+   "static_only": 0
+  },
+  "shaker:d00ef026 right": {
+   "both_stable": 0,
+   "both_fail": 2167,
+   "sim_only": 0,
+   "static_only": 0
+  },
+  "wok:0 under": {
+   "both_stable": 1663,
+   "both_fail": 458,
+   "sim_only": 0,
+   "static_only": 46
+  },
+  "wok:0 on": {
+   "both_stable": 0,
+   "both_fail": 1633,
+   "sim_only": 534,
+   "static_only": 0
+  },
+  "wok:1 under": {
+   "both_stable": 2003,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 1
+  },
+  "wok:1 on": {
+   "both_stable": 1183,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 821
+  }
+ },
+ "faces with a real footprint (>= 4 cm2)": {
+  "cells": 65010,
+  "agreement": 0.897,
+  "both_stable": 46278,
+  "both_fail": 12037,
+  "sim_only": 3841,
+  "static_only": 2854
+ },
+ "faces whose footprint is a line or ring": {
+  "cells": 23837,
+  "agreement": 0.8733,
+  "both_stable": 3910,
+  "both_fail": 16908,
+  "sim_only": 2921,
+  "static_only": 98
+ }
+}

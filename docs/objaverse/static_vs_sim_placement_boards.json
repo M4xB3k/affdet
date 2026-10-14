@@ -1,0 +1,276 @@
+{
+ "cells": 88847,
+ "agree": 66150,
+ "agreement": 0.7445,
+ "both_stable": 51384,
+ "both_fail": 14766,
+ "sim_only": 20941,
+ "static_only": 1756,
+ "pairs": 48,
+ "face_maps": 123,
+ "margin_mm": 5.0,
+ "by_top_face": {
+  "bowl:0 on": {
+   "both_stable": 1778,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 226
+  },
+  "bowl:1 under": {
+   "both_stable": 1959,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 45
+  },
+  "bowl:1 on": {
+   "both_stable": 1636,
+   "both_fail": 124,
+   "sim_only": 39,
+   "static_only": 368
+  },
+  "bowl:2 under": {
+   "both_stable": 1993,
+   "both_fail": 162,
+   "sim_only": 1,
+   "static_only": 11
+  },
+  "bowl:2 on": {
+   "both_stable": 1692,
+   "both_fail": 164,
+   "sim_only": 0,
+   "static_only": 311
+  },
+  "frying_pan:0 under": {
+   "both_stable": 1706,
+   "both_fail": 182,
+   "sim_only": 269,
+   "static_only": 10
+  },
+  "frying_pan:0 on": {
+   "both_stable": 0,
+   "both_fail": 83,
+   "sim_only": 2084,
+   "static_only": 0
+  },
+  "frying_pan:1 under": {
+   "both_stable": 1709,
+   "both_fail": 256,
+   "sim_only": 202,
+   "static_only": 0
+  },
+  "frying_pan:1 on": {
+   "both_stable": 0,
+   "both_fail": 1234,
+   "sim_only": 933,
+   "static_only": 0
+  },
+  "frying_pan:2 under": {
+   "both_stable": 1372,
+   "both_fail": 0,
+   "sim_only": 795,
+   "static_only": 0
+  },
+  "frying_pan:2 on": {
+   "both_stable": 0,
+   "both_fail": 0,
+   "sim_only": 2167,
+   "static_only": 0
+  },
+  "mug:0 under": {
+   "both_stable": 1931,
+   "both_fail": 235,
+   "sim_only": 0,
+   "static_only": 1
+  },
+  "mug:0 on": {
+   "both_stable": 1826,
+   "both_fail": 267,
+   "sim_only": 0,
+   "static_only": 74
+  },
+  "mug:0 front": {
+   "both_stable": 1419,
+   "both_fail": 558,
+   "sim_only": 1,
+   "static_only": 189
+  },
+  "mug:1 under": {
+   "both_stable": 2002,
+   "both_fail": 162,
+   "sim_only": 0,
+   "static_only": 3
+  },
+  "mug:1 on": {
+   "both_stable": 1905,
+   "both_fail": 165,
+   "sim_only": 0,
+   "static_only": 97
+  },
+  "mug:1 front": {
+   "both_stable": 0,
+   "both_fail": 1000,
+   "sim_only": 1167,
+   "static_only": 0
+  },
+  "mug:1 left": {
+   "both_stable": 0,
+   "both_fail": 1995,
+   "sim_only": 172,
+   "static_only": 0
+  },
+  "mug:2 under": {
+   "both_stable": 1864,
+   "both_fail": 265,
+   "sim_only": 0,
+   "static_only": 38
+  },
+  "mug:2 on": {
+   "both_stable": 0,
+   "both_fail": 412,
+   "sim_only": 1755,
+   "static_only": 0
+  },
+  "mug:2 back": {
+   "both_stable": 0,
+   "both_fail": 740,
+   "sim_only": 1427,
+   "static_only": 0
+  },
+  "plate:0 under": {
+   "both_stable": 2004,
+   "both_fail": 124,
+   "sim_only": 39,
+   "static_only": 0
+  },
+  "plate:0 on": {
+   "both_stable": 0,
+   "both_fail": 155,
+   "sim_only": 2012,
+   "static_only": 0
+  },
+  "shaker:270b9b45 under": {
+   "both_stable": 1968,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 36
+  },
+  "shaker:270b9b45 on": {
+   "both_stable": 1971,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 33
+  },
+  "shaker:86450daa under": {
+   "both_stable": 1963,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 41
+  },
+  "shaker:c442c916 under": {
+   "both_stable": 1974,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 30
+  },
+  "shaker:c442c916 on": {
+   "both_stable": 1964,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 40
+  },
+  "shaker:c442c916 front": {
+   "both_stable": 1754,
+   "both_fail": 413,
+   "sim_only": 0,
+   "static_only": 0
+  },
+  "shaker:c442c916 back": {
+   "both_stable": 1835,
+   "both_fail": 331,
+   "sim_only": 0,
+   "static_only": 1
+  },
+  "shaker:c442c916 left": {
+   "both_stable": 1758,
+   "both_fail": 383,
+   "sim_only": 0,
+   "static_only": 26
+  },
+  "shaker:c442c916 right": {
+   "both_stable": 1829,
+   "both_fail": 311,
+   "sim_only": 0,
+   "static_only": 27
+  },
+  "shaker:d00ef026 under": {
+   "both_stable": 1980,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 24
+  },
+  "shaker:d00ef026 front": {
+   "both_stable": 0,
+   "both_fail": 477,
+   "sim_only": 1690,
+   "static_only": 0
+  },
+  "shaker:d00ef026 back": {
+   "both_stable": 0,
+   "both_fail": 414,
+   "sim_only": 1753,
+   "static_only": 0
+  },
+  "shaker:d00ef026 left": {
+   "both_stable": 0,
+   "both_fail": 421,
+   "sim_only": 1746,
+   "static_only": 0
+  },
+  "shaker:d00ef026 right": {
+   "both_stable": 0,
+   "both_fail": 371,
+   "sim_only": 1796,
+   "static_only": 0
+  },
+  "wok:0 under": {
+   "both_stable": 1680,
+   "both_fail": 456,
+   "sim_only": 2,
+   "static_only": 29
+  },
+  "wok:0 on": {
+   "both_stable": 0,
+   "both_fail": 1378,
+   "sim_only": 789,
+   "static_only": 0
+  },
+  "wok:1 under": {
+   "both_stable": 2003,
+   "both_fail": 163,
+   "sim_only": 0,
+   "static_only": 1
+  },
+  "wok:1 on": {
+   "both_stable": 1909,
+   "both_fail": 61,
+   "sim_only": 102,
+   "static_only": 95
+  }
+ },
+ "faces with a real footprint (>= 4 cm2)": {
+  "cells": 65010,
+  "agreement": 0.8489,
+  "both_stable": 47450,
+  "both_fail": 7738,
+  "sim_only": 8140,
+  "static_only": 1682
+ },
+ "faces whose footprint is a line or ring": {
+  "cells": 23837,
+  "agreement": 0.4599,
+  "both_stable": 3934,
+  "both_fail": 7028,
+  "sim_only": 12801,
+  "static_only": 74
+ }
+}

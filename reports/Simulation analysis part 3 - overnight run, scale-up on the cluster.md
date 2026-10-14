@@ -68,6 +68,23 @@ fragile rather than wrong: the simulator keeps them for 2 s, but they are one gr
 Their score is low (5 / 20 = 0.25), which is what the score is for. One further tile (plate on a tray) could not be judged from the camera angle.
 The audit judges the pose in which the top was released: a mug lying in a bowl is stable in its new pose but fails as "stands upright where put down".
 
+## 4c. Independent check on flat bases: geometry against physics
+
+For the three cutting boards (flat slabs) a purely geometric rule predicts "stays": the top's centre of mass must project at least 5 mm inside the part of
+its face-down footprint that lies over the board (`scripts/sim_static_vs_sim_placement.py`; no physics). Compared cell by cell with the simulator over
+48 pairs, 123 face maps and 88,847 cells:
+
+| | cells | agree | simulator stable only | geometry stable only |
+|---|---|---|---|---|
+| faces with a real footprint (at least 4 cm2: flat bases) | 65,010 | 84.9 % | 8,140 | 1,682 |
+| same, simulator tilt limit 3 deg instead of 10 | 65,010 | 89.7 % | 3,841 | 2,854 |
+| faces whose footprint is a line or ring (upside-down pans, plates, lying mugs, hex shaker sides) | 23,837 | 46.0 % | 12,801 | 74 |
+
+On flat faces the two methods agree on about 85 to 90 % of cells, and the rest are boundary cells: the 10 degree tilt limit lets the simulator accept
+placements that overhang an edge and lean, a stricter limit makes the two sides meet (about 90 %). On rim and ring faces the geometric rule has no
+support polygon to work with and is simply wrong, while the simulator finds the real rim contacts (a pan balanced on a mug's rim, a plate on a rim):
+those are the cases a simulator is needed for. `docs/objaverse/static_vs_sim_placement_boards*.json`.
+
 ## 5. Which part of B carries A
 
 The map on B (`margin_mm`) answers "where can A's centre be". For a label of which part of B does the carrying that is the wrong question: the plate that rests across a mug's rim lights up the mug's floor. The export therefore has a second pair of channels, `support_mm` and `support_score`: for every vertex, the best margin among all stable placements whose contact points lie within 1 cm of it. Contact points are MuJoCo's own, collected over the last second and stored per sweep cell (object frames).
