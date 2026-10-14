@@ -33,6 +33,12 @@ FACE_DOWN = {  # rotation (axis, angle) that puts this face of the object down
 }
 
 
+DISTURBANCE_DEG = 5.0   # tilt a rest must survive; equals the static labeller's Params.min_tip_deg
+SETTLE_DEG = 2.0        # the face must return within this angle of its rest pose (a 64-gon rests 2.8 deg off: faceted-round must fail)
+LATE_MOTION_M = 0.005   # centre-of-mass travel allowed in the last second (a tall object may sway a few mm)
+SETTLE_CANDIDATE_DEG = 20.0  # like the static labeller: a face counts if the object rests on a facet this close to it
+
+
 def decompose(mesh: trimesh.Trimesh, threshold: float = 0.05, max_hulls: int = 24) -> list[trimesh.Trimesh]:
     """Convex parts (CoACD). Falls back to the convex hull when decomposition fails."""
     import coacd
@@ -144,8 +150,25 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0):
     return m, data, q_start, p_start
 
 
-def rest_test(body: Body, face: str, tilt_deg: float = 5.0, seed: int = 0, tilt_dir_deg: float | None = None,
-              ref_normal=None, settle_deg=3.0, max_drift=0.002, seconds=3.0) -> dict:
+def settled_margin(body: Body, data, tol=0.0005) -> float:
+    """Signed distance (m) from the centre of mass to the edge of the contact patch, measured on the settled pose.
+
+    The patch is every vertex of the collision hulls within `tol` of the table. Positive: the centre of mass is
+    over the patch. This is a purely geometric check of what the simulation actually rests on.
+    """
+    from shapely.geometry import MultiPoint, Point
+    Rw, x = data.body(body.name).xmat.reshape(3, 3), data.body(body.name).xpos
+    V = np.concatenate([p.vertices for p in body.parts]) @ Rw.T + x
+    pts = V[V[:, 2] < V[:, 2].min() + tol][:, :2]
+    poly = MultiPoint(pts.tolist()).convex_hull
+    c = Point(*data.body(body.name).xipos[:2])
+    if poly.area <= 0:
+        return float(-poly.distance(c))
+    return float(poly.exterior.distance(c) * (1 if poly.contains(c) else -1))
+
+
+def rest_test(body: Body, face: str, tilt_deg: float = DISTURBANCE_DEG, seed: int = 0, tilt_dir_deg: float | None = None,
+              ref_normal=None, settle_deg=SETTLE_DEG, max_drift=LATE_MOTION_M, seconds=3.0, down_dir=None) -> dict:
     """Set the object down on `face` (tilted by tilt_deg about a horizontal axis), release it,
     and watch the last second. It holds if the face normal ends within settle_deg of the
     reference rest direction and the centre of mass has stopped moving.
@@ -158,6 +181,10 @@ def rest_test(body: Body, face: str, tilt_deg: float = 5.0, seed: int = 0, tilt_
     from affdet.geometry.face_labels import FACES
     axis, ang = FACE_DOWN[face]
     R = trimesh.transformations.rotation_matrix(ang, axis)[:3, :3]
+    n_face = np.asarray(FACES[face], float)
+    if down_dir is not None:  # rest on a nearby facet instead of exactly on the box face
+        n_face = np.asarray(down_dir, float)
+        R = trimesh.geometry.align_vectors(n_face, [0, 0, -1])[:3, :3]
     if tilt_deg:
         if tilt_dir_deg is None:
             ax = np.random.default_rng(seed).normal(size=3); ax[2] = 0
@@ -166,7 +193,7 @@ def rest_test(body: Body, face: str, tilt_deg: float = 5.0, seed: int = 0, tilt_
         R = trimesh.transformations.rotation_matrix(math.radians(tilt_deg), ax)[:3, :3] @ R
     q = trimesh.transformations.quaternion_from_matrix(np.block([[R, np.zeros((3, 1))], [np.zeros((1, 3)), 1]]))
     pos = _place(body, R)
-    n_obj = np.asarray(FACES[face], float)
+    n_obj = n_face
     ref = np.array([0, 0, -1.0]) if ref_normal is None else np.asarray(ref_normal, float)
     offs, coms, last = [], [], {}
 
@@ -176,26 +203,53 @@ def rest_test(body: Body, face: str, tilt_deg: float = 5.0, seed: int = 0, tilt_
         coms.append(data.body(body.name).xipos[:2].copy())
         last["n"] = n_world
 
-    _simulate([body], [(pos, q)], seconds, watch=watch)
+    m, data, _, _ = _simulate([body], [(pos, q)], seconds, watch=watch)
     moving = float(np.linalg.norm(coms[-1] - coms[0]))  # centre-of-mass travel in the last second
     worst = float(max(offs))
     down_off = math.degrees(math.acos(np.clip(-last["n"][2], -1, 1)))
     return {"face": face, "face_off_deg": worst, "late_motion_m": moving, "n_final": last["n"],
+            "settled_margin_m": settled_margin(body, data),
             "down_off_deg": down_off, "stable": worst < settle_deg and moving < max_drift}
 
 
-def face_holds(body: Body, face: str, tilt_deg=8.0, directions=(0, 45, 90, 135, 180, 225, 270, 315),
-               max_rest_off_deg=20.0) -> dict:
-    """The face holds if (1) an untilted drop settles with the face within max_rest_off_deg of
-    down and stops moving, and (2) after tilting by tilt_deg in every direction it returns to
-    that same rest pose."""
-    ref = rest_test(body, face, tilt_deg=0, settle_deg=max_rest_off_deg)
+def _holds_on(body: Body, face: str, down_dir, tilt_deg, directions, max_rest_off_deg, settle_deg, max_drift) -> dict:
+    ref = rest_test(body, face, tilt_deg=0, settle_deg=max_rest_off_deg, max_drift=max_drift, down_dir=down_dir)
     if not ref["stable"]:
-        return {"face": face, "pass_frac": 0.0, "rest_off_deg": ref["down_off_deg"], "worst_off_deg": 180.0,
-                "holds": False}
-    res = [rest_test(body, face, tilt_deg=tilt_deg, tilt_dir_deg=d, ref_normal=ref["n_final"]) for d in directions]
-    return {"face": face, "pass_frac": sum(r["stable"] for r in res) / len(res), "rest_off_deg": ref["down_off_deg"],
-            "worst_off_deg": max(r["face_off_deg"] for r in res), "holds": all(r["stable"] for r in res)}
+        return {"holds": False, "rest_off_deg": ref["down_off_deg"], "worst_off_deg": 180.0,
+                "settled_margin_m": ref["settled_margin_m"], "pass_frac": 0.0, "per_dir": []}
+    res = [rest_test(body, face, tilt_deg=tilt_deg, tilt_dir_deg=d, ref_normal=ref["n_final"], settle_deg=settle_deg,
+                     max_drift=max_drift, down_dir=down_dir) for d in directions]
+    return {"holds": all(r["stable"] for r in res), "rest_off_deg": ref["down_off_deg"],
+            "worst_off_deg": max(r["face_off_deg"] for r in res), "settled_margin_m": ref["settled_margin_m"],
+            "pass_frac": sum(r["stable"] for r in res) / len(res),
+            "per_dir": [(r["face_off_deg"], r["late_motion_m"]) for r in res]}
+
+
+def face_holds(body: Body, face: str, tilt_deg=DISTURBANCE_DEG, directions=(0, 45, 90, 135, 180, 225, 270, 315),
+               max_rest_off_deg=SETTLE_CANDIDATE_DEG, settle_deg=SETTLE_DEG, max_drift=LATE_MOTION_M,
+               max_candidates=4) -> dict:
+    """The face holds if the object can rest with that face down, within max_rest_off_deg, and survive a tilt.
+
+    Like the static labeller, the object may settle onto a facet near the box face: the exact face-down pose is
+    tried first, then the largest hull facets within max_rest_off_deg of it. A candidate holds if (1) a drop
+    settles on it and stops moving and (2) after tilting by tilt_deg in every direction it returns to that rest
+    pose. The face holds if any candidate does. Returns the best candidate's metrics (raw, so thresholds can be
+    re-applied offline) and `candidate_deg`, the angle between that facet and the box face.
+    """
+    from affdet.geometry.face_labels import FACES, _resting_directions
+    nrm = np.asarray(FACES[face], float)
+    hull = trimesh.util.concatenate([p for p in body.parts]).convex_hull
+    cands = _resting_directions(hull, nrm, max_rest_off_deg, max_n=max_candidates)[:max_candidates]
+    best = None
+    for k, d in enumerate(cands):
+        r = _holds_on(body, face, None if k == 0 else d, tilt_deg, directions, max_rest_off_deg, settle_deg, max_drift)
+        r["candidate_deg"] = math.degrees(math.acos(np.clip(d @ nrm, -1, 1)))
+        if best is None or (r["holds"], r["pass_frac"]) > (best["holds"], best["pass_frac"]):
+            best = r
+        if r["holds"]:
+            break
+    return {"face": face, "tilt_deg": tilt_deg, "n_candidates_tried": k + 1, **best,
+            "worst_late_motion_m": max((m for _, m in best["per_dir"]), default=float("nan"))}
 
 
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
