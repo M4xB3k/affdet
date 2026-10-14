@@ -81,7 +81,7 @@ def _quat(axis, ang):
     return np.r_[math.cos(ang / 2), math.sin(ang / 2) * axis / np.linalg.norm(axis)]
 
 
-SIM = {"timestep": 0.002, "solref": "0.02 1", "roll": 0.0005}  # MuJoCo default contacts + small rolling friction (m)
+SIM = {"timestep": 0.001, "solref": "0.006 1", "roll": 0.0005, "noslip": 5}  # stiff contacts (the default 0.02 lets multi-part CoACD bodies sink 9 mm into the table) + small rolling friction (m)
 
 
 def build_xml(bodies: list[Body], poses: list[tuple[np.ndarray, np.ndarray]], timestep=None) -> str:
@@ -98,7 +98,7 @@ def build_xml(bodies: list[Body], poses: list[tuple[np.ndarray, np.ndarray]], ti
                            f'quat="{quat[0]:.6f} {quat[1]:.6f} {quat[2]:.6f} {quat[3]:.6f}">'
                            f'<freejoint/>{"".join(geoms)}</body>')
     return f"""<mujoco>
-  <option timestep="{timestep}" gravity="0 0 -9.81" cone="elliptic" impratio="10"/>
+  <option timestep="{timestep}" gravity="0 0 -9.81" cone="elliptic" impratio="10" noslip_iterations="{SIM["noslip"]}"/>
   <asset>{''.join(assets)}</asset>
   <worldbody>
     <geom name="table" type="plane" size="2 2 0.01" friction="0.6 0.005 {SIM["roll"]}" condim="6" solref="{SIM["solref"]}"/>
@@ -252,21 +252,62 @@ def face_holds(body: Body, face: str, tilt_deg=DISTURBANCE_DEG, directions=(0, 4
             "worst_late_motion_m": max((m for _, m in best["per_dir"]), default=float("nan"))}
 
 
+def surface_height(base: Body, Rb, pb, points) -> float:
+    """Highest point of `base` (placed with rotation Rb at pb) below any of the world (x, y) `points`."""
+    import mujoco
+    with tempfile.TemporaryDirectory() as d:
+        _write_parts(base, d)
+        m = mujoco.MjModel.from_xml_string(build_xml(
+            [base], [(pb, trimesh.transformations.quaternion_from_matrix(np.block([[Rb, np.zeros((3, 1))], [np.zeros((1, 3)), 1]])))]))
+    data = mujoco.MjData(m)
+    mujoco.mj_forward(m, data)
+    gid = np.array([-1], dtype=np.int32)
+    best = 0.0
+    for x, y in points:
+        dist = mujoco.mj_ray(m, data, np.array([x, y, 2.0]), np.array([0.0, 0.0, -1.0]), None, 1, -1, gid)
+        if dist >= 0 and gid[0] >= 0 and m.geom_bodyid[gid[0]] == m.body(base.name).id:
+            best = max(best, 2.0 - dist)
+    return best
+
+
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
-               max_tilt=10.0, max_drift=0.01, seconds=2.0) -> dict:
-    """Put `top` centred (plus offset) on `base`'s upward side; does it stay on?"""
+               max_tilt=10.0, max_drift=0.01, seconds=2.0, release="surface") -> dict:
+    """Put `top` at `offset` on `base`'s upward side; does it stay on?
+
+    release="surface": lower B until it first touches A under its footprint (what a robot does), so B starts a
+    couple of mm above the local surface, inside a cup or tray as well as on a rim. release="top": drop B from the
+    height of A's highest point (UTAMP-2's centred placement; B falls into anything concave).
+    """
     import mujoco
     Rb = trimesh.transformations.rotation_matrix(FACE_DOWN[base_face][1], FACE_DOWN[base_face][0])
     Rt = trimesh.transformations.rotation_matrix(FACE_DOWN[top_face][1], FACE_DOWN[top_face][0])
     pb = _place(base, Rb[:3, :3])
     base_top = max((p.vertices @ Rb[:3, :3].T)[:, 2].max() for p in base.parts) + pb[2]
     # centre of the base's top box face; the top object drops onto whatever is there
-    pt = _place(top, Rt[:3, :3], xy=offset, z_base=base_top, gap=0.002)
+    z_release = base_top
+    if release == "surface":
+        ext = np.ptp(np.concatenate([p.vertices for p in top.parts]) @ Rt[:3, :3].T, axis=0)[:2]
+        hx, hy = 0.5 * ext
+        probe = [(offset[0] + fx * hx, offset[1] + fy * hy)
+                 for fx, fy in [(0, 0), (.8, 0), (-.8, 0), (0, .8), (0, -.8), (.6, .6), (-.6, .6), (.6, -.6), (-.6, -.6)]]
+        z_release = surface_height(base, Rb[:3, :3], pb, probe)
+    pt = _place(top, Rt[:3, :3], xy=offset, z_base=z_release, gap=0.002)
     qb = trimesh.transformations.quaternion_from_matrix(Rb)
     qt = trimesh.transformations.quaternion_from_matrix(Rt)
     m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds)
-    tilt = _tilt_deg(q0[1], data.body(top.name).xquat)
-    drift = float(np.linalg.norm(data.body(top.name).xpos[:2] - p0[1][:2]))
+    # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
+    # which says nothing about whether B stays on A
+    def _mat(q):
+        r = np.zeros(9)
+        mujoco.mju_quat2Mat(r, q)
+        return r.reshape(3, 3)
+    Rb0, Rt0 = _mat(q0[0]), _mat(q0[1])
+    Rb1, Rt1 = data.body(base.name).xmat.reshape(3, 3), data.body(top.name).xmat.reshape(3, 3)
+    rel0, rel1 = Rb0.T @ Rt0, Rb1.T @ Rt1
+    tilt = math.degrees(math.acos(np.clip((np.trace(rel0.T @ rel1) - 1) / 2, -1, 1)))
+    d_end = Rb1.T @ (data.body(top.name).xpos - data.body(base.name).xpos)
+    d_start = Rb0.T @ (p0[1] - p0[0])
+    drift = float(np.linalg.norm((d_end - d_start)[:2]))
     drop = float(p0[1][2] - data.body(top.name).xpos[2])
     base_id, top_id = m.body(base.name).id, m.body(top.name).id
     contacts = []
@@ -280,11 +321,21 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
         # body-local coordinates are the object's own (upright) frame: geoms were built there
         x = data.body(name).xpos; Rw = data.body(name).xmat.reshape(3, 3)
         return (contacts - x) @ Rw
-    on_top = drop < 0.02 and tilt < max_tilt and drift < max_drift and len(contacts) > 0
+    # height of A's surface under the release point, and how far B should fall to reach it (a cup is deep,
+    # a rim is not). B has "stayed" if it ended no lower than that surface allows.
+    gid = np.array([-1], dtype=np.int32)
+    dist = mujoco.mj_ray(m, data, np.array([offset[0], offset[1], 2.0]), np.array([0.0, 0.0, -1.0]), None, 1,
+                         top_id, gid)
+    surface_z = 2.0 - dist if dist >= 0 else 0.0
+    expected_fall = float(z_release - surface_z)
+    excess_drop = float(drop - expected_fall - 0.002)
+    on_top = (excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
+              and len(contacts) > 0)
     poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
     return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": len(contacts), "poses": poses,
-            "stable": bool(on_top), "contacts_world": contacts,
+            "stable": bool(on_top), "expected_fall_m": expected_fall, "excess_drop_m": excess_drop,
+            "surface_depth_m": float(base_top - surface_z), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
             "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}
 

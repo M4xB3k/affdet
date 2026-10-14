@@ -58,3 +58,14 @@ def test_face_holds_uses_the_static_disturbance():
     from affdet.geometry.face_labels import Params
     from affdet.sim.mujoco_support import DISTURBANCE_DEG
     assert DISTURBANCE_DEG == Params().min_tip_deg
+
+
+def test_grasp_swing_grows_with_distance_from_the_centre_of_mass():
+    """A uniform 20 x 3 x 2 cm bar (1.2 kg) pinched across its width: a grasp at the COM lifts it flat, and the
+    further from the COM the pinch is, the more it pivots, until the pinch cannot hold it."""
+    from affdet.sim.grasp_map import grasp_test
+    bar = Body("bar", [_on_table(trimesh.creation.box([0.2, 0.03, 0.02]))], 1.2)
+    res = [grasp_test(bar, d, 0.0, 0.0) for d in (0.0, 0.04, 0.095)]
+    assert res[0]["success"] and res[0]["swing_deg"] < 3
+    assert res[1]["swing_deg"] > res[0]["swing_deg"] + 5
+    assert not res[2]["success"]
