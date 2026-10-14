@@ -27,6 +27,29 @@ Supervisor meeting was Oct 14, 14:30 — record its outcome here.
   in `llm_prompts_affd.py` (from old notes in `docs/taxonomy.md`; confirm with
   Pouya). Motion uses true bboxes from the CoppeliaSim scene.
 
+- **No weight in the output.** Mass enters only through `canLift` (object
+  "significantly lighter than the payload" when grasped from that member; the
+  pan lifts by its handle but not by an edge; the tray is too heavy, so it is
+  slid). Support predicates are booleans too. Mass and COM therefore stay
+  inside our labeller (canLift, pairwise stack stability for isP2PSupportive);
+  the output stays member boxes + faces + predicates. The paper assumes
+  placement at the centroid of a flat surface and grasps at the middle of a
+  member (listed as limitations).
+- **Benchmark objects as the paper describes them (ground truth hints):**
+  - Salt shaker: cylindrical with a round head, so it supports nothing; stands
+    only on its bottom; "can only be grasped stably from its top side". Our
+    width rule also allows side grasps, so ask whether that is a deliberate
+    restriction.
+  - Glass mug: supports small objects (the shaker) but not large ones; stands
+    on its top and bottom but not its round sides; wrap-grasped from top or
+    bottom, or by the handle.
+  - Cutting board: supports things on top; cannot be placed upside down;
+    handle grasp only.
+  - Frying pan: stands only on its bottom; handle grasp only (too large to
+    wrap, too heavy to edge-grasp); supports only the cutting board.
+  - Wooden tray: not liftable but slidable; graspable by handles and edges;
+    supports everything; upright only.
+
 ## The .ttt scene (decoded; Huffman-compressed CoppeliaSim format)
 Panda + gripper, table, workspace, `visionSensor`, `camera1`, `Gripper_Camera`,
 the 5 objects with meshes, and member shapes:
