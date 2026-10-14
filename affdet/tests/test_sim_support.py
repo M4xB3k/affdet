@@ -80,3 +80,50 @@ def test_analytic_grasp_model_matches_the_simulated_bar():
     assert abs(r["d_max"] - 0.051) < 0.002
     assert list(r["level"][0, :, 0]) == [True, True, False, False]
     assert not r["fits"][0, :, 1].any()  # closing along the 20 cm length does not fit the 8 cm opening
+
+
+def _walled_slab():
+    """A low wide slab (top 1.3 cm) with a 5 cm tall, 1 cm thick wall on its +x edge: a toy pan rim. Two convex parts."""
+    slab = trimesh.creation.box([0.4, 0.2, 0.013]); slab.apply_translation([0, 0, 0.0065])
+    wall = trimesh.creation.box([0.01, 0.2, 0.05]); wall.apply_translation([0.195, 0, 0.025])
+    return slab, wall
+
+
+def test_part_masses_follow_the_surface_for_shells_and_the_volume_for_solids():
+    from affdet.sim.objects import part_masses
+    wall = trimesh.creation.box([0.002, 0.1, 0.1])
+    cube = trimesh.creation.box([0.03, 0.03, 0.03]); cube.apply_translation([0.1, 0, 0])
+    both = trimesh.util.concatenate([wall, cube])
+    shell = part_masses(both, [wall, cube], 1.0, "shell")
+    solid = part_masses(both, [wall, cube], 1.0, "solid")
+    assert abs(sum(shell) - 1.0) < 1e-9 and abs(sum(solid) - 1.0) < 1e-9
+    assert shell[0] > 0.7 > 0.5 > solid[0]  # the thin wall has area but no volume
+
+
+def test_grasp_pads_start_clear_of_a_floor_next_to_the_wall():
+    """Pinching a toy pan's rim: the inner pad lands over the slab, not inside it, so the grasp lifts the object."""
+    from affdet.sim.grasp_map import grasp_test
+    slab, wall = _walled_slab()
+    body = Body("pan", [slab, wall], 0.3)
+    r = grasp_test(body, 0.195, 0.0, 90.0)
+    assert r["on_object"] and not r.get("blocked") and r["held"]
+
+
+def test_grasp_is_blocked_when_a_pad_would_start_inside_a_taller_neighbour():
+    """A 2 cm ledge 4 cm from a 5 cm wall: the far pad of a pinch on the ledge would land inside the wall."""
+    from affdet.sim.grasp_map import grasp_test
+    ledge = trimesh.creation.box([0.12, 0.1, 0.02]); ledge.apply_translation([-0.05, 0, 0.01])
+    wall = trimesh.creation.box([0.01, 0.1, 0.05]); wall.apply_translation([0.03, 0, 0.025])
+    r = grasp_test(Body("ledge", [ledge, wall], 0.3), -0.015, 0.0, 90.0)
+    assert r["blocked"] and not r["success"]
+
+
+def test_analytic_grasp_agrees_that_the_neighbouring_wall_blocks_the_pinch_and_rim_pitches():
+    from affdet.sim.grasp_analytic import grasp_analytic
+    ledge = trimesh.creation.box([0.12, 0.1, 0.02]); ledge.apply_translation([-0.05, 0, 0.01])
+    wall = trimesh.creation.box([0.01, 0.1, 0.05]); wall.apply_translation([0.03, 0, 0.025])
+    r = grasp_analytic([ledge, wall], 0.3, np.array([-0.015]), np.array([0.0]), [90])
+    assert not r["fits"].any()
+    slab, wall = _walled_slab()
+    pan = grasp_analytic([slab, wall], 1.2, np.array([0.195]), np.array([0.0]), [90])
+    assert pan["fits"].all() and not pan["level"].any()  # radial rim pinch of a 1.2 kg pan: the weight pitches it

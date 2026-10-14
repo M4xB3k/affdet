@@ -30,6 +30,7 @@ FORCE_N = 30.0
 PAD_BELOW_TOP_M = 0.03  # pad bottom this far below the surface under the grasp centre (squeezing above a handle's widest point wedges the pads off)
 LIFT_M = 0.50  # a 40 cm pan held by its handle hangs below it: the lift must clear its length
 PHASES = dict(close_max=1.2, lift=1.5, hold=0.4)  # seconds
+PARK_Z = 2.0  # pads start parked above the ray cast start so the height probes only see the object
 PAD_FRICTION = (1.0, 0.01, 0.001)  # sliding, torsional (m), rolling (m)
 
 
@@ -76,8 +77,8 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
         ms._write_parts(body, d)
         xml = ms.build_xml([body], [(pos, np.array([1.0, 0, 0, 0]))])
         # pads start open at the grasp centre; the height is set below once the surface under it is known
-        xml = xml.replace("</worldbody>", _pad_xml("fl", x - c0 * u[0], y - c0 * u[1], 0.003, yaw)
-                          + _pad_xml("fr", x + c0 * u[0], y + c0 * u[1], 0.003, yaw) + "</worldbody>")
+        xml = xml.replace("</worldbody>", _pad_xml("fl", x - c0 * u[0], y - c0 * u[1], PARK_Z, yaw)
+                          + _pad_xml("fr", x + c0 * u[0], y + c0 * u[1], PARK_Z, yaw) + "</worldbody>")
         xml = xml.replace("</mujoco>", _WELD + "</mujoco>")
         m = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(m)
@@ -87,14 +88,35 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
     bl, br, oid = m.body("fl").id, m.body("fr").id, m.body(body.name).id
     # lower the pads onto whatever is under the grasp centre (a pan handle floats 3-5 cm above the table)
     gid = np.array([-1], dtype=np.int32)
-    dist = mujoco.mj_ray(m, data, np.array([x, y, 1.0]), np.array([0.0, 0, -1.0]), None, 1, bl, gid)
-    if dist < 0 or m.geom_bodyid[gid[0]] != oid:
+
+    def top_at(px, py):
+        d_ = mujoco.mj_ray(m, data, np.array([px, py, 1.0]), np.array([0.0, 0, -1.0]), None, 1, -1, gid)
+        return (1.0 - d_) if d_ >= 0 and m.geom_bodyid[gid[0]] == oid else 0.0
+
+    z_top = top_at(x, y)
+    if z_top <= 0.0:
         return {"x": x, "y": y, "yaw": yaw_deg, "held": False, "lifted_m": 0.0, "swing_deg": 0.0, "slip_m": 0.0,
                 "success": False, "com0": data.xipos[oid].copy(), "on_object": False}
-    z_top = 1.0 - dist
     z0 = max(0.003, z_top - PAD_BELOW_TOP_M)
+    # a pad may not start inside the object: whatever is under either pad footprint (a pan's floor next to its rim
+    # wall) sets the lowest height the finger can reach; if that is above the surface being pinched, no grasp here
+    hx, hy, _ = PAD["half"]
+    t = np.array([-u[1], u[0]])  # the pad's long side runs along the world direction perpendicular to closing
+    floor = 0.0
+    for sgn in (-1, 1):
+        cx, cy = x + sgn * c0 * u[0], y + sgn * c0 * u[1]
+        for a_ in (-hx, 0.0, hx):
+            for b_ in (-hy, 0.0, hy):
+                floor = max(floor, top_at(cx + a_ * t[0] + b_ * u[0], cy + a_ * t[1] + b_ * u[1]))
+    z0 = max(z0, floor + 0.001)
+    if z0 > z_top - 0.008:
+        return {"x": x, "y": y, "yaw": yaw_deg, "held": False, "lifted_m": 0.0, "swing_deg": 0.0, "slip_m": 0.0,
+                "success": False, "com0": data.xipos[oid].copy(), "on_object": True, "blocked": True}
     for i in (il, ir):
         data.mocap_pos[i][2] = z0
+    for name in ("fl", "fr"):  # start the pads at their targets: spawning them at table height buries them in the object's hulls
+        a = m.jnt_qposadr[m.body(name).jntadr[0]]
+        data.qpos[a + 2] = z0
     mujoco.mj_forward(m, data)
     com0 = data.xipos[oid].copy()
     R0 = data.xmat[oid].reshape(3, 3).copy()
@@ -161,5 +183,8 @@ def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150),
     ok = np.array([r["success"] for r in res]).reshape(shape)
     swing = np.array([r["swing_deg"] for r in res]).reshape(shape)
     held = np.array([r["held"] for r in res]).reshape(shape)
+    blocked = np.array([r.get("blocked", False) for r in res]).reshape(shape)  # a pad could not reach the pinched surface
+    lifted = np.array([r["lifted_m"] for r in res]).reshape(shape)
+    slip = np.array([r["slip_m"] for r in res]).reshape(shape)
     return {"xs": xs, "ys": ys, "yaws": list(yaws), "success": ok, "held": held, "swing_deg": swing,
-            "score": ok.mean(2), "best_yaw_idx": ok.argmax(2), "com": res[0]["com0"], "step": step}
+            "blocked": blocked, "lifted_m": lifted, "slip_m": slip, "score": ok.mean(2), "best_yaw_idx": ok.argmax(2), "com": res[0]["com0"], "step": step}

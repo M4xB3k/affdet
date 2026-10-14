@@ -61,6 +61,7 @@ class Body:
     parts: list  # convex trimesh parts in the object frame
     mass: float
     friction: float = 0.6
+    part_mass: list | None = None  # kg per part (sums to `mass`); None spreads `mass` uniformly over the part volumes
     mesh_files: list = field(default_factory=list)
 
     @property
@@ -92,7 +93,8 @@ def build_xml(bodies: list[Body], poses: list[tuple[np.ndarray, np.ndarray]], ti
         geoms = []
         for i, f in enumerate(b.mesh_files):
             assets.append(f'<mesh name="{b.name}_{i}" file="{f}"/>')
-            geoms.append(f'<geom type="mesh" mesh="{b.name}_{i}" density="{dens:.3f}" '
+            weight = f'mass="{b.part_mass[i]:.6f}"' if b.part_mass is not None else f'density="{dens:.3f}"'
+            geoms.append(f'<geom type="mesh" mesh="{b.name}_{i}" {weight} '
                          f'friction="{b.friction} 0.005 {SIM["roll"]}" condim="6" solref="{SIM["solref"]}" rgba="0.6 0.7 0.9 1"/>')
         worldbodies.append(f'<body name="{b.name}" pos="{pos[0]:.5f} {pos[1]:.5f} {pos[2]:.5f}" '
                            f'quat="{quat[0]:.6f} {quat[1]:.6f} {quat[2]:.6f} {quat[3]:.6f}">'
