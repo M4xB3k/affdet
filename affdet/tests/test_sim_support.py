@@ -127,3 +127,24 @@ def test_analytic_grasp_agrees_that_the_neighbouring_wall_blocks_the_pinch_and_r
     slab, wall = _walled_slab()
     pan = grasp_analytic([slab, wall], 1.2, np.array([0.195]), np.array([0.0]), [90])
     assert pan["fits"].all() and not pan["level"].any()  # radial rim pinch of a 1.2 kg pan: the weight pitches it
+
+
+def test_patch_heat_marks_only_the_resting_patch_of_each_face():
+    from affdet.sim.pair_map import patch_heat
+    box = _on_table(trimesh.creation.box([0.04, 0.04, 0.08]))
+    h = patch_heat(box.vertices, {"under": 1.0})
+    assert (h[box.vertices[:, 2] < 0.001] == 1.0).all() and (h[box.vertices[:, 2] > 0.07] == 0.0).all()
+    h2 = patch_heat(box.vertices, {"under": 0.3, "on": 0.9})  # 'on' puts the top face down
+    assert h2[box.vertices[:, 2] > 0.07].max() == 0.9 and h2[box.vertices[:, 2] < 0.001].max() == 0.3
+
+
+def test_pair_map_has_a_map_on_each_side():
+    """A tall 4 x 4 x 8 cm box on a slab: the wide faces are the robust supports, standing up is sensitive."""
+    from affdet.sim.pair_map import pair_map
+    base = Body("slab", [_on_table(trimesh.creation.box([0.2, 0.2, 0.02]))], 1.0)
+    top = Body("box", [_on_table(trimesh.creation.box([0.04, 0.04, 0.08]))], 0.2)
+    m = pair_map(base, top, (0.12, 0.12), step=0.04, faces=("under", "front"), procs=2)
+    assert m["b_any"].shape == (4, 4) and m["b_any"].any()
+    assert set(m["a_face_margin_mm"]) == {"under", "front"}
+    assert m["a_face_margin_mm"]["under"] > 0 and m["a_face_margin_mm"]["front"] > 0
+    assert m["b_best_face"].max() <= 1

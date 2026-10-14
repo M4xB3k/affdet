@@ -41,9 +41,15 @@ def main():
             body, mesh = load_body(os.path.join(glb_dir, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100,
                                    float(r["objathor_mass_kg"]), "obj", cache_dir=os.path.join(work, "placement", "coacd"))
             ex = mesh.extents[:2]
-            xs = np.arange(-ex[0] / 2, ex[0] / 2 + 1e-9, step)
-            ys = np.arange(-ex[1] / 2, ex[1] / 2 + 1e-9, step)
-            a = grasp_analytic(body.parts, body.mass, xs, ys, YAWS)
+            sim_f = [f for f in (os.path.join(work, "grasp_mug2", f"{role}_{uid}.pkl"), os.path.join(work, "grasp3", f"{role}_{uid}.pkl"))
+                     if os.path.exists(f)]
+            s = pickle.load(open(sim_f[0], "rb")) if sim_f else None
+            if s is not None:  # analytic on the simulated grid, so the two maps compare cell by cell
+                xs, ys, step = s["xs"], s["ys"], s["step"]
+            else:
+                xs = np.arange(-ex[0] / 2, ex[0] / 2 + 1e-9, step)
+                ys = np.arange(-ex[1] / 2, ex[1] / 2 + 1e-9, step)
+            a = grasp_analytic(body.parts, body.mass, xs, ys, YAWS, part_mass=body.part_mass)
             a["step"] = step
             pickle.dump(a, open(os.path.join(out, f"grasp_analytic_{role}_{uid}.pkl"), "wb"))
             cls = classes(a)
@@ -52,9 +58,15 @@ def main():
             ax[0].imshow(cls, origin="lower", extent=ext, cmap=ListedColormap(["#2b2b2b", "#e8b04b", "#7bd88f"]), vmin=0, vmax=2,
                          interpolation="nearest")
             outline(ax[0], mesh, color="w")
+            if s is not None:  # what the simulated gripper did: dot = lifted and held, ringed dot = held with swing < 30 deg
+                X0, Y0 = np.meshgrid(xs, ys)
+                held = s["held"].any(2)
+                stable = (s["held"] & (s["swing_deg"] < 30)).any(2)
+                ax[0].scatter(X0[held], Y0[held], s=14, c="k", zorder=5, label="simulated gripper: lifted and held")
+                ax[0].scatter(X0[stable], Y0[stable], s=40, facecolors="none", edgecolors="k", zorder=5, label="... and swing < 30 deg")
             ax[0].plot(a["com"][0], a["com"][1], "c^", ms=11, label="centre of mass")
             ax[0].set_title(f"{role} {uid} ({body.mass} kg): analytic best pinch\n(green holds it level, amber fits but swings, dark: no pinch fits)")
-            ax[0].legend(fontsize=7, loc="lower left")
+            ax[0].legend(fontsize=6, loc="lower left")
             mg = np.where(a["fits"], a["margin"], 0).max(2)
             im = ax[1].imshow(np.log10(np.clip(mg, 1e-2, 1e2)), origin="lower", extent=ext, cmap="RdYlGn", vmin=-1, vmax=1)
             outline(ax[1], mesh, color="0.3")
@@ -73,18 +85,9 @@ def main():
             for x_ in ax:
                 x_.set_aspect("equal"); x_.set_xlabel("x (m)"); x_.set_ylabel("y (m)")
             fig.tight_layout(); fig.savefig(os.path.join(out, f"grasp_analytic_{role}_{uid}.png"), dpi=130); plt.close(fig)
-            # agreement with the simulated gripper where a simulated map exists
-            sim_f = [f for f in (os.path.join(work, "grasp_mug", f"{role}_{uid}.pkl"), os.path.join(work, "grasp", f"{role}_{uid}.pkl"))
-                     if os.path.exists(f)]
-            if sim_f:
-                s = pickle.load(open(sim_f[0], "rb"))
-                if s["score"].shape == cls.shape:
-                    sim_ok = s["success"].any(2)
-                    an_ok = a["level"].any(2)
-                    agree[f"{role}_{uid}"] = {
-                        "cells": int(sim_ok.size), "both_yes": int((sim_ok & an_ok).sum()), "sim_only": int((sim_ok & ~an_ok).sum()),
-                        "analytic_only": int((~sim_ok & an_ok).sum()), "both_no": int((~sim_ok & ~an_ok).sum()),
-                        "sim_held_any": int(s["held"].any(2).sum()), "analytic_fits_any": int(a["fits"].any(2).sum())}
+            if s is not None:
+                from scripts.sim_grasp_compare import compare
+                agree[f"{role}_{uid}"] = compare(s, body)
     json.dump(agree, open(os.path.join(out, "agreement.json"), "w"), indent=1)
     print(json.dumps(agree, indent=1))
 

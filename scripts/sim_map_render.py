@@ -33,13 +33,13 @@ def lookup(m, xs, ys, grid):
     return grid[iy, ix]
 
 
-def render(mesh, colors, size=520, az=-60, el=50):
+def render(mesh, colors, size=520, az=-60, el=50, dist=1.15):
     sub = trimesh.Trimesh(*trimesh.remesh.subdivide_to_size(mesh.vertices, mesh.faces, max_edge=0.008, max_iter=10), process=False)
     c = colors(sub)
     sub.visual = trimesh.visual.ColorVisuals(sub, vertex_colors=c)
     lo, hi = sub.bounds
     ctr = (lo + hi) / 2
-    r = np.linalg.norm(hi - lo) * 1.15
+    r = np.linalg.norm(hi - lo) * dist
     a, e = math.radians(az), math.radians(el)
     eye = ctr + r * np.array([math.cos(e) * math.cos(a), math.cos(e) * math.sin(a), math.sin(e)])
     pose = _look_at(eye, ctr)
