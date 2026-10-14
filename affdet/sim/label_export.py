@@ -97,6 +97,39 @@ def slide_labels(slide: dict, mesh: trimesh.Trimesh, max_edge=0.006) -> dict:
     return out
 
 
+def contact_labels(pair: dict, top_body, base_body, top_mesh: trimesh.Trimesh, base_mesh: trimesh.Trimesh, eps_m=0.003, max_edge=0.006):
+    """Where A and B touch in the most robust placement of the pair: per-vertex `contact` (1 within `eps_m` of the other object in the
+    settled pose, else 0) and `gap_mm` (distance to the other object, capped at 20 mm), for both objects. Re-runs that one placement.
+
+    Returns ({'A': {...}, 'B': {...}}, info) with info = face, x, y of the placement, or (None, info) if nothing holds."""
+    from affdet.sim.mujoco_support import stack_test
+    best = None
+    for f, m in pair["per_face"].items():
+        j, i = np.unravel_index(np.argmax(m["margin_mm"]), m["margin_mm"].shape)
+        if m["margin_mm"][j, i] > 0 and (best is None or m["margin_mm"][j, i] > best[0]):
+            best = (float(m["margin_mm"][j, i]), f, float(m["xs"][i]), float(m["ys"][j]))
+    if best is None:
+        return None, {}
+    _, face, x, y = best
+    r = stack_test(base_body, top_body, "under", face, offset=(x, y))
+    out = {}
+    for key, mesh, other, pose, pose_o in (("A", top_mesh, base_mesh, r["poses"]["top"], r["poses"]["base"]),
+                                              ("B", base_mesh, top_mesh, r["poses"]["base"], r["poses"]["top"])):
+        sub = subdivide(mesh, max_edge)
+        w = sub.vertices @ pose[1].T + pose[0]                  # this object's vertices in the world, settled pose
+        o = other.copy()
+        T = np.eye(4); T[:3, :3] = pose_o[1]; T[:3, 3] = pose_o[0]
+        o.apply_transform(T)
+        gap = np.full(len(w), 0.02)
+        lo, hi = o.bounds
+        near = np.all((w > lo - 0.02) & (w < hi + 0.02), axis=1)
+        if near.any():
+            _, d, _ = trimesh.proximity.closest_point(o, w[near])
+            gap[near] = np.minimum(d, 0.02)
+        out[key] = {"vertices": sub.vertices, "faces": sub.faces, "valid": np.ones(len(w), bool), "contact": (gap < eps_m).astype(np.int8), "gap_mm": 1000 * gap}
+    return out, {"face": face, "x": x, "y": y, "stable": bool(r["stable"]), "tilt_deg": float(r["tilt_deg"])}
+
+
 def save(path: str, labels: dict, meta: dict):
     meta = {"schema_version": SCHEMA_VERSION, "cap_mm": CAP_MM, **meta}
     np.savez_compressed(path, meta=json.dumps(meta), **labels)
