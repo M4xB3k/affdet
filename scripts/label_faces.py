@@ -95,7 +95,7 @@ def main():
                 check_sheet(scene, text).save(os.path.join(a.out_dir, "check", f"{oid}.jpg"), quality=85)
     if a.summary and rows_out:
         with open(a.summary, "w", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=list(rows_out[0]))
+            w = csv.DictWriter(fh, fieldnames=list(rows_out[0]), lineterminator="\n")
             w.writeheader()
             w.writerows(rows_out)
     print(f"{len(rows_out)} objects labelled")

@@ -80,7 +80,7 @@ Per object, the script:
 
 | Column | Meaning |
 |---|---|
-| `supportable_<face>` | The object rests stably with that face down. The COM must lie ≥ 5 mm inside the contact polygon, and tipping it must need ≥ 5°. Resting directions up to 20° from the face count, because a ridged side settles onto a facet. |
+| `supportable_<face>` | The object rests stably with that face down. The contact polygon is made of hull facets within 5° of flat. The COM must lie inside it by at least 5 mm, and by at least half the face width × sin 10°. The second bound is the strip a finely tessellated round body of that size would give. Tipping it over must need ≥ 5°. Resting directions up to 20° from the face count, because a ridged side settles onto a facet. |
 | `tip_deg_<face>` | The tilt needed to tip the object over in that rest. |
 | `supportive_on` | The flat region on top is ≥ 3 cm across and the object stands on `under`. |
 | `top_flat_width_cm` | The narrowest width of that flat region. |
@@ -90,13 +90,49 @@ Per object, the script:
 The COM is the centroid of the solid convex hull, which suits a filled shaker.
 Mugs and pans will need a better estimate.
 
-Results: all 46 stand on `under`. 23 can stand upside down (flat cap). 19 can
+Results: all 46 stand on `under`. 26 can stand upside down (flat cap). 19 can
 lie on at least one side (square, octagonal or faceted bodies). 8 can support
-something on top. 4 are flagged for review. Every object except the two widest
-mills can be grasped from the top and the sides.
+something on top. 5 are flagged for review. Every object except the widest
+mills (9–12 cm) can be grasped from the top and the sides.
+
+`tip_deg_<face>` is kept so that borderline cases can become soft labels; a
+handful sit within a degree or a millimetre of the thresholds.
 
 Several rows share one mesh with a different texture: d8e2236b/270b9b45,
 05308bf4/76fcdf15, 1f4e8a33/a991699c and 3437607e/f71db294. Keep each pair in
 the same split. d8e2236b and 270b9b45 differ only in target height (12 vs
 10 cm), and their side labels differ too, because the margin sits at the 5 mm
 threshold.
+
+## VLM pilot (GPT-6-sol)
+
+`vlm_pilot_gpt6sol.md` / `.csv` hold the results; `scripts/vlm_face_pilot.py`
+runs them. Twenty of these objects were each sent 3× to GPT-6-sol (Azure) as
+one face-labelled 4-view render. The questions cover handle, materials,
+fragility, body cross-section and top shape. Three more questions overlap with
+the geometry labels: stands upside down, lies on which sides, top can hold
+something. The pilot cost $0.40 (97k tokens).
+
+Findings:
+
+- **Handles are reliable.** Both crank grinders got `has_handle` with the
+  right face, 3/3; no false handles. Every repeat agreed on every object.
+- **Materials are the least consistent** (body 15/20, cap 14/20 identical
+  across repeats). Use the majority of 3 and have a person check the splits.
+- **Near-metric questions should stay with geometry.** The VLM agrees with
+  the labeller on 75–85 % of objects, and the misses go the way size
+  blindness predicts:
+  - It says 1.5–2 cm tops and a knob can hold a coaster.
+  - It says a square jar with a wider round lid (b8a406f8) lies on all four
+    sides, but the lid makes it roll on two of them.
+  - It calls one flat-sided body square yet says it lies on no side
+    (d00ef026, 2/3).
+- **It does help with the review flags.** It calls two of the five
+  smooth-shaded low-poly bodies round (d8e2236b, e0b380d2, 3/3), so their
+  side labels should be dropped. It calls two faceted (e07a892b, 5ba5959e).
+  The novelty rocket (9ef6c018) gets "faceted" but "lies on no side".
+  Resolving flags with `body_cross_section` and a person checking the
+  leftovers is the planned workflow.
+
+This matches the decision in `docs/utamp2_integration_notes.md`: numbers from
+geometry, and the VLM only for non-metric attributes.

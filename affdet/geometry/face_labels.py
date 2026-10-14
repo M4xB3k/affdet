@@ -14,7 +14,9 @@ For each face:
   (convex-hull facets within `flat_angle_deg` of the resting direction and
   within `contact_tol` of the extreme plane). The object is stable if the
   centre of mass projects inside the polygon at least `min_margin` from its
-  edge and tipping it over needs at least `min_tip_deg` (atan(margin / COM
+  edge (and at least half the face width x sin(2 x flat_angle_deg), the
+  strip a finely tessellated round body of that size could produce) and
+  tipping it over needs at least `min_tip_deg` (atan(margin / COM
   height)). Put down with the face roughly down, an object settles onto the
   nearest stable facet, so resting directions up to `settle_deg` from the
   face normal count (a jar whose side is two facets meeting at a shallow
@@ -64,7 +66,7 @@ OPPOSITE = {"on": "under", "under": "on", "front": "back", "back": "front", "lef
 @dataclass
 class Params:
     # support / stability
-    flat_angle_deg: float = 3.0      # hull facets this close to the face normal count as contact
+    flat_angle_deg: float = 5.0      # hull facets this close to the face normal count as contact
     contact_tol: float = 0.001       # m; and lie this close to the extreme plane
     min_tip_deg: float = 5.0         # tilt needed to tip the object over
     min_margin: float = 0.005        # m; COM distance inside the support polygon edge
@@ -224,15 +226,16 @@ def label_faces(mesh: trimesh.Trimesh, p: Params = Params(), mass: float | None 
         for d in _resting_directions(hull, nrm, p.settle_deg):
             poly, R, top = support_polygon(hull, d, p)
             margin, tip = _stability(poly, R, top, com)
-            score = min(margin / p.min_margin, tip / p.min_tip_deg)
+            score = min(margin / p.min_margin, tip / p.min_tip_deg)  # pick the steadiest rest
             if best is None or score > best[0]:
                 best = (score, margin, tip, d, _min_width(poly))
         _, margin, tip, d, rest_width = best
         poly, _, _ = support_polygon(hull, nrm, p)  # flat region of the face itself
-        supportable[name] = bool(margin >= p.min_margin and tip >= p.min_tip_deg)
+        axes = [i for i in range(3) if nrm[i] == 0]
+        need = max(p.min_margin, 0.5 * min(ext[axes]) * math.sin(math.radians(2 * p.flat_angle_deg)))
+        supportable[name] = bool(margin >= need and tip >= p.min_tip_deg)
         smooth = _contact_smoothness(mesh, d, p)
         flat[name] = _min_width(poly)
-        axes = [i for i in range(3) if nrm[i] == 0]
         labels.faces.append(FaceLabel(
             face=name, box_dims=(float(ext[axes[0]]), float(ext[axes[1]])),
             support_area=float(poly.area), support_min_width=flat[name],

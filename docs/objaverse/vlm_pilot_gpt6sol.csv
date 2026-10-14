@@ -1,0 +1,21 @@
+object_id,tier,repeats,has_handle,has_handle_votes,handle_face,handle_face_votes,body_material,body_material_votes,cap_material,cap_material_votes,fragile,fragile_votes,body_cross_section,body_cross_section_votes,top_shape,top_shape_votes,stands_upside_down,stands_upside_down_votes,rests_on_sides,rests_on_sides_votes,top_can_hold,top_can_hold_votes,geom_supportable_on,geom_sides,geom_supportive_on,geom_review
+c442c91673a24b3798065d76fda3b4e0,shaker,3,False,3/3,none,3/3,glass,3/3,metal,2/3,True,3/3,square_or_rectangle,3/3,flat,3/3,True,3/3,back front left right,3/3,True,3/3,1,front back left right,0,
+5ba5959ecc044c5fa44dded4c75ea25a,shaker,3,False,3/3,none,3/3,glass,3/3,plastic,3/3,True,3/3,faceted_polygon,3/3,flat,3/3,True,3/3,back front left right,3/3,True,3/3,1,front back left right,1,left(13deg) right(13deg)
+9336ba99aeea42eaa4837567ab70af03,shaker,3,False,3/3,none,3/3,glass,3/3,plastic,3/3,True,3/3,round,3/3,domed,2/3,False,2/3,,3/3,False,2/3,1,front back,0,
+d00ef0263b6b47378c6904801ce84adf,shaker,3,False,3/3,none,3/3,wood,3/3,none,3/3,False,3/3,square_or_rectangle,2/3,domed,3/3,False,3/3,,2/3,False,3/3,0,front back left right,0,
+b1e7f11f513649058b4de8567f581d43,shaker,3,False,3/3,none,3/3,metal,3/3,metal,3/3,False,3/3,round,3/3,knob_or_finial,3/3,False,3/3,,3/3,False,3/3,0,,0,
+05308bf4da874a63b040399dca39489b,shaker,3,False,3/3,none,3/3,ceramic,3/3,plastic,2/3,True,3/3,round,3/3,domed,3/3,False,3/3,,3/3,False,2/3,1,,0,
+77a7cef9019c4a50b982e315b38a90df,shaker,3,False,3/3,none,3/3,ceramic,2/3,metal,3/3,True,3/3,faceted_polygon,3/3,flat,3/3,True,3/3,back front left right,3/3,True,3/3,1,front back left right,1,
+d8e2236b427c4539a496f152bbc65d4d,shaker,3,False,3/3,none,3/3,wood,3/3,wood,3/3,False,3/3,round,2/3,flat,1/3,False,2/3,,3/3,False,2/3,1,front back right,0,front(16deg) back(16deg) right(16deg)
+e0b380d2819249ecbb75c2552bedd0a1,shaker,3,False,3/3,none,3/3,glass,2/3,plastic,2/3,True,2/3,round,3/3,flat,2/3,True,2/3,,3/3,True,2/3,1,front back left right,0,on(10deg) front(16deg) back(10deg) left(16deg) right(16deg)
+1e74c88055b748cbbef0c92a1d02a4c2,shaker,3,False,3/3,none,3/3,glass,2/3,ceramic,1/3,True,3/3,faceted_polygon,3/3,flat,3/3,True,3/3,back front left right,3/3,True,3/3,1,front back left right,1,
+12a6366c033245eb97551a615317c12e,shaker,3,False,3/3,none,3/3,ceramic,2/3,ceramic,2/3,True,2/3,faceted_polygon,3/3,flat,3/3,True,3/3,back front left right,3/3,True,3/3,1,front back left,0,
+c70225db3dd34e8ba2f53b13bf93411a,shaker,3,False,3/3,none,3/3,wood,2/3,metal,2/3,False,3/3,round,3/3,knob_or_finial,3/3,False,3/3,,3/3,False,3/3,0,,0,
+cf8640d4e4624bb4940850631ee6bb1c,shaker,3,False,3/3,none,3/3,wood,3/3,wood,3/3,False,3/3,faceted_polygon,3/3,knob_or_finial,3/3,True,3/3,back front left right,2/3,True,2/3,1,front back left right,0,
+23a809f734f24ff6b817b77bd9bf0541,pepper_mill,3,False,3/3,none,3/3,wood,3/3,wood,3/3,False,3/3,round,3/3,knob_or_finial,3/3,True,2/3,,3/3,False,2/3,1,,1,
+a121f6c17bdd4818970cd642e74c2fd2,pepper_mill,3,True,3/3,right,3/3,wood,3/3,metal,3/3,False,3/3,round,3/3,knob_or_finial,3/3,False,3/3,,3/3,False,3/3,0,,0,
+e07a892b7ea3497ebe98f5d9ea30abc7,pepper_mill,3,True,3/3,right,3/3,wood,3/3,metal,3/3,False,3/3,faceted_polygon,3/3,knob_or_finial,3/3,False,3/3,back front left,2/3,False,3/3,0,front left,0,left(22deg)
+88067fa666d746928bc59af924eb62fe,pepper_mill,3,False,3/3,none,3/3,wood,3/3,wood,3/3,False,3/3,round,3/3,domed,3/3,False,3/3,,3/3,False,3/3,0,,0,
+b8a406f85d84423e925b6ebf804bf63b,spice_jar,3,False,3/3,none,3/3,glass,3/3,plastic,3/3,True,3/3,square_or_rectangle,3/3,flat,3/3,True,3/3,back front left right,3/3,True,3/3,1,front back,1,
+9e4437be65e94d2e81a7161a48117c62,spice_jar,3,False,3/3,none,3/3,metal,3/3,metal,3/3,False,3/3,round,3/3,flat,3/3,True,3/3,,3/3,True,3/3,1,,1,
+9ef6c018a8ce4d41824ec40b9870e412_0,shaker_from_pair,3,False,3/3,none,3/3,plastic,3/3,plastic,3/3,False,3/3,faceted_polygon,2/3,pointed,3/3,False,3/3,,3/3,False,3/3,0,front back left right,0,front(18deg) back(18deg) left(18deg) right(18deg)

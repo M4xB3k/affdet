@@ -1,4 +1,4 @@
-# Handoff: integrating affdet into UTAMP-2 (status 2026-10-14, end of day)
+# Handoff: integrating affdet into UTAMP-2 (status 2026-10-14, evening)
 
 Context for continuing this work in a new session. Point the session at this
 file. Branch: `claude/dino-geometry-affordances-e32leg` (pushed, in sync).
@@ -57,12 +57,23 @@ plus grasp_* / place_* / support_* frames.
   reused across scenes (thesis trick).
 - Avoid AffordanceNet ("support" = spatula blade there). Off-the-shelf grasp
   baseline: GraspGen (Panda model) binned to faces.
-- **VLM for the non-metric questions: GPT-6-sol** (Azure, $2 / $10 per M tokens,
-  short context). Whole labelling run costs < ~$15 on any candidate, so pick
-  on quality. Not benchmarked yet — run a ~20-object pilot (3× each) against
-  own labels, comparing GPT-6-sol with GPT-5-mini (the thesis teacher, 83.2 %
-  vs human labels) and o4-mini (UTAMP-2's model); keep the most consistent.
-  Note 4o-mini is not cheaper for images (bills ~30× more tokens per image).
+- **VLM for the non-metric questions: GPT-6-sol** (Azure, $2 / $10 per M tokens).
+  It is the only model the Azure key serves, so GPT-5-mini / o4-mini are not
+  compared. Pilot done (see Results). Access: endpoint
+  `https://personale.services.ai.azure.com/openai/v1/` (Responses API),
+  deployment `gpt-6-sol`, key in env `AZURE_TOKEN` sent as the `api-key` header.
+  The older scripts (`affdet/label/vlm.py` etc.) read
+  `AZURE_OPENAI_ENDPOINT=https://personale.services.ai.azure.com` and
+  `AZURE_OPENAI_API_KEY`; set those from the same values to reuse them.
+- **Supportability is judged with the face down, allowing a settle of up to 20°
+  onto a nearby stable facet**, using the convex hull and a hull-centroid COM.
+  Thresholds: facets within 5° of flat count as contact; COM margin
+  ≥ max(5 mm, ½ face width × sin 10°); tip angle ≥ 5°. The size-relative
+  margin stops finely tessellated round bodies (an 84-gon of radius 4.5 cm)
+  from passing, while a 0.4 mm cone on a cap still counts as flat. Low-poly
+  bodies shaded smooth get a `review` flag rather than a changed label.
+  Grasps: Franka Hand, 80 mm opening, fingers reaching 4 cm past the palm face.
+  Grasps from every face are listed, including `under`.
 
 ## Objects
 
@@ -108,6 +119,38 @@ thumbnails only — meshes not yet opened; 5 have no licence in ObjaTHOR.
 outliers with thumbnails; salt-shaker tab also has the curated set and the 122
 name mismatches. Rebuild with `scripts/size_review/` (see its README).
 
+## Results so far
+
+### Per-face labeller (`affdet/geometry/`, `scripts/label_faces.py`)
+Install with `pip install -e .[geometry]`; on a headless machine set
+`PYOPENGL_PLATFORM=osmesa` (needs `apt install libosmesa6`) for check renders.
+The 46 salt shakers are labelled:
+- `docs/objaverse/salt_shaker_face_labels.csv`
+- `docs/objaverse/salt_shaker_face_labels_overview.jpg`
+- per-object JSON and 4-view check sheets in `data/face_labels/salt_shaker/`
+  (gitignored; regenerate in ~1.5 min)
+
+GLBs are in `data/objaverse/glbs/` (gitignored, 148 MB, from HF). Uprighting
+needed only the two crank grinders (`up_axis=-x` column); one tilted scan is
+levelled automatically. Counts: all 46 stand; 26 stand upside down; 19 lie on
+a side; 8 hold something on top; 5 review flags. Tests:
+`affdet/tests/test_face_labels.py` (primitives: round vs hexagonal vs domed,
+wide 84-gon, near-flat cap, grasp widths). Details and caveats are in
+`docs/objaverse/README.md`, which also covers four shared-mesh pairs that must
+go in the same split.
+
+### VLM pilot (`scripts/vlm_face_pilot.py`)
+GPT-6-sol, 20 objects × 3, one face-labelled 4-view image each; $0.40.
+- Handles are perfect: both cranks found, with the right face.
+- Materials are the least consistent (14–15/20).
+- On near-metric questions it agrees with geometry only 75–85 %, and the
+  errors are size-blind (it says 2 cm tops can hold a coaster).
+- It resolves the smooth-shaded review flags via `body_cross_section`.
+
+This confirms "numbers from geometry, VLM for non-metric". Results are in
+`docs/objaverse/vlm_pilot_gpt6sol.{md,csv}`; raw answers and images are in
+`data/vlm_pilot/`.
+
 ## Research report
 `reports/UTAMP grasp and support perception.md` + notes in `research_notes/`.
 Demo track: geometric predicate generator over the .ttt members, diffed
@@ -115,16 +158,27 @@ against UTAMP-2-GT. Paper track: DINOv2 student for face-level predicates +
 predicate-noise → plan-success study on the 127 configurations.
 
 ## Next steps
-1. Write the per-face labeller (pipeline above) and run it on the 46 salt
-   shakers: download GLBs, upright, scale, label, render a few for checking.
-2. Curate the other categories the same way (by eye, ~30–80 each); mugs,
-   plates, trays, pans have plenty; cutting boards ~61.
-3. VLM pilot (20 objects × 3 models × 3 repeats) once there is an Azure endpoint.
-4. Ask Pouya: UTAMP-2 code, `llm_prompts_affd.py`, hand-made affordance table
-   (ground truth to test the labeller on — especially their salt shaker),
-   127 configurations, whether hf1/hf2 order matters, whether upside-down
-   counts as supportable, canLift/canSlide scope, what the benchmark salt
-   shaker's cap looks like.
-5. Check GraspGen builds on the lab GPU.
-6. Licences: check the ~60 non-commercial objects and the 5 without a licence;
-   confirm ObjaTHOR annotation licence before redistributing the joined CSV.
+1. Apply the review rule: for flagged faces, drop side supportability when
+   GPT-6-sol's majority `body_cross_section` is `round`. Then do a human pass
+   over the leftovers and over the borderline `tip_deg` cases (soft labels?).
+2. Members for the other categories: mugs, pans, trays and boards have handles
+   and rims, so the labeller needs member boxes (body / handle / edge) before
+   their grasp labels mean anything. Options: split by mesh part where artists
+   modelled the handle separately, or ask the VLM for the handle face (reliable
+   in the pilot) and cut the box there. The hull-centroid COM is wrong for
+   hollow objects; use a shell-plus-content estimate.
+3. Curate the other categories the same way (by eye, ~30–80 each); mugs,
+   plates, trays and pans have plenty, cutting boards ~61.
+4. Full VLM run on the non-metric questions (materials, handle, fragile,
+   cross-section) for all curated objects, 3× each; under $15 in total.
+5. Ask Pouya: UTAMP-2 code, `llm_prompts_affd.py`, the hand-made affordance
+   table (ground truth to test the labeller on, especially their salt shaker),
+   the 127 configurations, whether hf1/hf2 order matters, whether
+   palm=`under` grasps should be listed, whether upside-down counts as
+   supportable, their face naming (which axis is `front`/`left`), canLift and
+   canSlide scope, and what the benchmark salt shaker's cap looks like.
+6. Check GraspGen builds on the lab GPU; bin its grasps to faces and compare
+   with the width rule.
+7. Licences: check the ~60 non-commercial objects and the 5 without a licence;
+   confirm the ObjaTHOR annotation licence before redistributing the joined CSV.
+8. Supervisor meeting (Oct 14, 14:30): its outcome is still to be recorded here.

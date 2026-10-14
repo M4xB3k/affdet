@@ -66,3 +66,18 @@ def test_predicates_and_lift():
     assert "(isSupportable salt_shaker under)" in preds
     assert "(canGraspFrom salt_shaker body on left right)" in preds
     assert "(canLift salt_shaker body)" in preds
+
+
+def test_wide_finely_tessellated_round_body_still_rolls():
+    f = _faces(label_faces(_on_table(trimesh.creation.cylinder(radius=0.045, height=0.2, sections=84))))
+    assert not any(f[s].supportable for s in ("left", "right", "front", "back"))
+
+
+def test_nearly_flat_cap_counts_as_flat():
+    # octagonal shaker whose top is a 0.4 mm high cone over 6 mm (4 deg facets)
+    body = trimesh.creation.cylinder(radius=0.029, height=0.086, sections=8)
+    body.apply_translation([0, 0, 0.043])
+    ring = [[0.006 * np.cos(a), 0.006 * np.sin(a), z] for z in (0.086, 0.0896) for a in np.linspace(0, 2 * np.pi, 8, endpoint=False)]
+    cap = trimesh.convex.convex_hull(np.vstack([ring, [[0, 0, 0.09]], [[0.012 * np.cos(a), 0.012 * np.sin(a), 0.086] for a in np.linspace(0, 2 * np.pi, 8, endpoint=False)]]))
+    f = _faces(label_faces(_on_table(trimesh.util.concatenate([body, cap]))))
+    assert f["on"].supportable
