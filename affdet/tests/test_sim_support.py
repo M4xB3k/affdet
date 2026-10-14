@@ -199,3 +199,28 @@ def test_grasp_labels_report_held_and_stable_fractions():
     g = {"xs": xs, "ys": ys, "step": 0.05, "held": held, "swing_deg": swing}
     lab = grasp_labels(g, _on_table(trimesh.creation.box([0.1, 0.1, 0.02])))
     assert lab["held_frac"].max() == 1.0 and abs(lab["stable_frac"].max() - 0.5) < 1e-9
+
+
+def test_slide_a_tall_narrow_box_topples_when_pushed_high_and_a_flat_one_slides():
+    """Push a 4 x 4 x 12 cm, 0.2 kg box at 15 % and 50 % of its height, and a 12 x 12 x 4 cm, 1 kg box at 90 %."""
+    from affdet.sim.slide_map import slide_test
+    def box(x, y, z, mass):
+        return Body("b", [_on_table(trimesh.creation.box([x, y, z]))], mass)
+    tall = box(0.04, 0.04, 0.12, 0.2)
+    assert slide_test(tall, 0.0, 0.15)["success"]
+    high = slide_test(tall, 0.0, 0.5)
+    assert not high["success"] and high["tilt_deg"] > 30
+    assert slide_test(box(0.12, 0.12, 0.04, 1.0), 0.0, 0.9)["success"]
+
+
+def test_slide_labels_paint_the_samples_on_the_side_surface():
+    from affdet.sim.label_export import slide_labels
+    az = list(range(0, 360, 90)); fr = [0.25, 0.75]
+    ok = np.zeros((2, 4), bool); ok[0, :] = True  # pushing low works from every side, high from none
+    sm = {"azimuths": az, "fracs": fr, "success": ok, "moved_frac": ok * 1.0, "tilt_deg": np.where(ok, 0.0, 60.0), "yaw_deg": np.zeros((2, 4)),
+          "on_object": np.ones((2, 4), bool)}
+    box = _on_table(trimesh.creation.box([0.06, 0.06, 0.1]))
+    lab = slide_labels(sm, box)
+    z = lab["vertices"][:, 2]
+    side = lab["valid"]
+    assert side.sum() > 0 and (lab["slide_score"][side & (z < 0.04)] == 1.0).all() and (lab["slide_score"][side & (z > 0.07)] == 0.0).all()

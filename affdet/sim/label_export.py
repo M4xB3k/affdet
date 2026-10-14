@@ -71,6 +71,27 @@ def grasp_labels(grasp: dict, mesh: trimesh.Trimesh, max_swing_deg=30.0, max_edg
             "stable_frac": np.where(up, _lookup(grasp, m.vertices[:, 0], m.vertices[:, 1], stable), 0.0)}
 
 
+def slide_labels(slide: dict, mesh: trimesh.Trimesh, max_edge=0.006) -> dict:
+    """Per-vertex canSlide labels from a `slide_map`: each side vertex takes the outcome of the nearest (azimuth, height) push.
+
+    `valid` marks vertices whose surface faces sideways (a horizontal push can reach them); `slide_score` is 1 where that push
+    slides the object without tipping or spinning it, 0 where it does not, and `moved_frac`/`tilt_deg`/`yaw_deg` carry the outcome."""
+    m = subdivide(mesh, max_edge)
+    centre = 0.5 * (m.bounds[0] + m.bounds[1])
+    height = m.bounds[1][2] - m.bounds[0][2]
+    n = m.vertex_normals
+    side = np.hypot(n[:, 0], n[:, 1]) > 0.5
+    az = np.degrees(np.arctan2(m.vertices[:, 1] - centre[1], m.vertices[:, 0] - centre[0])) % 360.0
+    fr = (m.vertices[:, 2] - m.bounds[0][2]) / max(height, 1e-9)
+    A = np.asarray(slide["azimuths"], float); F = np.asarray(slide["fracs"], float)
+    ia = np.abs(((az[:, None] - A[None]) + 180.0) % 360.0 - 180.0).argmin(1)
+    ifr = np.abs(fr[:, None] - F[None]).argmin(1)
+    out = {"vertices": m.vertices, "faces": m.faces, "valid": side}
+    for key, name in (("success", "slide_score"), ("moved_frac", "moved_frac"), ("tilt_deg", "tilt_deg"), ("yaw_deg", "yaw_deg")):
+        out[name] = np.where(side, np.asarray(slide[key], float)[ifr, ia], 0.0)
+    return out
+
+
 def save(path: str, labels: dict, meta: dict):
     meta = {"schema_version": SCHEMA_VERSION, "cap_mm": CAP_MM, **meta}
     np.savez_compressed(path, meta=json.dumps(meta), **labels)
