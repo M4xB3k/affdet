@@ -70,4 +70,5 @@ rendered in CoppeliaSim; estimated ~2.5–3 weeks full-time.
 2. Ask Pouya: UTAMP-2 code, `llm_prompts_affd.py`, hand-made affordance table,
    127 configurations, whether hf1/hf2 order matters, canLift/canSlide scope.
 3. Check GraspGen builds on the lab GPU.
-4. Fix GitHub access for this repo (pushes from the cloud session got 403).
+4. ~~Fix GitHub access for this repo~~ — done 2026-10-14: the unpushed
+   bundle was applied and pushed to `claude/dino-geometry-affordances-e32leg`.
