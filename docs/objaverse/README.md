@@ -51,10 +51,10 @@ cocktail shakers and protein bottles "shaker".
 | shaker | 21 | the benchmark object's own kind |
 | pepper_mill | 11 | same affordances (wrap grasp on the body, top supports nothing); taller |
 | spice_jar | 7 | same affordances and size; adds label and lid appearance |
-| pair_needs_split | 6 | two shakers in one model; usable after splitting the mesh |
+| shaker_from_pair | 5 models → 7 shakers | two shakers in one model, split with `scripts/split_pairs.py`; the `note` column says which halves to keep (identical twins count once) |
 
 `target_height_cm` / `target_mass_kg` are the sizes to scale to: ObjaTHOR's value
 when it is plausible for the tier (shaker 6–14 cm, mill 12–25 cm, jar 8–14 cm),
 otherwise the tier default (9 / 18 / 10 cm). Picks are from thumbnails only —
-open the meshes before rendering. Five objects have no licence in ObjaTHOR;
+open the meshes before rendering. In total: 46 objects (28 shakers, 11 mills, 7 jars). Five objects have no licence in ObjaTHOR;
 check them in the Objaverse metadata.
