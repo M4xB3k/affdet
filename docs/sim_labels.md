@@ -1,12 +1,16 @@
 # Simulation labels: format
 
 Labels for the proof-of-concept predicates come from the MuJoCo simulator (`affdet/sim/`), exported by
-`affdet/sim/label_export.py` as one `.npz` per object and role. Each file holds the object's mesh and per-vertex
-heatmap channels, in the object's own upright metric frame (z up, base at z = 0).
+`scripts/export_labels.py` (functions in `affdet/sim/label_export.py`). Layout of the output directory:
+
+- `mesh/<object>.<role>.npz`: the object's subdivided mesh (`vertices` float32, `faces` int32) in its own upright metric frame
+  (z up, base at z = 0). One per object and role, shared by all label files that name it in `meta.mesh`.
+- `pair/<top>_on_<base>.A.npz` and `.B.npz`, `grasp/<object>.npz`, `slide/<object>.npz`: per-vertex channels (float16 or int8)
+  aligned with the mesh named in `meta.mesh`.
+- `index.json`: one line of summary statistics per label file.
 
 | array | shape | meaning |
 |---|---|---|
-| `vertices`, `faces` | (N, 3), (M, 3) | the mesh, subdivided to 6 mm edges |
 | `valid` | (N,) bool | vertices that can carry the label (see below); labels are 0 elsewhere |
 | `score` | (N,) in [0, 1] | `clip(margin_mm / 20, 0, 1)` |
 | `margin_mm` | (N,) | millimetres a placement may be off before it fails |
@@ -40,3 +44,10 @@ applied. Margins are quantised to the map's grid step (`meta.step`, 1 to 5 cm fo
 
 Faces that do not hold on a flat table are not swept, so a round cap resting inside an opening is missed. Mass is
 spread over parts by surface area, not by material. See the part-2 report for the open items.
+
+## canSlide: one file per object
+
+`valid` = side vertices (surface normal mostly horizontal). `slide_score` is 1 where a flat pusher pushing horizontally at that
+point (inward, along the line to the object's centre) slides the object 12 cm without tipping it more than 10 degrees or turning
+it more than 25 degrees; 0 otherwise. `moved_frac`, `tilt_deg` and `yaw_deg` carry the measured outcome. The map is sampled at
+12 azimuths and 4 heights and painted on the mesh by nearest sample. The object settles for 1 s before the push.

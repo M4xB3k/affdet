@@ -45,8 +45,20 @@ def main():
             meshes[spec] = prepare(glb, h, "+y")[1]
         return meshes[spec]
 
-    for d in ("pair", "grasp", "slide"):
+    for d in ("pair", "grasp", "slide", "mesh"):
         os.makedirs(os.path.join(a.out, d), exist_ok=True)
+    saved_meshes = {}
+
+    def slim(lab, spec, role):
+        """Store the (subdivided) mesh once per object and keep only compact label arrays per file."""
+        key = (spec, role)
+        name = f"{reg.spec_name(spec)}.{role}" if role else reg.spec_name(spec)
+        if name not in saved_meshes:
+            np.savez_compressed(os.path.join(a.out, "mesh", f"{name}.npz"), vertices=lab["vertices"].astype(np.float32), faces=lab["faces"].astype(np.int32))
+            saved_meshes[name] = len(lab["vertices"])
+        assert saved_meshes[name] == len(lab["vertices"]), "subdivision changed between two labels of the same object"
+        out = {k: (v.astype(np.float16) if v.dtype.kind == "f" else v) for k, v in lab.items() if k not in ("vertices", "faces")}
+        return out, name
     index = {"schema_version": le.SCHEMA_VERSION, "cap_mm": le.CAP_MM, "pair": [], "grasp": [], "slide": []}
     for d in a.pairs:
         for f in sorted(glob.glob(os.path.join(d, "*_on_*.pkl"))):
@@ -56,8 +68,10 @@ def main():
             m = pickle.load(open(f, "rb"))
             lab = le.pair_labels(m, mesh(ts), mesh(bs))
             meta = {"pair": name, "top": ts, "base": bs, "step": m["step"], "faces": m["faces"], "skipped_faces": m["skipped"]}
-            le.save(os.path.join(a.out, "pair", f"{name}.A.npz"), lab["A"], {**meta, "side": "A (put down)"})
-            le.save(os.path.join(a.out, "pair", f"{name}.B.npz"), lab["B"], {**meta, "side": "B (supporting)"})
+            la, ma = slim(lab["A"], ts, "A")
+            lb, mb = slim(lab["B"], bs, "B")
+            le.save(os.path.join(a.out, "pair", f"{name}.A.npz"), la, {**meta, "side": "A (put down)", "mesh": ma})
+            le.save(os.path.join(a.out, "pair", f"{name}.B.npz"), lb, {**meta, "side": "B (supporting)", "mesh": mb})
             index["pair"].append({"pair": name, "top": ts, "base": bs, "supported_fraction_of_B": round(float(m["b_any"].mean()), 3),
                                   "best_margin_mm": round(float(m["b_margin_mm"].max()), 1), "faces_that_work": [k for k, v in m["a_face_margin_mm"].items() if v > 0]})
     for d in a.grasp:
@@ -66,7 +80,8 @@ def main():
             spec = spec_of(name, reg)
             g = pickle.load(open(f, "rb"))
             lab = le.grasp_labels(g, mesh(spec))
-            le.save(os.path.join(a.out, "grasp", f"{name}.npz"), lab, {"object": spec, "step": g["step"], "yaws": g["yaws"]})
+            lg, mg = slim(lab, spec, "grasp")
+            le.save(os.path.join(a.out, "grasp", f"{name}.npz"), lg, {"object": spec, "step": g["step"], "yaws": g["yaws"], "mesh": mg})
             index["grasp"].append({"object": spec, "step": g["step"], "held_cells": int(g["held"].any(2).sum()), "stable_cells": int((g["held"] & (g["swing_deg"] < 30)).any(2).sum()), "cells": int(g["held"].any(2).size)})
     for d in a.slide:
         for f in sorted(glob.glob(os.path.join(d, "slide_*.pkl"))):
@@ -74,7 +89,8 @@ def main():
             spec = spec_of(name, reg)
             s = pickle.load(open(f, "rb"))
             lab = le.slide_labels(s, mesh(spec))
-            le.save(os.path.join(a.out, "slide", f"{name}.npz"), lab, {"object": spec, "azimuths": s["azimuths"], "fracs": s["fracs"]})
+            ls, ms_ = slim(lab, spec, "slide")
+            le.save(os.path.join(a.out, "slide", f"{name}.npz"), ls, {"object": spec, "azimuths": s["azimuths"], "fracs": s["fracs"], "mesh": ms_})
             ok = s["success"][s["on_object"]]
             index["slide"].append({"object": spec, "slides_fraction": round(float(ok.mean()) if ok.size else 0.0, 3)})
     json.dump(index, open(os.path.join(a.out, "index.json"), "w"), indent=1)

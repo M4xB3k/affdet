@@ -102,6 +102,13 @@ def save(path: str, labels: dict, meta: dict):
     np.savez_compressed(path, meta=json.dumps(meta), **labels)
 
 
-def load(path: str):
+def load(path: str, mesh_dir: str | None = None):
+    """(arrays, meta) of a label file. With `mesh_dir` (the export's `mesh/` directory) the shared mesh named in `meta["mesh"]`
+    is read as well and returned as `vertices` and `faces`."""
+    import os
     z = np.load(path, allow_pickle=False)
-    return {k: z[k] for k in z.files if k != "meta"}, json.loads(str(z["meta"]))
+    arrays, meta = {k: z[k] for k in z.files if k != "meta"}, json.loads(str(z["meta"]))
+    if mesh_dir is not None and "mesh" in meta:
+        mz = np.load(os.path.join(mesh_dir, meta["mesh"] + ".npz"))
+        arrays["vertices"], arrays["faces"] = mz["vertices"], mz["faces"]
+    return arrays, meta

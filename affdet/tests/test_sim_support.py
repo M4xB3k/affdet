@@ -198,8 +198,11 @@ def test_pair_labels_put_a_heatmap_on_each_object_and_round_trip(tmp_path):
     assert b["valid"].sum() > 0 and (b["score"][~b["valid"]] == 0).all()   # only upward faces carry a label
     assert a["valid"].sum() > 0 and a["face"].max() == 0                   # the 'under' patch only: 'on' cannot rest
     assert np.allclose(a["margin_mm"][a["face"] == 0], 40.0)
-    save(str(tmp_path / "b.npz"), b, {"object": "slab"})
-    got, meta = load(str(tmp_path / "b.npz"))
+    mesh_dir = tmp_path / "mesh"; mesh_dir.mkdir()
+    np.savez_compressed(mesh_dir / "slab.B.npz", vertices=b["vertices"], faces=b["faces"])
+    save(str(tmp_path / "b.npz"), {k: v for k, v in b.items() if k not in ("vertices", "faces")}, {"object": "slab", "mesh": "slab.B"})
+    got, meta = load(str(tmp_path / "b.npz"), mesh_dir=str(mesh_dir))
+    assert got["vertices"].shape == b["vertices"].shape
     assert meta["cap_mm"] == CAP_MM and meta["schema_version"] == 1 and np.allclose(got["score"], b["score"])
 
 
