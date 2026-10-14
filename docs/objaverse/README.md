@@ -24,3 +24,14 @@ included — filter with the Objaverse metadata before redistribution.
 Role totals in the table come from the counting script; the CSV holds the exact
 rows (5,090). The "type_prob ≥ 0.5" column was computed with a slightly wider
 type list for mug and plate/bowl, so it is left blank there.
+
+## ObjaTHOR size / mass annotations
+
+`objathor_kitchen.csv` joins the candidates with the ObjaTHOR 2024_08_16
+annotations (allenai/objathor, GPT-4o; 625,252 objects), built with
+`scripts/join_objathor.py`. 4,539 of 5,090 candidates are covered. Columns:
+height / max dimension (cm), mass (kg), materials, quality (0–10), licence and
+the metric THOR bounding box (m, y = up). Values are coarse (5 cm / 0.5 kg
+steps) and the bbox is derived from the same scale, so it is not an independent
+check. Salt-shaker heights and some upright cutting boards are off — clamp to
+category ranges before use. Check the annotations' licence before redistribution.
