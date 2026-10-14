@@ -27,10 +27,11 @@ def main():
     ap.add_argument("--cells", type=int, default=16, help="grid cells along the base's longer side")
     ap.add_argument("--adaptive", type=int, default=0, help="coarse-to-fine factor (2 recommended), 0 = full sweeps")
     ap.add_argument("--skip-same", action="store_true", help="skip a spec on itself")
+    ap.add_argument("--friction", type=float, default=0.6, help="friction coefficient of all objects (sensitivity runs)")
     ap.add_argument("--procs", type=int, default=8, help="worker processes (one per CPU core you have)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
-    reg = Registry(a.picks, a.glb, a.shaker_csv, os.path.join(a.out, "coacd"))
+    reg = Registry(a.picks, a.glb, a.shaker_csv, os.path.join(a.out, "coacd"), friction=a.friction)
     log = os.path.join(a.out, "pairs.jsonl")
     done = {json.loads(l)["pair"] for l in open(log)} if os.path.exists(log) else set()
     face_ok = {}

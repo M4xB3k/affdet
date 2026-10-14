@@ -13,10 +13,11 @@ from affdet.sim.objects import load_body
 
 
 class Registry:
-    def __init__(self, picks_json: str, glb_dir: str, shaker_csv: str, cache_dir: str):
+    def __init__(self, picks_json: str, glb_dir: str, shaker_csv: str, cache_dir: str, friction: float = 0.6):
         self.picks = json.load(open(picks_json))
         self.glb_dir = glb_dir
         self.cache = cache_dir
+        self.friction = friction  # friction coefficient of every object (a materials table is not built yet)
         self.shakers = {r["object_uid"][:8]: r for r in csv.DictReader(open(shaker_csv))}
         self._bodies = {}
 
@@ -31,11 +32,11 @@ class Registry:
             if kind == "shaker":
                 r = self.shakers[ident]
                 self._bodies[spec] = load_body(os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["target_height_cm"]) / 100,
-                                               float(r["target_mass_kg"]), f"shaker_{ident}", cache_dir=self.cache, convex=True)
+                                               float(r["target_mass_kg"]), f"shaker_{ident}", cache_dir=self.cache, convex=True, friction=self.friction)
             else:
                 r = self.picks[kind][int(ident)]
                 self._bodies[spec] = load_body(os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100,
-                                               float(r["objathor_mass_kg"]), f"{kind}{ident}", cache_dir=self.cache)
+                                               float(r["objathor_mass_kg"]), f"{kind}{ident}", cache_dir=self.cache, friction=self.friction)
         return self._bodies[spec]
 
     def glb(self, spec: str):

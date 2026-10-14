@@ -127,11 +127,14 @@ def _tilt_deg(q0, q1):
     return math.degrees(math.acos(np.clip(z0 @ z1, -1, 1)))
 
 
-def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None):
+def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None, descend=None):
     """Build and step the scene. watch(data) is called every step of the last `window` seconds.
 
     If `info` is a dict it receives `initial_penetration_m`: how deeply the last body overlaps anything at t = 0.
-    With `skip_if_penetration` set, a start deeper than that returns without stepping (the result is already decided)."""
+    With `skip_if_penetration` set, a start deeper than that returns without stepping (the result is already decided).
+    With `descend=(z_lo, z_hi)` the last body is first lowered straight down from z_hi to the lowest height in [z_lo, z_hi]
+    at which it overlaps nothing (bisection on the body's height), i.e. until it first touches something, as a robot does
+    when it puts an object down; it is then released 0.5 mm above that height."""
     import mujoco
     with tempfile.TemporaryDirectory() as d:
         for b in bodies:
@@ -146,6 +149,32 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, inf
         data.qvel[a:a + 3] = v
         data.qvel[a + 3:a + 6] = w
     mujoco.mj_forward(m, data)
+    if descend is not None:
+        last = m.body(bodies[-1].name).id
+        adr = m.jnt_qposadr[m.body(bodies[-1].name).jntadr[0]]
+
+        def overlap_at(z):
+            data.qpos[adr + 2] = z
+            mujoco.mj_forward(m, data)
+            return max([-c.dist for c in data.contact[: data.ncon] if last in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2])], default=0.0)
+
+        lo, hi = descend
+        tol = 0.0002
+        if overlap_at(lo) <= tol:
+            z_star = lo                      # nothing in the way down to the table
+        else:
+            for _ in range(16):
+                mid = 0.5 * (lo + hi)
+                if overlap_at(mid) <= tol:
+                    hi = mid
+                else:
+                    lo = mid
+            z_star = hi
+        data.qpos[adr + 2] = z_star + 0.0005
+        mujoco.mj_forward(m, data)
+        if info is not None:
+            info["descent_m"] = float(descend[1] - z_star)
+            info["release_z"] = float(z_star + 0.0005)
     if info is not None:
         last = m.body(bodies[-1].name).id
         pen = [-c.dist for c in data.contact[: data.ncon] if last in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2])]
@@ -285,11 +314,13 @@ def surface_height(base: Body, Rb, pb, points) -> float:
 
 
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
-               max_tilt=10.0, max_drift=0.01, seconds=2.0, release="surface", max_release_penetration=0.003) -> dict:
+               max_tilt=10.0, max_drift=0.01, seconds=2.0, release="descend", max_release_penetration=0.003) -> dict:
     """Put `top` at `offset` on `base`'s upward side; does it stay on?
 
-    release="surface": lower B until it first touches A under its footprint (what a robot does), so B starts a
-    couple of mm above the local surface, inside a cup or tray as well as on a rim. release="top": drop B from the
+    release="descend" (default): B is held above the offset point and lowered straight down until it first touches
+    anything (bisection on its height), then released: a lying shaker over a mug opening comes to rest across the rim,
+    a small one goes down to the floor. release="surface": B starts 2 mm above the highest of 9 probe points of A under its
+    footprint (kept for comparison; a probe can miss a rim, hence the overlap rule below). release="top": drop B from the
     height of A's highest point (UTAMP-2's centred placement; B falls into anything concave).
 
     A placement where B already overlaps A by more than `max_release_penetration` at release (a 9 cm shaker laid
@@ -309,7 +340,14 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
         probe = [(offset[0] + fx * hx, offset[1] + fy * hy)
                  for fx, fy in [(0, 0), (.8, 0), (-.8, 0), (0, .8), (0, -.8), (.6, .6), (-.6, .6), (.6, -.6), (-.6, -.6)]]
         z_release = surface_height(base, Rb[:3, :3], pb, probe)
-    pt = _place(top, Rt[:3, :3], xy=offset, z_base=z_release, gap=0.002)
+    descend = None
+    if release == "descend":
+        z_floor = _place(top, Rt[:3, :3], xy=offset, z_base=0.0, gap=0.0)[2]       # resting on the table
+        z_high = _place(top, Rt[:3, :3], xy=offset, z_base=base_top, gap=0.02)[2]    # lowest point 2 cm above A's highest point
+        descend = (float(z_floor), float(z_high))
+        pt = _place(top, Rt[:3, :3], xy=offset, z_base=base_top, gap=0.02)
+    else:
+        pt = _place(top, Rt[:3, :3], xy=offset, z_base=z_release, gap=0.002)
     qb = trimesh.transformations.quaternion_from_matrix(Rb)
     qt = trimesh.transformations.quaternion_from_matrix(Rt)
     info = {}
@@ -320,7 +358,7 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
         ids = {mm.body(base.name).id, mm.body(top.name).id}
         touching[0] = max(touching[0], sum(1 for c in data.contact[: data.ncon] if {mm.geom_bodyid[c.geom1], mm.geom_bodyid[c.geom2]} == ids))
 
-    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch)
+    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch, descend=descend)
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
     # which says nothing about whether B stays on A
     def _mat(q):
@@ -334,7 +372,7 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     d_end = Rb1.T @ (data.body(top.name).xpos - data.body(base.name).xpos)
     d_start = Rb0.T @ (p0[1] - p0[0])
     drift = float(np.linalg.norm((d_end - d_start)[:2]))
-    drop = float(p0[1][2] - data.body(top.name).xpos[2])
+    drop = float(p0[1][2] - data.body(top.name).xpos[2])  # p0 is the pose after the descent
     base_id, top_id = m.body(base.name).id, m.body(top.name).id
     contacts = []
     for c in data.contact[: data.ncon]:
@@ -353,7 +391,7 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     dist = mujoco.mj_ray(m, data, np.array([offset[0], offset[1], 2.0]), np.array([0.0, 0.0, -1.0]), None, 1,
                          top_id, gid)
     surface_z = 2.0 - dist if dist >= 0 else 0.0
-    expected_fall = float(z_release - surface_z)
+    expected_fall = 0.0 if release == "descend" else float(z_release - surface_z)  # lowered until touching: no fall is expected
     excess_drop = float(drop - expected_fall - 0.002)
     # still moving at the end (a shaker balanced on a rim and slowly tipping off) is not "stays"
     vt, vb = data.body(top.name).cvel, data.body(base.name).cvel
@@ -367,7 +405,8 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
     return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": max(len(contacts), touching[0]), "poses": poses,
             "stable": bool(on_top), "release_penetration_m": info["initial_penetration_m"], "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
-            "surface_depth_m": float(base_top - surface_z), "contacts_world": contacts,
+            "surface_depth_m": float(base_top - (np.concatenate([p.vertices for p in top.parts]) @ data.body(top.name).xmat.reshape(3, 3).T + data.body(top.name).xpos)[:, 2].min()) if release == "descend" else float(base_top - surface_z),
+            "release_z": info.get("release_z"), "descent_m": info.get("descent_m"), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
             "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}
 
