@@ -2,9 +2,9 @@
 
 For each grasp centre (x, y) on a grid over the object's footprint, and each gripper yaw, a two-finger gripper
 (fingers at table height, closing horizontally, as when picking a flat object from above) closes with a limited
-force, lifts the object 15 cm and holds. The label is physical:
+force, lifts it 35 cm and holds. The label is physical:
 
-- `held`: the object left the table with the gripper and is still carried at the end.
+- `held`: the object is clear of the table at the end and has not slipped in the grip.
 - `swing_deg`: how far the object rotated relative to its starting pose (a pan held far from its centre of mass
   pivots about the pinch until the centre of mass hangs below it; a good grasp keeps this small).
 - success = held and swing below `max_swing_deg`.
@@ -28,8 +28,8 @@ from affdet.sim.mujoco_support import Body
 PAD = dict(half=(0.010, 0.004, 0.0125), open_half=0.040, travel=0.045)  # pad half sizes (m), inner opening, travel
 FORCE_N = 30.0
 PAD_BELOW_TOP_M = 0.03  # pad bottom this far below the surface under the grasp centre (squeezing above a handle's widest point wedges the pads off)
-LIFT_M = 0.15
-PHASES = dict(close_max=1.2, lift=0.6, hold=0.3)  # seconds
+LIFT_M = 0.50  # a 40 cm pan held by its handle hangs below it: the lift must clear its length
+PHASES = dict(close_max=1.2, lift=1.5, hold=0.4)  # seconds
 PAD_FRICTION = (1.0, 0.01, 0.001)  # sliding, torsional (m), rolling (m)
 
 
@@ -120,7 +120,8 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
         data.mocap_pos[il][2] = data.mocap_pos[ir][2] = z0 + lift
         mujoco.mj_step(m, data)
         if rel0 is None and t_start is not None and t >= t_start:
-            rel0 = data.xipos[oid] - data.mocap_pos[il]
+            # the pinch point in the object's own frame: it must not move if the object does not slip in the grip
+            rel0 = data.xmat[oid].reshape(3, 3).T @ (0.5 * (data.xpos[bl] + data.xpos[br]) - data.xipos[oid])
         if record is not None:
             record(m, data)
         k += 1
@@ -130,8 +131,11 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
     R1 = data.xmat[oid].reshape(3, 3)
     lifted = float(com1[2] - com0[2])
     swing = math.degrees(math.acos(np.clip((np.trace(R0.T @ R1) - 1) / 2, -1, 1)))
-    slip = float(np.linalg.norm((data.xipos[oid] - data.mocap_pos[il]) - rel0))
-    held = bool(np.isfinite(com1).all()) and lifted > 0.8 * LIFT_M and slip < 0.05
+    rel1 = R1.T @ (0.5 * (data.xpos[bl] + data.xpos[br]) - data.xipos[oid])
+    slip = float(np.linalg.norm(rel1 - rel0))
+    on_table = any({data.contact[i].geom1, data.contact[i].geom2} & {0} and oid in (m.geom_bodyid[data.contact[i].geom1],
+                   m.geom_bodyid[data.contact[i].geom2]) for i in range(data.ncon))
+    held = bool(np.isfinite(com1).all()) and not on_table and lifted > 0.05 and slip < 0.05
     return {"x": x, "y": y, "yaw": yaw_deg, "held": bool(held), "lifted_m": lifted, "swing_deg": swing, "slip_m": slip,
             "success": bool(held and swing < max_swing_deg), "com0": com0, "on_object": True}
 
@@ -147,7 +151,7 @@ def _one(a):
     return grasp_test(_G["body"], *a)
 
 
-def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5), procs=8, max_swing_deg=30.0) -> dict:
+def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150), procs=8, max_swing_deg=30.0) -> dict:
     xs = np.arange(-extent_xy[0] / 2, extent_xy[0] / 2 + 1e-9, step)
     ys = np.arange(-extent_xy[1] / 2, extent_xy[1] / 2 + 1e-9, step)
     jobs = [(x, y, yaw, max_swing_deg) for y in ys for x in xs for yaw in yaws]

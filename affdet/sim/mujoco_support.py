@@ -329,12 +329,17 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     surface_z = 2.0 - dist if dist >= 0 else 0.0
     expected_fall = float(z_release - surface_z)
     excess_drop = float(drop - expected_fall - 0.002)
-    on_top = (excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
+    # still moving at the end (a shaker balanced on a rim and slowly tipping off) is not "stays"
+    vt, vb = data.body(top.name).cvel, data.body(base.name).cvel
+    w_end = float(np.linalg.norm(vt[:3] - vb[:3]))
+    v_end = float(np.linalg.norm(vt[3:] - vb[3:]))
+    settled = w_end < 0.3 and v_end < 0.03
+    on_top = (settled and excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
               and len(contacts) > 0)
     poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
     return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": len(contacts), "poses": poses,
-            "stable": bool(on_top), "expected_fall_m": expected_fall, "excess_drop_m": excess_drop,
+            "stable": bool(on_top), "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
             "surface_depth_m": float(base_top - surface_z), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
             "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}

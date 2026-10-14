@@ -1,0 +1,11 @@
+{
+ "mug_77d41aba": {
+  "cells": 165,
+  "both_yes": 50,
+  "sim_only": 43,
+  "analytic_only": 0,
+  "both_no": 72,
+  "sim_held_any": 93,
+  "analytic_fits_any": 50
+ }
+}
