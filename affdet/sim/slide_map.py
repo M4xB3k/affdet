@@ -25,14 +25,16 @@ import affdet.sim.mujoco_support as ms
 from affdet.sim.mujoco_support import Body
 
 PUSHER = dict(half=(0.004, 0.025, 0.010), mass=5.0, friction=(0.6, 0.01, 0.001))  # x is the push direction: a 2 cm tall, 5 cm wide plate
+SETTLE_S = 1.0    # the object is let go from its upright pose and settles first: a round-bottomed bowl is not at rest upright
 PUSH_M = 0.12
 SPEED = 0.05      # m/s
 LEAD_M = 0.03     # the pusher starts this far from the surface
 MOVED_MIN, TILT_MAX, YAW_MAX = 0.8, 10.0, 25.0
 
 
-def _pusher_xml(x, y, z, yaw):
-    hx, hy, hz = PUSHER["half"]
+def _pusher_xml(x, y, z, yaw, hz=None):
+    hx, hy, hz0 = PUSHER["half"]
+    hz = hz0 if hz is None else hz
     q = f"{math.cos(yaw / 2):.6f} 0 0 {math.sin(yaw / 2):.6f}"
     f = PUSHER["friction"]
     return (f'<body name="tpush" mocap="true" pos="{x:.5f} {y:.5f} {z:.5f}" quat="{q}"/>'
@@ -46,17 +48,23 @@ def slide_test(body: Body, azimuth_deg: float, frac: float, push_m=PUSH_M, speed
     a = math.radians(azimuth_deg)
     out = np.array([math.cos(a), math.sin(a)])  # from the object toward the pusher
     pos = ms._place(body, np.eye(3))
-    height = max(float((p.vertices[:, 2]).max()) for p in body.parts) - min(float(p.vertices[:, 2].min()) for p in body.parts)
-    z = float(pos[2] + min(p.vertices[:, 2].min() for p in body.parts) + frac * height)
+    z_lo = float(min(p.vertices[:, 2].min() for p in body.parts)); z_hi = float(max(p.vertices[:, 2].max() for p in body.parts))
+    hz = min(PUSHER["half"][2], 0.4 * (z_hi - z_lo))  # a pusher no taller than the object (a plate is 1 cm high)
     with tempfile.TemporaryDirectory() as d:
         ms._write_parts(body, d)
         xml = ms.build_xml([body], [(pos, np.array([1.0, 0, 0, 0]))])
-        xml = xml.replace("</worldbody>", _pusher_xml(0.0, 0.0, 2.0, a + math.pi) + "</worldbody>")  # parked above the probe
+        xml = xml.replace("</worldbody>", _pusher_xml(0.0, 0.0, 2.0, a + math.pi, hz) + "</worldbody>")  # parked above while the object settles
         xml = xml.replace("</mujoco>", '<equality><weld body1="push" body2="tpush" solref="0.008 1"/></equality></mujoco>')
         m = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(m)
     mujoco.mj_forward(m, data)
     oid = m.body(body.name).id
+    for _ in range(int(SETTLE_S / m.opt.timestep)):
+        mujoco.mj_step(m, data)
+    Rs, ps = data.xmat[oid].reshape(3, 3).copy(), data.xpos[oid].copy()
+    verts = np.concatenate([p.vertices for p in body.parts]) @ Rs.T + ps
+    zmin, zmax = float(verts[:, 2].min()), float(verts[:, 2].max())
+    z = max(zmin + frac * (zmax - zmin), hz + 0.001)  # the pusher centre stays above the table
     com0 = data.xipos[oid].copy()
     # where the pusher's line meets the object: cast from far outside toward the centre of mass at the push height
     gid = np.array([-1], dtype=np.int32)
@@ -68,8 +76,6 @@ def slide_test(body: Body, azimuth_deg: float, frac: float, push_m=PUSH_M, speed
     hx = PUSHER["half"][0]
     start = hit + out * (LEAD_M + hx)
     qa = a + math.pi  # pusher x axis points toward the object
-    for name in ("push", "tpush"):
-        pass
     jid = m.body("push").jntadr[0]
     qadr = m.jnt_qposadr[jid]
     data.qpos[qadr:qadr + 3] = [start[0], start[1], z]

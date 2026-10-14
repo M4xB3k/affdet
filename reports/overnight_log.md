@@ -15,3 +15,4 @@ Started 2026-10-15 00:00. Planned to run about 4 hours without input. Rules: pus
 - 00:01 canSlide prototype (affdet/sim/slide_map.py): tall narrow box topples when pushed high, flat box slides; tests + label export written.
 - 00:02 Wrote scripts/export_labels.py (all maps -> per-vertex .npz + index) and scripts/pair_matrix_report.py.
 - 00:10 Wide matrix v2 (16 cells, adaptive 2) done: 276 pairs, 65k sims, 1.4 job-h. Spot check: pan-on-tray map shows a thin plus-shaped region with speckles: likely adaptive artefact -> launching v3 = full sweeps, 32 cells along the long side.
+- 00:12 canSlide: objects now settle for 1 s before the push, pusher height clamped (plates were pushed below the table). Re-running on all 22 objects; v3 full-resolution pair matrix running (16 jobs).
