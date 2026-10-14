@@ -35,3 +35,26 @@ the metric THOR bounding box (m, y = up). Values are coarse (5 cm / 0.5 kg
 steps) and the bbox is derived from the same scale, so it is not an independent
 check. Salt-shaker heights and some upright cutting boards are off — clamp to
 category ranges before use. Check the annotations' licence before redistribution.
+
+## Curated salt-shaker set
+
+`salt_shaker_set.csv` is a hand-picked set for the salt-shaker role, chosen by
+looking at Sketchfab thumbnails of 259 candidates: the 183 DeepMind-labelled
+candidates above, Objaverse-LVIS `saltshaker` / `shaker` / `pepper_mill` /
+`condiment`, and every ObjaTHOR object whose category or description names a
+salt/pepper shaker, pepper mill or spice jar. Name-based filtering alone was not
+enough: ObjaTHOR often calls real shakers "container" or "bottle", and calls
+cocktail shakers and protein bottles "shaker".
+
+| Tier | Count | Why it is in the set |
+|---|---|---|
+| shaker | 21 | the benchmark object's own kind |
+| pepper_mill | 11 | same affordances (wrap grasp on the body, top supports nothing); taller |
+| spice_jar | 7 | same affordances and size; adds label and lid appearance |
+| pair_needs_split | 6 | two shakers in one model; usable after splitting the mesh |
+
+`target_height_cm` / `target_mass_kg` are the sizes to scale to: ObjaTHOR's value
+when it is plausible for the tier (shaker 6–14 cm, mill 12–25 cm, jar 8–14 cm),
+otherwise the tier default (9 / 18 / 10 cm). Picks are from thumbnails only —
+open the meshes before rendering. Five objects have no licence in ObjaTHOR;
+check them in the Objaverse metadata.
