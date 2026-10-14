@@ -3,7 +3,8 @@
     python scripts/sim_pair_gallery.py PICKS_JSON GLB_DIR SHAKER_CSV PAIR_DIR(S...) --base mug:0 --tops shaker:86450daa bowl:1 ... --out OUT.png
     python scripts/sim_pair_gallery.py ... --top shaker:c442c916 --bases mug:0 tray:0 ... --out OUT.png
 
-Mode 1 (--base, --tops): the supporting object B painted with how robustly each top can be put down at every point.
+Mode 1 (--base, --tops): the supporting object B painted with how robustly each top can be put down: where it touches B in its stable
+placements when the maps carry contact points (v5), else where its centre can be.
 Mode 2 (--top, --bases): the top object A painted with how robustly each of its faces supports it, once per base.
 Colours: viridis of the margin in mm, scaled per panel; pink = nothing holds; grey = not a support surface.
 """
@@ -23,7 +24,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 from affdet.geometry.prepare import prepare  # noqa: E402
-from affdet.sim.label_export import _lookup  # noqa: E402
+from affdet.sim.label_export import _lookup, support_labels  # noqa: E402
 from affdet.sim.pair_map import patch_heat  # noqa: E402
 from affdet.sim.registry import Registry  # noqa: E402
 from scripts.sim_map_render import render  # noqa: E402
@@ -54,13 +55,19 @@ def main():
             if m is None:
                 continue
             vb = max(1.0, float(m["b_margin_mm"].max()))
+            has_support = all("contact_pts_base" in pf for pf in m["per_face"].values())
 
-            def col(sub, m=m, vb=vb):
+            def col(sub, m=m, vb=vb, has_support=has_support):
                 up = sub.vertex_normals[:, 2] > 0.5
-                v = _lookup(m, sub.vertices[:, 0], sub.vertices[:, 1], m["b_margin_mm"], smooth=True)
+                if has_support:  # where the top actually touches B in its stable placements (best margin of the placements touching the vertex)
+                    v = support_labels(m, sub.vertices, np.zeros((1, 3)))["B"]["support_mm"]
+                    lit = v > 0.05
+                else:             # where the top's centre can be
+                    v = _lookup(m, sub.vertices[:, 0], sub.vertices[:, 1], m["b_margin_mm"], smooth=True)
+                    lit = v > 0.05
                 rgba = (np.array(cm.viridis(np.clip(v / vb, 0, 1))) * 255).astype(np.uint8)
-                rgba[v <= 0.05] = [233, 150, 150, 255]
-                rgba[~up] = [200, 200, 200, 255]
+                rgba[~lit] = [233, 150, 150, 255]
+                rgba[~up & ~(lit & has_support)] = [200, 200, 200, 255]
                 return rgba
             panels.append((render(obj, col, size=360, el=78, dist=1.5), f"{t} on {a.base}\n{100 * m['b_any'].mean():.0f}% of points, best {vb:.0f} mm"))
     else:
