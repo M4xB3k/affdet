@@ -27,6 +27,7 @@ def main():
     ap.add_argument("--cells", type=int, default=16, help="grid cells along the base's longer side")
     ap.add_argument("--adaptive", type=int, default=0, help="coarse-to-fine factor (2 recommended), 0 = full sweeps")
     ap.add_argument("--skip-same", action="store_true", help="skip a spec on itself")
+    ap.add_argument("--procs", type=int, default=8, help="worker processes (one per CPU core you have)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     reg = Registry(a.picks, a.glb, a.shaker_csv, os.path.join(a.out, "coacd"))
@@ -48,7 +49,7 @@ def main():
             step = max(0.005, round(max(ext[:2]) / a.cells, 3))
             t0 = time.time()
             try:
-                m = pair_map(base, top, ext[:2], step=step, face_ok=face_ok[top_s], adaptive=a.adaptive)
+                m = pair_map(base, top, ext[:2], step=step, face_ok=face_ok[top_s], adaptive=a.adaptive, procs=a.procs)
             except ValueError as e:
                 rec = {"pair": name, "top": top_s, "base": base_s, "error": str(e), "face_ok": face_ok[top_s]}
             else:
