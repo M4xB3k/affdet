@@ -29,10 +29,15 @@ def margin_score(margin_mm, cap_mm=CAP_MM):
     return np.clip(np.asarray(margin_mm, float) / cap_mm, 0.0, 1.0)
 
 
-def _lookup(m, x, y, grid):
-    ix = np.clip(np.round((x - m["xs"][0]) / m["step"]).astype(int), 0, len(m["xs"]) - 1)
-    iy = np.clip(np.round((y - m["ys"][0]) / m["step"]).astype(int), 0, len(m["ys"]) - 1)
-    return grid[iy, ix]
+def _lookup(m, x, y, grid, smooth=False):
+    """The grid value at (x, y): the nearest cell, or (smooth=True) a bilinear blend of the four surrounding cells, so a margin
+    ramps down to 0 at a failing cell instead of changing in steps."""
+    fx = np.clip((x - m["xs"][0]) / m["step"], 0, len(m["xs"]) - 1)
+    fy = np.clip((y - m["ys"][0]) / m["step"], 0, len(m["ys"]) - 1)
+    if smooth:
+        from scipy.ndimage import map_coordinates
+        return map_coordinates(np.asarray(grid, float), [fy, fx], order=1, mode="nearest")
+    return grid[np.round(fy).astype(int), np.round(fx).astype(int)]
 
 
 def subdivide(mesh: trimesh.Trimesh, max_edge=0.006) -> trimesh.Trimesh:
@@ -44,7 +49,7 @@ def pair_labels(pair: dict, top_mesh: trimesh.Trimesh, base_mesh: trimesh.Trimes
     """The two label arrays of an isP2PSupportive pair map: {'A': {...}, 'B': {...}}, each ready for `save`."""
     b = subdivide(base_mesh, max_edge)
     up = b.vertex_normals[:, 2] > 0.5
-    margin_b = np.where(up, _lookup(pair, b.vertices[:, 0], b.vertices[:, 1], pair["b_margin_mm"]), 0.0)
+    margin_b = np.where(up, _lookup(pair, b.vertices[:, 0], b.vertices[:, 1], pair["b_margin_mm"], smooth=True), 0.0)
     best_face = np.where(up, _lookup(pair, b.vertices[:, 0], b.vertices[:, 1], pair["b_best_face"]), -1)
     out_b = {"vertices": b.vertices, "faces": b.faces, "valid": up, "margin_mm": margin_b, "score": margin_score(margin_b) * up,
              "best_face": best_face.astype(np.int8)}
@@ -67,8 +72,8 @@ def grasp_labels(grasp: dict, mesh: trimesh.Trimesh, max_swing_deg=30.0, max_edg
     held = grasp["held"].mean(2)
     stable = (grasp["held"] & (grasp["swing_deg"] < max_swing_deg)).mean(2)
     return {"vertices": m.vertices, "faces": m.faces, "valid": up,
-            "held_frac": np.where(up, _lookup(grasp, m.vertices[:, 0], m.vertices[:, 1], held), 0.0),
-            "stable_frac": np.where(up, _lookup(grasp, m.vertices[:, 0], m.vertices[:, 1], stable), 0.0)}
+            "held_frac": np.where(up, _lookup(grasp, m.vertices[:, 0], m.vertices[:, 1], held, smooth=True), 0.0),
+            "stable_frac": np.where(up, _lookup(grasp, m.vertices[:, 0], m.vertices[:, 1], stable, smooth=True), 0.0)}
 
 
 def slide_labels(slide: dict, mesh: trimesh.Trimesh, max_edge=0.006) -> dict:

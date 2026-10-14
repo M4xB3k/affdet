@@ -43,7 +43,7 @@ def _pusher_xml(x, y, z, yaw, hz=None):
             f'solref="{ms.SIM["solref"]}" rgba="0.8 0.2 0.2 1"/></body>')
 
 
-def slide_test(body: Body, azimuth_deg: float, frac: float, push_m=PUSH_M, speed=SPEED, record=None) -> dict:
+def slide_test(body: Body, azimuth_deg: float, frac: float, push_m=PUSH_M, speed=SPEED, record=None, xml_hook=None) -> dict:
     import mujoco
     a = math.radians(azimuth_deg)
     out = np.array([math.cos(a), math.sin(a)])  # from the object toward the pusher
@@ -55,6 +55,8 @@ def slide_test(body: Body, azimuth_deg: float, frac: float, push_m=PUSH_M, speed
         xml = ms.build_xml([body], [(pos, np.array([1.0, 0, 0, 0]))])
         xml = xml.replace("</worldbody>", _pusher_xml(0.0, 0.0, 2.0, a + math.pi, hz) + "</worldbody>")  # parked above while the object settles
         xml = xml.replace("</mujoco>", '<equality><weld body1="push" body2="tpush" solref="0.008 1"/></equality></mujoco>')
+        if xml_hook is not None:
+            xml = xml_hook(xml)
         m = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(m)
     mujoco.mj_forward(m, data)
