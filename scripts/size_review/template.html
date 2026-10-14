@@ -1,0 +1,299 @@
+<title>Kitchen Object Sizes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; overview table, then a tab per object role with
+   normal-value histograms (range band shaded) above an outlier card grid. */
+:root {
+  --bg: #f6f7f5; --surface: #ffffff; --ink: #1d2328; --muted: #5d6870; --line: #dde1dc;
+  --accent: #1f5f8b; --band: #d7e6ef; --bar: #6f8794;
+  --border-c: #a86a00; --border-bg: #fbefd9;
+  --far-c: #b3261e; --far-bg: #fbe3e1;
+  --wrong-c: #5c5470; --wrong-bg: #ebe8f1;
+  --incon-c: #1c6b62; --incon-bg: #dcefec;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #13171a; --surface: #1b2125; --ink: #e4e8ea; --muted: #97a3aa; --line: #2c353b;
+  --accent: #7db8de; --band: #1f3646; --bar: #8ea3ae;
+  --border-c: #e6b45c; --border-bg: #3a2d14; --far-c: #f08c84; --far-bg: #3e1f1d;
+  --wrong-c: #b9b0cf; --wrong-bg: #2b2836; --incon-c: #73c7bb; --incon-bg: #17322e; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #13171a; --surface: #1b2125; --ink: #e4e8ea; --muted: #97a3aa; --line: #2c353b;
+  --accent: #7db8de; --band: #1f3646; --bar: #8ea3ae;
+  --border-c: #e6b45c; --border-bg: #3a2d14; --far-c: #f08c84; --far-bg: #3e1f1d;
+  --wrong-c: #b9b0cf; --wrong-bg: #2b2836; --incon-c: #73c7bb; --incon-bg: #17322e; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 32px 64px; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+p { margin: 0; max-width: 68ch; }
+.lede { display: grid; gap: 10px; }
+.lede p { color: var(--muted); }
+.mono, td.num, .vals { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+a { color: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+.chip { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em; padding: 1px 7px; border-radius: 3px; white-space: nowrap; }
+.k-borderline { color: var(--border-c); background: var(--border-bg); }
+.k-far_off { color: var(--far-c); background: var(--far-bg); }
+.k-wrong_object { color: var(--wrong-c); background: var(--wrong-bg); }
+.k-inconsistent { color: var(--incon-c); background: var(--incon-bg); }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-weight: 500; color: var(--muted); font-size: 0.78rem; }
+td.num, th.num { text-align: right; }
+tr:last-child td { border-bottom: 0; }
+td.role { font-weight: 600; }
+td.sm { font-size: 0.78rem; }
+th, td { padding-inline: 10px; }
+tbody tr { cursor: pointer; }
+tbody tr:hover td { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.zero { color: var(--muted); opacity: 0.6; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 10px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 2; padding-top: 10px; }
+.tab { font: 500 0.9rem var(--f-body); color: var(--ink); background: transparent; border: 1px solid var(--line); padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tab:focus-visible, .filt:focus-visible, tbody tr:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.panel { display: grid; gap: 22px; }
+.panel-head { display: grid; gap: 6px; }
+.panel-head p { color: var(--muted); }
+.hists { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 760px) { .hists { grid-template-columns: minmax(0, 1fr); } }
+.hist { background: var(--surface); border: 1px solid var(--line); padding: 12px 12px 6px; display: grid; gap: 4px; min-width: 0; }
+.hist .hrow { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.hist .stat { font-family: var(--f-mono); font-size: 0.8rem; color: var(--muted); }
+.hist .stat b { color: var(--ink); font-weight: 500; }
+.hist svg { width: 100%; height: auto; display: block; }
+.hist svg text { fill: var(--muted); font: 10px var(--f-mono); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 10px; padding: 10px; align-items: start; }
+.card img, .card .noimg { width: 88px; height: 88px; object-fit: cover; background: var(--line); display: block; }
+.card .noimg { display: grid; place-items: center; font-size: 0.7rem; color: var(--muted); text-align: center; }
+.card .body { display: grid; gap: 4px; min-width: 0; }
+.card .cat { font-weight: 600; font-size: 0.88rem; line-height: 1.25; overflow-wrap: anywhere; }
+.vals { font-size: 0.78rem; display: flex; flex-wrap: wrap; gap: 2px 10px; }
+.vals .bad { color: var(--far-c); font-weight: 500; }
+.card .why { font-size: 0.78rem; color: var(--muted); }
+.card .meta { font-size: 0.74rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.card .desc { font-size: 0.76rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.filt { font: 500 0.8rem var(--f-body); border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 4px 10px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.filt[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.filt .n { font-family: var(--f-mono); color: var(--muted); }
+.empty { color: var(--muted); font-size: 0.9rem; }
+.foot { color: var(--muted); font-size: 0.82rem; display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="lede">
+    <h1>Kitchen Object Sizes</h1>
+    <p>Real-world height, longest dimension and mass for the Objaverse candidates behind the five UTAMP-2 objects (plus plates and bowls). The numbers are GPT-4o estimates from ObjaTHOR 2024_08_16. An object is counted when ObjaTHOR's category name matches the role and its quality score is 7 or more. Objects whose category is a different thing are then set aside as wrong objects.</p>
+    <p>Each role has a plausible range. Values inside it are normal. Values outside it are sorted into three kinds of outlier. Where GPT-4o reported a max dimension below the height (it gave the width instead), the height is used as the longest side.</p>
+    <div class="legend">
+      <span><i class="chip k-far_off">far off</i> more than one annotation step outside the range</span>
+      <span><i class="chip k-borderline">borderline</i> within one step (5 cm or 0.5 kg)</span>
+      <span><i class="chip k-wrong_object">wrong object</i> category is something else</span>
+    </div>
+  </header>
+
+  <section style="display:grid;gap:10px">
+    <h3>Overview</h3>
+    <p class="empty">All columns up to Far off come from the automatic name filter. Curated is the hand-picked set, picked by eye from a wider search (salt shakers only so far), so it is a separate count, not a subset of Real.</p>
+    <div class="tablebox"><table id="overview">
+      <thead><tr><th>Role</th><th class="num">Name match</th><th class="num">Wrong object</th><th class="num">Real</th><th class="num">Normal</th><th class="num">Borderline</th><th class="num">Far off</th><th class="num">Curated</th><th>Range: height · max dim · mass</th><th>Median</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+
+  <section style="display:grid;gap:18px">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="panel" class="panel" role="tabpanel"></div>
+  </section>
+
+  <footer class="foot">
+    <p>Ranges are hand-set guesses for everyday kitchenware: height is measured as the object rests (a cutting board lying flat), and max dimension includes handles. Change them in <span class="mono">scripts/</span> once Pouya confirms the benchmark objects' sizes.</p>
+    <p>Data: <span class="mono">docs/objaverse/objathor_kitchen.csv</span>. Thumbnails from Sketchfab; 16 models are no longer online. Wrong-object outliers are excluded from the histograms and medians.</p>
+  </footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const D = JSON.parse(document.getElementById("data").textContent);
+const ROLES = [["salt_shaker","Salt shaker"],["mug","Mug"],["cutting_board","Cutting board"],["frying_pan","Frying pan"],["tray","Tray"],["plate_bowl","Plate / bowl"]];
+const KINDS = [["far_off","far off"],["wrong_object","wrong object"],["borderline","borderline"]];
+const KLABEL = Object.fromEntries(KINDS);
+const fmt = (x, u) => x == null ? "–" : (u === "kg" ? (+x).toFixed(x < 1 ? 2 : 1).replace(/\.?0+$/, "") : (+x).toString()) + " " + u;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const count = (v, k) => v.outliers.filter(o => o.kind === k).length;
+
+// overview
+const tb = document.querySelector("#overview tbody");
+for (const [k, name] of ROLES) {
+  const v = D[k], [rh, rd, rm] = v.range, [mh, md, mm] = v.median;
+  const c = k2 => { const n = count(v, k2); return `<td class="num${n ? "" : " zero"}">${n}</td>`; };
+  const tr = document.createElement("tr");
+  tr.tabIndex = 0;
+  tr.innerHTML = `<td class="role">${name}</td><td class="num">${v.n_usable}</td>${c("wrong_object")}<td class="num"><b>${v.n_kept}</b></td><td class="num">${v.n_ok}</td>${c("borderline")}${c("far_off")}<td class="num${v.curated ? "" : " zero"}">${v.curated ? `<b>${curatedCount(v)}</b>` : "–"}</td>
+    <td class="mono sm">${rh[0]}–${rh[1]} · ${rd[0]}–${rd[1]} cm · ${rm[0]}–${rm[1]} kg</td><td class="mono sm">${mh} · ${md} cm · ${mm} kg</td>`;
+  const go = () => { select(k); document.getElementById("tabs").scrollIntoView({behavior: "smooth", block: "start"}); };
+  tr.addEventListener("click", go);
+  tr.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  tb.appendChild(tr);
+}
+
+// tabs
+const tabs = document.getElementById("tabs");
+for (const [k, name] of ROLES) {
+  const b = document.createElement("button");
+  b.className = "tab"; b.role = "tab"; b.dataset.k = k; b.textContent = name; b.id = "tab-" + k;
+  b.addEventListener("click", () => select(k));
+  tabs.appendChild(b);
+}
+
+function niceStep(span, target) {
+  const raw = span / target, p = Math.pow(10, Math.floor(Math.log10(raw)));
+  return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
+}
+function hist(values, range, median, unit, label) {
+  const xs = values.filter(x => x != null);
+  const hi = range[1];
+  const axisMax = Math.max(hi * 2, range[0] * 3);
+  const step = niceStep(axisMax, 18);
+  const nb = Math.ceil(axisMax / step);
+  const bins = new Array(nb + 1).fill(0);
+  let over = 0;
+  for (const x of xs) { if (x >= nb * step) { bins[nb]++; over++; } else bins[Math.floor(x / step)]++; }
+  const W = 320, H = 120, L = 6, R = 6, T = 8, B = 22, pw = W - L - R, ph = H - T - B;
+  const n = nb + 1, bw = pw / n, maxc = Math.max(...bins, 1);
+  const X = v => L + (Math.min(v, nb * step) / step) * bw;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)} distribution">`;
+  s += `<rect x="${X(range[0])}" y="${T}" width="${X(range[1]) - X(range[0])}" height="${ph}" fill="var(--band)"/>`;
+  bins.forEach((c, i) => {
+    if (!c) return;
+    const h = Math.max(1.5, (c / maxc) * ph);
+    s += `<rect x="${L + i * bw + 1}" y="${T + ph - h}" width="${bw - 2}" height="${h}" fill="${i === nb ? "var(--far-c)" : "var(--bar)"}"><title>${i === nb ? "≥ " + nb * step : i * step + "–" + (i + 1) * step} ${unit}: ${c}</title></rect>`;
+  });
+  s += `<line x1="${X(median)}" x2="${X(median)}" y1="${T - 4}" y2="${T + ph}" stroke="var(--accent)" stroke-width="2"/>`;
+  s += `<line x1="${L}" x2="${W - R}" y1="${T + ph}" y2="${T + ph}" stroke="var(--line)"/>`;
+  const ticks = [0, range[0], range[1], nb * step].filter((v, i, a) => a.indexOf(v) === i && (i === 0 || i === a.length - 1 || (X(v) - X(0) > 26 && X(nb * step) - X(v) > 30)));
+  ticks.forEach((t, i) => {
+    const anchor = i === 0 ? "start" : i === ticks.length - 1 ? "end" : "middle";
+    const txt = i === ticks.length - 1 ? "≥" + t : t;
+    s += `<text x="${i === ticks.length - 1 ? W - R : X(t)}" y="${H - 6}" text-anchor="${anchor}">${txt}</text>`;
+  });
+  s += `</svg>`;
+  const inR = xs.filter(x => x >= range[0] && x <= range[1]).length;
+  return `<div class="hist"><div class="hrow"><h3>${label}</h3><span class="stat">median <b>${fmt(median, unit)}</b></span></div>${s}
+    <div class="hrow"><span class="stat">range ${range[0]}–${range[1]} ${unit}</span><span class="stat">${inR} of ${xs.length} inside${over ? ` · ${over} beyond axis` : ""}</span></div></div>`;
+}
+
+function card(o, range) {
+  const bad = [o.h != null && (o.h < range[0][0] || o.h > range[0][1]), o.d != null && (o.d < range[1][0] || o.d > range[1][1]), o.m != null && (o.m < range[2][0] || o.m > range[2][1])];
+  const v = (x, u, b, lab) => `<span class="${b ? "bad" : ""}" title="${lab}">${lab[0]} ${fmt(x, u)}</span>`;
+  const img = o.img ? `<img src="${o.img}" alt="${esc(o.cat)}" loading="lazy">` : `<div class="noimg">no longer<br>on Sketchfab</div>`;
+  const why = o.kind === "wrong_object" ? `ObjaTHOR calls it “${esc(o.cat)}”` : o.why.map(esc).join(", ");
+  return `<article class="card">${img}<div class="body">
+    <div class="cat">${esc(o.cat)}</div>
+    <div class="vals">${v(o.h, "cm", bad[0] && o.kind !== "wrong_object", "height")}${o.width != null ? v(o.width, "cm", false, "width") : v(o.d, "cm", bad[1] && o.kind !== "wrong_object", "max dim")}${v(o.m, "kg", bad[2] && o.kind !== "wrong_object", "mass")}</div>
+    ${o.kind ? `<div class="meta"><span class="chip k-${o.kind}">${KLABEL[o.kind]}</span><span>${why}</span></div>` : `<div class="meta"><span>${esc(o.mat.split("|").join(", "))}</span></div>`}
+    <div class="desc">${esc(o.desc)}</div>
+    <div class="meta"><a href="https://sketchfab.com/3d-models/${o.uid}" target="_blank" rel="noopener">Sketchfab</a><span>q ${o.q}</span><span>${esc(o.lic)}</span></div>
+  </div></article>`;
+}
+
+let current = null, filter = new Set(KINDS.map(k => k[0]));
+const order = Object.fromEntries(KINDS.map((k, i) => [k[0], i]));
+function select(k) {
+  current = k;
+  try { localStorage.setItem("kos-tab", k); } catch (e) {}
+  for (const b of tabs.children) b.setAttribute("aria-selected", b.dataset.k === k ? "true" : "false");
+  const v = D[k], name = ROLES.find(r => r[0] === k)[1];
+  const p = document.getElementById("panel");
+  p.setAttribute("aria-labelledby", "tab-" + k);
+  const pct = Math.round(100 * v.n_ok / v.n_kept);
+  p.innerHTML = `
+    <div class="panel-head"><h2>${name}</h2><p>${v.n_kept} of ${v.n_usable} name matches are the right kind of object. ${v.n_ok} of those (${pct}%) have all three values inside the range. The blue band marks the range and the blue line the median, both without the wrong-object outliers.</p></div>
+    ${v.curated ? curatedSection(v) : ""}
+    <div class="hists">${hist(v.values.map(x => x[0]), v.range[0], v.median[0], "cm", "Height")}${hist(v.values.map(x => x[1]), v.range[1], v.median[1], "cm", "Max dimension")}${hist(v.values.map(x => x[2]), v.range[2], v.median[2], "kg", "Mass")}</div>
+    <h3>Typical objects</h3>
+    <div class="cards">${v.typical.map(o => card(o, v.range)).join("")}</div>
+    <div style="display:grid;gap:10px">
+      <h3>Outliers · ${v.outliers.length}</h3>
+      <div class="filters" id="filters">${KINDS.map(([kk, lab]) => `<button class="filt" data-k="${kk}" aria-pressed="${filter.has(kk)}"><span class="chip k-${kk}">${lab}</span><span class="n">${count(v, kk)}</span></button>`).join("")}</div>
+      <div class="cards" id="outs"></div>
+    </div>
+    ${v.dropped ? droppedSection(v) : ""}`;
+  p.querySelectorAll(".filt").forEach(b => b.addEventListener("click", () => {
+    const kk = b.dataset.k; filter.has(kk) ? filter.delete(kk) : filter.add(kk);
+    b.setAttribute("aria-pressed", filter.has(kk)); renderOuts();
+  }));
+  renderOuts();
+}
+const TIERS = [["shaker", "Salt / pepper shakers", "The benchmark object's own kind."],
+  ["pepper_mill", "Pepper mills", "Same affordances: wrap grasp on the body, top too small to support anything. Taller, scaled to 12–25 cm."],
+  ["spice_jar", "Spice jars", "Same affordances and size; adds label and lid appearance."],
+  ["shaker_from_pair", "Split from two-shaker models", "Split with scripts/split_pairs.py. Identical twins count once, so 5 models give 7 shakers."]];
+function curatedCount(v) { return v.curated.reduce((n, o) => n + (o.halves || 1), 0); }
+function curatedSection(v) {
+  const c = o => {
+    const img = o.img ? `<img src="${o.img}" alt="${esc(o.cat)}" loading="lazy">` : `<div class="noimg">no thumbnail</div>`;
+    return `<article class="card">${img}<div class="body">
+      <div class="cat">${esc(o.cat || "no ObjaTHOR entry")}</div>
+      <div class="vals"><span>target h ${fmt(o.th, "cm")}</span><span>m ${fmt(o.tm, "kg")}</span></div>
+      <div class="meta"><span>${o.hf === "objathor" ? "height from ObjaTHOR" : "default height" + (o.oh ? ` (ObjaTHOR said ${o.oh} cm)` : "")}</span></div>
+      ${o.note ? `<div class="meta"><span>${esc(o.note)}</span></div>` : ""}
+      <div class="meta"><a href="https://sketchfab.com/3d-models/${o.uid}" target="_blank" rel="noopener">Sketchfab</a><span>${esc(o.lic)}</span></div>
+    </div></article>`;
+  };
+  const single = curatedCount(v);
+  return `<div style="display:grid;gap:14px">
+    <h3>Curated training set · ${single} objects</h3>
+    <p class="empty">Picked by eye from 259 candidates: this list, Objaverse-LVIS (saltshaker, shaker, pepper_mill, condiment) and every ObjaTHOR object named or described as a shaker or mill. Saved as <span class="mono">docs/objaverse/salt_shaker_set.csv</span> with a target height and mass for scaling.</p>
+    ${TIERS.map(([t, name, why]) => { const os = v.curated.filter(o => o.tier === t); return `<div style="display:grid;gap:8px"><div class="meta" style="font-size:.85rem"><b>${name}</b><span class="mono">${os.length}</span><span>${why}</span></div><div class="cards">${os.map(c).join("")}</div></div>`; }).join("")}
+  </div>`;
+}
+function droppedSection(v) {
+  const byCat = {};
+  for (const o of v.dropped) (byCat[o.cat] ||= []).push(o);
+  const cats = Object.entries(byCat).sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+  const dcard = o => {
+    const img = o.img ? `<img src="${o.img}" alt="${esc(o.cat)}" loading="lazy">` : `<div class="noimg">no longer<br>on Sketchfab</div>`;
+    const width = o.d != null && o.h != null && o.d < o.h;
+    return `<article class="card">${img}<div class="body">
+      <div class="cat">${esc(o.cat)}</div>
+      <div class="vals"><span>h ${fmt(o.h, "cm")}</span><span>${width ? "w" : "m"} ${fmt(o.d, "cm")}</span><span>m ${fmt(o.m, "kg")}</span></div>
+      <div class="meta"><span>candidate list: ${esc(o.dm)} (${o.dmp})</span></div>
+      <div class="desc">${esc(o.desc)}</div>
+      <div class="meta"><a href="https://sketchfab.com/3d-models/${o.uid}" target="_blank" rel="noopener">Sketchfab</a><span>q ${o.q}</span><span>${esc(o.lic)}</span></div>
+    </div></article>`;
+  };
+  return `<div style="display:grid;gap:10px">
+    <h3>Not matched by name · ${v.dropped.length}</h3>
+    <p class="empty">On the candidate list as shakers or pepper mills (DeepMind label and confidence on each card), but ObjaTHOR named them something without “salt”, “pepper” or “shaker”, so they were left out of every count above. Grouped by ObjaTHOR's name.</p>
+    ${cats.map(([c, os]) => `<div style="display:grid;gap:8px"><div class="meta" style="font-size:.85rem"><b>${esc(c)}</b><span class="mono">${os.length}</span></div><div class="cards">${os.map(dcard).join("")}</div></div>`).join("")}
+  </div>`;
+}
+function renderOuts() {
+  const v = D[current];
+  const list = v.outliers.filter(o => filter.has(o.kind)).sort((a, b) => order[a.kind] - order[b.kind] || (b.d ?? 0) - (a.d ?? 0));
+  document.getElementById("outs").innerHTML = list.length ? list.map(o => card(o, v.range)).join("") : `<p class="empty">No outliers of the selected kinds.</p>`;
+}
+let start = "salt_shaker";
+try { const s = localStorage.getItem("kos-tab"); if (s && D[s]) start = s; } catch (e) {}
+select(start);
+</script>
