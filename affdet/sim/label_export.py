@@ -45,6 +45,24 @@ def subdivide(mesh: trimesh.Trimesh, max_edge=0.006) -> trimesh.Trimesh:
     return trimesh.Trimesh(v, f, process=False)
 
 
+TILT_VARIANTS = (5.0, 15.0)  # the tilt limit is the threshold the maps are most sensitive to: export the margin at these limits too
+
+
+def margin_variants(pair: dict, max_tilt: float):
+    """(B-side margin grid, {face: best margin in mm}) of a pair map re-evaluated with another tilt limit, from the stored raw metrics."""
+    from affdet.sim.placement_map import finalize
+    grids, faces = [], {}
+    shape = next(iter(pair["per_face"].values()))["stable"].shape
+    for f in pair["faces"]:
+        m = pair["per_face"].get(f)
+        if m is None or "release_penetration_m" not in m:
+            faces[f] = 0.0
+            continue
+        out = finalize({k: (v.copy() if hasattr(v, "copy") else v) for k, v in m.items()}, max_tilt=max_tilt)
+        grids.append(out["margin_mm"]); faces[f] = float(out["best_margin_mm"])
+    return (np.max(grids, axis=0) if grids else np.zeros(shape)), faces
+
+
 def pair_labels(pair: dict, top_mesh: trimesh.Trimesh, base_mesh: trimesh.Trimesh, names=("A", "B"), max_edge=0.006) -> dict:
     """The two label arrays of an isP2PSupportive pair map: {'A': {...}, 'B': {...}}, each ready for `save`."""
     b = subdivide(base_mesh, max_edge)
@@ -53,6 +71,10 @@ def pair_labels(pair: dict, top_mesh: trimesh.Trimesh, base_mesh: trimesh.Trimes
     best_face = np.where(up, _lookup(pair, b.vertices[:, 0], b.vertices[:, 1], pair["b_best_face"]), -1)
     out_b = {"vertices": b.vertices, "faces": b.faces, "valid": up, "margin_mm": margin_b, "score": margin_score(margin_b) * up,
              "best_face": best_face.astype(np.int8)}
+    variants = {t: margin_variants(pair, t) for t in TILT_VARIANTS}
+    for t, (grid, _) in variants.items():
+        mv = np.where(up, _lookup(pair, b.vertices[:, 0], b.vertices[:, 1], grid, smooth=True), 0.0)
+        out_b[f"margin_mm_tilt{int(t)}"] = mv
     a = subdivide(top_mesh, max_edge)
     fv = {f: float(v) for f, v in pair["a_face_margin_mm"].items()}
     margin_a = patch_heat(a.vertices, fv)
@@ -62,6 +84,8 @@ def pair_labels(pair: dict, top_mesh: trimesh.Trimesh, base_mesh: trimesh.Trimes
             face_of[patch_heat(a.vertices, {f: 1.0}) > 0] = k
     out_a = {"vertices": a.vertices, "faces": a.faces, "valid": face_of >= 0, "margin_mm": margin_a, "score": margin_score(margin_a),
              "face": face_of}
+    for t, (_, fm) in variants.items():
+        out_a[f"margin_mm_tilt{int(t)}"] = patch_heat(a.vertices, {f: v for f, v in fm.items() if f not in pair["skipped"]})
     return {"A": out_a, "B": out_b}
 
 

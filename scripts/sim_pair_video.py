@@ -56,15 +56,13 @@ def clips_from_map(m):
     return out[:4]
 
 
-def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60, elevation=-52.0, azimuth=125.0, distance=0.46, see_through=False):
+def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60, elevation=-52.0, azimuth=125.0, distance=None, see_through=False):
     Rb = np.eye(3)
     Rt = trimesh.transformations.rotation_matrix(ms.FACE_DOWN[face][1], ms.FACE_DOWN[face][0])[:3, :3]
     pb = ms._place(base, Rb)
-    ext = np.ptp(np.concatenate([p.vertices for p in top.parts]) @ Rt.T, axis=0)[:2]
-    hx, hy = 0.5 * ext
-    probe = [(x + fx * hx, y + fy * hy) for fx, fy in [(0, 0), (.8, 0), (-.8, 0), (0, .8), (0, -.8), (.6, .6), (-.6, .6), (.6, -.6), (-.6, -.6)]]
-    z_rel = ms.surface_height(base, Rb, pb, probe)
-    pt = ms._place(top, Rt, xy=(x, y), z_base=z_rel, gap=0.002)
+    base_top = max(p.vertices[:, 2].max() for p in base.parts) + pb[2]
+    z_floor = ms._place(top, Rt, xy=(x, y), z_base=0.0, gap=0.0)[2]          # the same release as stack_test: held 2 cm above A's
+    pt = ms._place(top, Rt, xy=(x, y), z_base=base_top, gap=0.02)             # highest point, then lowered until it first touches
     q = lambda R: trimesh.transformations.quaternion_from_matrix(np.block([[R, np.zeros((3, 1))], [np.zeros((1, 3)), 1]]))
     with tempfile.TemporaryDirectory() as d:
         for b in (base, top):
@@ -82,9 +80,13 @@ def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60, elevation=-5
             m.geom_rgba[g] = BASE_RGBA_SEE_THROUGH if see_through else BASE_RGBA
     data = mujoco.MjData(m)
     mujoco.mj_forward(m, data)
+    ms.lower_until_touching(m, data, top.name, float(z_floor), float(pt[2]))
+    ext = max(float(np.ptp(np.concatenate([p.vertices for p in b.parts]), axis=0)[:2].max()) for b in (base, top))
+    if distance is None:
+        distance = max(0.46, 2.3 * ext)
     rend = mujoco.Renderer(m, size, size)
     cam = mujoco.MjvCamera()
-    cam.lookat[:] = [0.0, 0.0, 0.085]
+    cam.lookat[:] = [0.0, 0.0, 0.085 if ext < 0.25 else 0.04]
     cam.distance = distance
     cam.azimuth = azimuth
     cam.elevation = elevation
@@ -95,7 +97,7 @@ def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60, elevation=-5
             frames.append(Image.fromarray(rend.render().copy()))
         mujoco.mj_step(m, data)
     rend.close()
-    return frames
+    return frames, data.body(top.name).xpos.copy()
 
 
 def main():
@@ -106,7 +108,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pkl"); ap.add_argument("picks"); ap.add_argument("glb"); ap.add_argument("shaker_csv")
     ap.add_argument("top"); ap.add_argument("base"); ap.add_argument("out")
-    ap.add_argument("--elevation", type=float, default=-52.0); ap.add_argument("--azimuth", type=float, default=125.0); ap.add_argument("--distance", type=float, default=0.46)
+    ap.add_argument("--elevation", type=float, default=-52.0); ap.add_argument("--azimuth", type=float, default=125.0); ap.add_argument("--distance", type=float, default=None)
     a = ap.parse_args()
     m = pickle.load(open(a.pkl, "rb"))
     reg = Registry(a.picks, a.glb, a.shaker_csv, os.path.join(os.path.dirname(os.path.abspath(a.pkl)), "coacd"))
@@ -124,7 +126,11 @@ def main():
             why = f" (ends {r['tilt_deg']:.0f} deg tilted)" if r["tilt_deg"] >= 10 else ""
         label = f"{label.split(':')[0].split(' (')[0]}: {'stays' if r['stable'] else 'fails'}{why}"
         print(label, round(float(x), 3), round(float(y), 3), flush=True)
-        allf.append((label, make_clip(base, top, face, x, y, elevation=a.elevation, azimuth=a.azimuth, distance=a.distance, see_through=bool(r["surface_depth_m"] > 0.03)), bool(r["stable"])))
+        frames, end_pos = make_clip(base, top, face, x, y, elevation=a.elevation, azimuth=a.azimuth, distance=a.distance, see_through=bool(r["surface_depth_m"] > 0.03))
+        err = float(np.linalg.norm(end_pos - r["poses"]["top"][0]))
+        if err > 0.005:  # the clip must show the placement the label was computed from
+            print(f"WARNING: clip and label runs end {1000 * err:.0f} mm apart for {label}", flush=True)
+        allf.append((label, frames, bool(r["stable"])))
     hold = 48  # frames of stillness before the release and after the end, so the start and result can be read
     allf = [(lab, [fr[0]] * hold + fr + [fr[-1]] * hold, ok) for lab, fr, ok in allf]
     n = min(len(f) for _, f, _ in allf)

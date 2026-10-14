@@ -128,6 +128,36 @@ def _tilt_deg(q0, q1):
     return math.degrees(math.acos(np.clip(z0 @ z1, -1, 1)))
 
 
+def lower_until_touching(m, data, body_name: str, z_lo: float, z_hi: float, tol=0.0002) -> float:
+    """Lower a free body straight down from z_hi to the lowest height in [z_lo, z_hi] at which it overlaps nothing (bisection on
+    its height; overlap is monotone in z), then leave it 0.5 mm above that height. Returns that height.
+
+    This is how a robot puts an object down: descend until the first contact. Shared by `stack_test` and the videos."""
+    import mujoco
+    bid = m.body(body_name).id
+    adr = m.jnt_qposadr[m.body(body_name).jntadr[0]]
+
+    def overlap_at(z):
+        data.qpos[adr + 2] = z
+        mujoco.mj_forward(m, data)
+        return max([-c.dist for c in data.contact[: data.ncon] if bid in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2])], default=0.0)
+
+    lo, hi = z_lo, z_hi
+    if overlap_at(lo) <= tol:
+        z_star = lo                      # nothing in the way down to the table
+    else:
+        for _ in range(16):
+            mid = 0.5 * (lo + hi)
+            if overlap_at(mid) <= tol:
+                hi = mid
+            else:
+                lo = mid
+        z_star = hi
+    data.qpos[adr + 2] = z_star + 0.0005
+    mujoco.mj_forward(m, data)
+    return z_star
+
+
 def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None, descend=None):
     """Build and step the scene. watch(data) is called every step of the last `window` seconds.
 
@@ -151,28 +181,7 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, inf
         data.qvel[a + 3:a + 6] = w
     mujoco.mj_forward(m, data)
     if descend is not None:
-        last = m.body(bodies[-1].name).id
-        adr = m.jnt_qposadr[m.body(bodies[-1].name).jntadr[0]]
-
-        def overlap_at(z):
-            data.qpos[adr + 2] = z
-            mujoco.mj_forward(m, data)
-            return max([-c.dist for c in data.contact[: data.ncon] if last in (m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2])], default=0.0)
-
-        lo, hi = descend
-        tol = 0.0002
-        if overlap_at(lo) <= tol:
-            z_star = lo                      # nothing in the way down to the table
-        else:
-            for _ in range(16):
-                mid = 0.5 * (lo + hi)
-                if overlap_at(mid) <= tol:
-                    hi = mid
-                else:
-                    lo = mid
-            z_star = hi
-        data.qpos[adr + 2] = z_star + 0.0005
-        mujoco.mj_forward(m, data)
+        z_star = lower_until_touching(m, data, bodies[-1].name, *descend)
         if info is not None:
             info["descent_m"] = float(descend[1] - z_star)
             info["release_z"] = float(z_star + 0.0005)

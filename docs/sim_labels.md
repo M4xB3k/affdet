@@ -24,9 +24,13 @@ Labels for the proof-of-concept predicates come from the MuJoCo simulator (`affd
 - **A file (the object put down).** `valid` = vertices on the resting patch of a face that holds on a flat table.
   `margin_mm` is that face's best margin over all positions on B. `face` is the face index.
 
+`margin_mm_tilt5` and `margin_mm_tilt15` (same shape as `margin_mm`) repeat the label with the tilt limit at 5 and 15 degrees instead of 10:
+the limit is the threshold the maps are most sensitive to (about a quarter of the face maps move by more than 5 points of stable share
+between 10 and 5 degrees, see the part-3 report), so a model can be trained on all three or on the spread.
+
 A placement stays if, after 2 s of physics, A has not tipped more than 10 degrees relative to B, has not slid
 more than 3 cm, has not fallen further than B's surface under it requires, is not still tumbling, still touches B,
-and did not overlap B by more than 3 mm when released.
+and the object was released by lowering it straight down from above until it first touched anything (so there is no overlap at release).
 
 ## canGrasp: one file per object
 
