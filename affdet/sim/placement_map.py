@@ -28,7 +28,12 @@ def _init(base, top, base_face, top_face):
 
 
 def _one(xy):
-    r = stack_test(_G["base"], _G["top"], _G["base_face"], _G["top_face"], offset=tuple(xy))
+    try:
+        r = stack_test(_G["base"], _G["top"], _G["base_face"], _G["top_face"], offset=tuple(xy))
+    except Exception as e:  # a solver failure (e.g. out of arena memory with hundreds of contacts) fails that placement, not the sweep
+        import sys
+        print(f"stack_test failed at {tuple(xy)}: {e}", file=sys.stderr, flush=True)
+        return (0, 0.0, 180.0, 1.0, 0.0, 1.0, 99.0, 99.0, 1.0)
     return (r["n_contacts"], r["drop_m"], r["tilt_deg"], r["drift_m"], r["surface_depth_m"], r["excess_drop_m"], r["w_end"],
             r["v_end"], r["release_penetration_m"])
 

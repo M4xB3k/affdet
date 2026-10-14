@@ -100,6 +100,7 @@ def build_xml(bodies: list[Body], poses: list[tuple[np.ndarray, np.ndarray]], ti
                            f'quat="{quat[0]:.6f} {quat[1]:.6f} {quat[2]:.6f} {quat[3]:.6f}">'
                            f'<freejoint/>{"".join(geoms)}</body>')
     return f"""<mujoco>
+  <size memory="256M"/>
   <option timestep="{timestep}" gravity="0 0 -9.81" cone="elliptic" impratio="10" noslip_iterations="{SIM["noslip"]}"/>
   <asset>{''.join(assets)}</asset>
   <worldbody>
