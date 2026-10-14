@@ -21,6 +21,7 @@ def main():
     ap.add_argument("--role", default="frying_pan")
     ap.add_argument("--index", type=int, nargs="+", default=[0])
     ap.add_argument("--step", type=float, default=0.02)
+    ap.add_argument("--procs", type=int, default=8)
     a = ap.parse_args()
     picks = json.load(open(a.picks))
     os.makedirs(a.out, exist_ok=True)
@@ -29,7 +30,7 @@ def main():
         name = f"{a.role}_{r['object_uid'][:8]}"
         body, mesh = load_body(os.path.join(a.glb_dir, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100,
                                float(r["objathor_mass_kg"]), "obj", cache_dir=os.path.join(a.out, "coacd"))
-        m = grasp_map(body, mesh.extents[:2], step=a.step)
+        m = grasp_map(body, mesh.extents[:2], step=a.step, procs=a.procs)
         m["extents"] = mesh.extents
         pickle.dump(m, open(os.path.join(a.out, f"{name}.pkl"), "wb"))
         print(name, "grid", m["score"].shape, "any-success cells %.0f%%" % (100 * (m["score"] > 0).mean()),
