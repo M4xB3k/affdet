@@ -1,0 +1,665 @@
+role,object_uid,kept,fix,reject_reason,objathor_height_cm,objathor_mass_kg,materials,license
+mug,77d41aba53e4455f9f84fa04b175dff4,1,,,12,0.3,glass|air,by
+mug,44ece25cd49349eea495ed4734481bde,0,,handle detached,12,0.3,glass|air,by
+mug,00b3a1a3f68f4d438c632a30c13798c7,1,,,12,0.3,glass|air,by
+mug,ecee0ee5b32447db927636e3f65a73e4,1,,,15,0.5,glass|plastic|air,by
+mug,cd2f2ec6af864451b4fb205efc9bb599,1,,,10,0.3,glass|air,by
+mug,5403033b69514daaa3771bf444d6a55f,0,,not a mug,10,0.5,glass|air,by
+mug,52bd46f46979445a8092e35c36a9c4fb,1,,,15,0.5,glass|air,by
+mug,6feb4eeeb1944f6d81ea64c22c0dc5da,0,,not a mug,15,0.5,glass|metal|wood|air,by
+mug,2d73906b3cb14fcca26b13ab39da14ba,1,,,20,0.5,metal|glass|air,by
+mug,5f7ff57d7f5546d7b16b5ce5bbe1735d,1,,,15,0.5,wood|metal|glass|air,by
+mug,11338490f5744b5a8776fdeafb33afa2,0,,teacup with lid,12,0.3,glass|plastic|air,by
+mug,f17dbe54e5194525b1abb85249f5d50d,0,,"glass in holder, no handle",15,0.5,glass|metal|air,by
+mug,e0d2a417533245f4bdeed37e2e527933,0,,no handle,10,0.3,glass|air,by
+mug,f5af4021cedf4ae0b0487ef6485aaf5d,0,,broken mesh,12,0.3,glass|air,by
+mug,65e09d3dd913416289c928d7943d04ea,0,,glass holder,15,0.5,metal|glass|air,by
+mug,2870177fbb6d4695b50815cd8f882126,0,,glass holder on doily,15,0.5,glass|ceramic|air,by
+mug,8d4eb28da2304ad7ac3061e4948d98fd,1,,,10,0.3,ceramic|air,by
+mug,32d3385f5be14d7f9f6e8d102b2dcd3e,1,,,10,0.3,ceramic|glaze|air,by
+mug,10fdc5101f714d4ea9d8d67e606f2385,1,,,10,0.3,ceramic|air|liquid,by
+mug,feac60de613f44ce8655fb376750e0a7,1,,,10,0.3,ceramic|air,by
+mug,47fbaee716c84587867c742b5baaf5f8,1,,,10,0.3,ceramic|air,by
+mug,0858947c9b2c49aea198bd569bc06913,1,,,10,0.3,ceramic|glaze|air,by
+mug,70583f5df06448c1bba076df3afcdbbb,1,,,10,0.3,ceramic|air,by
+mug,1ddf0e1fc752455b8bc78d0980436ea8,0,,"extra plane, tiny",10,0.3,ceramic|air,by
+mug,04d0553202d34b299bc0bf43025b6ef8,1,,,10,0.3,ceramic|air|liquid,by
+mug,feaee8e9b4854e8aa90c653ed3bb06a7,1,,,15,0.3,ceramic|air,by
+mug,fae880a8051a40e6ad2ce804feec7d3c,1,,,10,0.3,ceramic|air,by
+mug,19d9783a37cc42c89a1e4260e1b9c514,1,,,10,0.3,ceramic|air,by
+mug,6c45882185ef453f9af3e0edc84c0a93,1,,,10,0.3,ceramic|air,by
+mug,3e190ed4969f42d9bda62be49cbc2b73,1,,,10,0.3,ceramic|air,by
+mug,e122e5cc0f58418f856fdb7cfe81b2ef,1,,,10,0.3,ceramic|air,by
+mug,5d4897a49d8b4b5f87c78cab1759ae12,1,,,10,0.3,ceramic|air,by
+mug,bad3565a215a4795a119973e6816df8a,1,,,10,0.3,ceramic|air,by-sa
+mug,3e8ff737918542e9b4b5be50375f686f,1,,,10,0.3,ceramic|paint|air,by
+mug,3214eb7029bc4f3ebd17ade9039e7afb,0,,three mugs,8,0.3,metal|enamel|air,by
+mug,756272e2839a4ce28ae0fba5b2c68fc6,1,,,10,0.3,ceramic|air,by
+mug,5c1780b1ed654d4895f041979ceebfeb,1,,,10,0.3,ceramic|air,by
+mug,1522d7b6d8a14f4f8c19f996320fdc09,1,,,10,0.3,ceramic|air,by
+mug,ce0b23b419e44f23b7607801d8f9a569,1,,,10,0.3,ceramic|air,by
+mug,e17e67e4acd743d9bd1d817fdfa5d40a,1,,,10,0.3,ceramic|air,by
+mug,6c72f22c56d84d1cb720c16cf9be327e,1,,,10,0.3,ceramic|air,by
+mug,c83ceebacd3e4370a0898a9c2f78a6b3,0,,duplicate of 30,10,0.3,ceramic|air,by
+mug,fae08c03cc75437c811f50426a81ac30,1,,,10,0.3,ceramic|air,by
+mug,d28da8b4a1d84b818149213343f94d37,1,,,12,0.3,ceramic|air,by
+mug,89d51e0e1f20445c82a05a600252c069,1,,,10,0.3,ceramic|air,by-sa
+mug,e056c8b79f614ef4a5e33b382b00a664,0,,duplicate of 39,10,0.3,ceramic|air,by
+mug,59503c8c5e8541a192040869d6be6349,1,,,10,0.3,ceramic|air,by
+mug,84a0b929f88f4538bd790c5fd0b898e2,1,,,12,0.3,ceramic|air,by
+mug,2096af99da83435186fc4e2b02b45868,1,,,10,0.3,ceramic|air,by
+mug,09d94736e44a460c8f3ed2b240b82915,1,,,10,0.3,ceramic|air,by
+mug,0e9285f31e8c415ea10584dc7b702075,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,b0f7d098678049749b1fc0fe4e881465,1,,,10,0.3,ceramic|air,by-nc
+mug,b4c2a98cbd9340e2923041045f3b2c9e,0,,no handle visible in render,10,0.3,ceramic|ink|air,by
+mug,c53c0bc3406b455397edfb07700fb3e6,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,b83b7a50b770423d94af78d60a27fb01,0,,closed cylinder,10,0.3,ceramic|air,by
+mug,558edde7f2cd4eb380116b89f31004bd,1,,,10,0.3,ceramic|air,by
+mug,9b022b4547b748e0a6e4ac0cce1afa47,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,4944dc13c4b74a769debd6223fc3581b,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,31b7048a2fbe4a038a9f216f1a966bb2,1,,,10,0.3,ceramic|ink|air,by
+mug,4000e736538d4aff91d664ef1d3ea0eb,1,,,15,0.4,ceramic|air,by
+mug,856c8e743e11439ebcb8e5da55b8fc73,1,,,10,0.3,ceramic|air,by
+mug,371febc7198f40179b9b84e60bfcf1ab,1,,,10,0.3,ceramic|air,by
+mug,8cdaa8d8fbc34606a734f3dbd1e63e12,0,,paper cup,10,0.3,ceramic|glaze|air,by
+mug,c46da7eecac84073837edf720a959fe4,1,,,12,0.3,ceramic|air,by
+mug,160aef68880846ca923a0171ccf9b296,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,3780471615c14912bdfe374c02dbbc2d,0,,two mugs,10,0.5,ceramic|air,by
+mug,4062147010d5445d8970ed8230ab6cc5,1,,,12,0.3,ceramic|air,by
+mug,13cb5f6c327c4aeabe1f4690dbe73838,1,,,12,0.4,ceramic|air,by
+mug,37cdf12da9f2429d98004e3fe8ca4108,1,,,10,0.3,ceramic|air,by
+mug,4e8344c3621f45cba39dcdc554c82813,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,c713039981ff463fb6c8b63428a2a3af,1,,,10,0.3,ceramic|air,by
+mug,d25e2bca5f2a4890ac78510acda13151,1,,,10,0.3,ceramic|air,by
+mug,8bc5c1842a064a67a815d1ed965fa37f,1,,,12,0.3,ceramic|air,by
+mug,454263bc109c4e65b1dcf0eff3583962,1,,,12,0.3,ceramic|air,by
+mug,c1df60dd47b74b8394c4466459bb4e13,1,,,10,0.3,ceramic|air,by
+mug,99ba1c80ef9a4edbaa406085da2b4590,1,,,10,0.3,ceramic|glaze|air,by
+mug,6702d5d92c9c416eac5cc99ee383ff46,1,,,10,0.3,ceramic|air,by
+mug,a4c007e83f7c4aa6933ed02520cba825,0,,many mugs,10,0.3,ceramic|air,by
+mug,08935f5de51f4db0888b50d034751b0a,1,,,10,0.3,ceramic|air,by
+mug,77bab8a48cbb4be2821182bb2939bc6c,1,,,10,0.3,ceramic|air,by
+mug,76465a35052249799da0cf79b41aed57,1,,,10,0.3,ceramic|air,by
+mug,d250ff5dd46947b7ac906213d39e4f63,1,,,10,0.3,ceramic|air,by
+mug,b46c1630ac9a406688e36a4b798cab75,0,,odd shape,10,0.3,ceramic|air,by
+mug,0710dee85ae14427bdf75d009d20c2f0,1,,,10,0.3,ceramic|air,by
+mug,c395f43c29994a21b9c68e39d1fe79ec,1,,,10,0.3,ceramic|air,by
+mug,ffb8361ff6cc437eabf33ae528645121,1,,,12,0.3,ceramic|air,by
+mug,cc476252a858427a95ab6563ffa2676c,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,11895fde32224e3c8efe7a7014c7cd8d,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,8763fbbdc3274d0f9358834276eafce2,1,,,12,0.3,ceramic|air,by
+mug,27334d77c37b417395aa34eccb5f7133,1,,,10,0.3,ceramic|air,by
+mug,316c7d22922f401fb983698c2ca66367,1,,,10,0.3,ceramic|air,by
+mug,004149fc070441ecbe9aca6d371d7648,1,,,10,0.3,ceramic|air,by
+mug,1fb985a5d5974bdcb412e91293d817f7,1,,,12,0.3,ceramic|air,by
+mug,0dec3d46d07c43ab9e76bd2f6091262a,1,,,12,0.4,ceramic|glaze|air,by
+mug,01af543e10c8478c9632394e176a3a50,0,,no handle visible in render,10,0.3,ceramic|air,by
+mug,b8478cea51454555b90de0fe6ba7ba83,1,,,10,0.3,ceramic|air,by
+mug,55db8df42b584f8dac3f618a3d3f15e3,1,,,10,0.3,ceramic|air,by
+mug,e4aa3da20c11456482d4494f0d30e2e1,1,,,12,0.3,ceramic|air,by
+mug,a1a42cf6c2c64163b95a882d24716e65,1,,,10,0.3,ceramic|air,by
+mug,fa347ad2c4a24a378789daf1f08f011f,0,,no handle visible in render,10,0.3,ceramic|air,by
+cutting_board,5b21f62253f646c69569d5a0fbf34941,1,,,2,1.5,wood|air,by
+cutting_board,ce34c8bf389d4053aae98b9d2752a7b9,1,,,2,1.5,wood|air,by
+cutting_board,532a57fdf48542b89c29258f02db24ab,1,,,2,1.5,wood,by-sa
+cutting_board,06c94ce2e7b84a29ac3bc848b4f862bf,1,,,2,1.5,wood|air,by
+cutting_board,753f67b1aceb4cef8342dfb95b57578c,1,,,3,1.5,wood,by
+cutting_board,9d45f15fb21f4fc89118b2631eec5fda,1,,,2,1.5,wood|air,by
+cutting_board,476f8b64886f4edbae88e74f68d065c9,1,,,2,1.5,wood|air,by
+cutting_board,c1e6ac573c37485f9e7acaaae418df30,1,,,2,1.5,wood,by
+cutting_board,5fcbfe0fa0dd4d48847e488ea882adda,1,,,2,1.5,wood|air,by
+cutting_board,69a938dcf97b4a7b8e86a200c42b1cdd,1,,,2,1.5,wood|air,by
+cutting_board,c9094bfe4777461db55adcd323cceb60,1,modelled standing on edge: set up_axis,,30,0.5,wood,by
+cutting_board,1e97e1453cd94f598169470ae10d671b,1,,,2,1.5,wood,by
+cutting_board,db23aabda25944ac9a019a3887043f68,1,,,2,0.5,wood|air,by
+cutting_board,445869b3117349adaed1639cf201cb65,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,wood|metal|air,by
+cutting_board,e4f14450ff9c4a0c95ad76be20dd2dc7,1,,,2,1.5,wood|air,by
+cutting_board,665aa05d24e54e3bb5d0f01ac52ce9ed,1,,,2,1.5,wood|air,by
+cutting_board,2d6dc43671fd468bafb8493a3a920973,1,,,2,0.8,wood|air,by
+cutting_board,28186fb8326b42b18cb91ad1ae834709,1,,,2,1.5,wood|air,by-nc
+cutting_board,8521f9252bb94938aee3af96715663b3,1,,,2,1.5,wood|air,by-nc
+cutting_board,fe3a3694377443bfbe55d29ef8a2006e,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.5,wood|pastry|filling|air,by
+cutting_board,ef1cd3f57b9a4480bf6952647ab7df78,1,,,2,1.5,wood|air,by
+cutting_board,a9b11eebe651451dbfb12699918d23a0,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),3,1.5,wood|metal|plastic|air,by
+cutting_board,bef2b24ac48d4741add8b36157635224,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.5,plastic|metal,by
+cutting_board,368f525cf8704607bc37f6eacbdc48d8,1,modelled standing on edge: set up_axis,,40,0.8,wood|air,by
+cutting_board,52061d059595423c8ef6fbc49c0e5c62,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.8,wood|metal|plastic|air,by
+cutting_board,82284b454e04439f9d2019407bd87b11,1,,,2,1.5,wood|air,by
+cutting_board,2da63c1b8ac247dd8b3248fbc86a6232,1,,,2,0.8,wood,by-nc
+cutting_board,8e7de830aa97442084c081aac6d25377,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,c2d5bd4ad02a45599fe9dbbaba787411,1,,,2,0.8,wood|air,by
+cutting_board,fef9faec907d4a80a3f60f5ae086a383,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.5,wood|metal|plastic|air,by
+cutting_board,5cb6842116ce4d179cec43213a113642,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),10,0.05,plastic|air,by
+cutting_board,61514d8187084153a197bb39817637ea,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,d8e0c7a8003b4a52893842bafbdc71de,1,modelled standing on edge: set up_axis,,40,1.5,wood,by
+cutting_board,fc7a54fd3ef14140ab9807fa168d8cd3,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,wood|metal|plastic|air,by
+cutting_board,dd763f3936af4d6b901fbbbb9ab94ba5,1,,,2,1.5,wood|air,by
+cutting_board,09f55aed04cb4c4084d8450bff7a984b,1,,,,,,
+cutting_board,c8be721be21047cebbe0395fe8fbf4b9,1,,,2,1.5,wood|air,by
+cutting_board,2d784110ac464f91831ca6ae333e3cdf,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),10,1.5,wood|metal|plastic|liquid|air,by
+cutting_board,140e689537454f9e868d525713a865e2,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),30,0.3,wood|paint|ribbon|air,by
+cutting_board,4dc90206ca244f0e9f9637494757f8d1,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,2,wood|fruit|air,by
+cutting_board,54635016117143778fb4681a593d40a6,1,,,2,1.5,wood|air,by
+cutting_board,59c97f3ea12946e390f498c64bbfec50,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,wood|vegetable|air,by
+cutting_board,34ee0d380b5d44f9a334368aa39f73bb,1,modelled standing on edge: set up_axis,,30,0.5,wood|metal|paint,by
+cutting_board,fa320007da4943918066cbcc0810b768,0,,duplicate of 42,30,0.5,wood|metal|paint|air,by
+cutting_board,73aa0c898c0b47e5a03efb0958e0c401,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,461cd739c85b4b74aad13611a834b6ce,1,,,,,,
+cutting_board,7099f4c91ee448ddbd4f3e6f7e249c87,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,cb1302ec760c4195a9b17f74be1912ca,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,b39cc4071f49426f8afdd45af8dd662c,1,modelled standing on edge: set up_axis,,40,1.5,wood|air,by
+cutting_board,5a1c3385222a4f35b208faad2837c5c9,1,,,1,0.5,wood|stone|air,by
+cutting_board,3e2cafb7e40e4694b6945de55a3fd589,1,,,1,0.5,plastic,by
+cutting_board,977ad5c84b6a42dfa6f6c03e136fb7b4,1,,,2,5,wood,by
+cutting_board,30a40bddb6ea4f1f975f779ef0c8e348,0,,duplicate of 51,2,5,wood,by
+cutting_board,e6b9d6caef804f42a14d88d3bed48100,1,,,,,,
+cutting_board,5953d6e6367043b59a5ec1bc091ae285,1,,,5,0.5,foam|fabric,by
+cutting_board,a72d8d894d314232a67504a56e3864d0,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),3,1.5,wood|fruit|air,by
+cutting_board,3c196746536b46ddb3cb677c944bc629,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,fbcaa2e44d784de5b8f971ee130741b6,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),10,0.5,plastic|metal|organic|air,by
+cutting_board,c39fbdaaefd344158bda5a61e8e8c3e1,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),3,1.5,wood|plastic|meat|air,by
+cutting_board,8c5c724c124c49e28a910bb436f51571,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,79b76e955dc64584bb30db421827e5bf,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,aba338fbf83f46539c3304227dcf4440,1,,,,,,
+cutting_board,b7536587a24a4d1b86732e64cf88665e,1,,,2,2,wood|air,by
+cutting_board,9b7acadefa844388ab724196e4d9bd4b,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,wood|meat|paper|air,by
+cutting_board,c439408526eb4a2a97411fe902963c58,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,9cb35cfdfb5b4ab7b33ce288136b7d36,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),15,1.5,wood|air,by
+cutting_board,553156446f1044d19139a15d2741e4c2,1,modelled standing on edge: set up_axis,,30,1.5,wood,by-sa
+cutting_board,4165035b2cb74c50ba36f26f366e8190,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,1.5,wood|metal|plastic|air,by
+cutting_board,73976ea643cc483cb24f011302842111,1,,,3,5,wood,by
+cutting_board,8965f1714f3f4c3e88c811d6a8983538,1,,,2,1.5,wood|composite|air,by
+cutting_board,8f67aebe7cb9496faa28ba0633c665f6,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,1.5,wood|ceramic|glass|metal|air,by
+cutting_board,76b26b3cb77e4dbf81e1599d0eaa0800,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),10,0.5,wood|air,cc0
+cutting_board,877325404d9144398117ad2560f1ded2,1,,,5,50,stone|air,by
+cutting_board,4ea2f53c86dc4f6dbf9925df42284fd6,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),15,1.5,wood|plastic|metal|ceramic|air,by
+cutting_board,67f64d601838480ab50bf2f99bb8b793,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,1.5,wood|metal|plastic|air,by
+cutting_board,a7a624ea28664927bf8a657bdb6b8138,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),1,0.5,wood|plastic|air,by
+cutting_board,f843f7865ae641819e302d46cac4eaec,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.8,wood|vegetable|air,by
+cutting_board,2308824bb70547eeb3cd07ed420f1bb0,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),3,1.5,wood|bread|air,by
+cutting_board,15bc3f8ced00416aab6964a2172c15a7,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),100,50,wood|brick|metal|vegetable|air,by
+cutting_board,d743187f39d14827aac2cbd04260e1b5,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.8,wood|ceramic|metal|air,by
+cutting_board,e108423b97f4429aa7fa0f978ab9357a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,wood|paper|air,by
+cutting_board,755116c322ad43688c9e18a111106402,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),15,10,metal|ceramic|plastic|air,by
+cutting_board,09e40d8f0cba4f2295fc67e8a46425a8,1,,,5,3,wood|air,by
+cutting_board,502de07d9bd44abd96468890b444c3e1,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,78f41f99bf0c46588ca17d63308fbb7a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,wood|metal|organic|air,by
+cutting_board,212d631f54994118934926e416b47913,1,,,,,,
+cutting_board,c9bcb782e5ef4d37bd8671f1f82a0fbc,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,2f8b1430ff634501aa3a19717bed0319,1,,,5,0.5,wood|air,by
+cutting_board,0efe8483dd22457184ada462375f21d1,1,,,2,10,wood|air,by
+cutting_board,75428138884b44819ca05162fd7e826c,1,,,0.5,0.01,plastic|metallic finish|air,by
+cutting_board,afe9e3d2401040e7b99f6dfcce58caca,1,,,2,1.5,wood,by
+cutting_board,3b72e8a8c97d48e0bbda1bd488b1bb20,1,,,2,2,wood,by
+cutting_board,99cd3c37b6f147f896f02cc44e954f5c,1,,,5,50,concrete|metal,by
+cutting_board,366e80cdcd634a28be219ea96705967a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),30,2.5,plastic|metal|air,by
+cutting_board,7397cdaaeb024f3f9cfd4a29cdbb0a16,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,plastic|paint|air,by
+cutting_board,5aa74b6468a14e02adee553e3333a6f6,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,wood|pork|air,by
+cutting_board,6880caf2ca0d42f2a2042b110ad43f62,1,,,5,20,wood|air,by
+cutting_board,154a46bf7d524a8588608e8dfab9c6c1,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),8,1.5,stone|wood,by
+cutting_board,c96dad7a8d9f459e83a1cbeeb7370d55,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),20,0.5,wood|air,by
+cutting_board,c4e8a024b2674938a279605a0f6db5e3,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,1.5,stone,by
+cutting_board,7f499392d6a24c0193df90a8811756c6,1,,,1,0.05,wood|air,by
+cutting_board,c97b15ec9ddd4df4804ad16e859ac7a1,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.8,wood|ceramic|vegetable|air,by
+cutting_board,a562ee32c10f4850abe9123c75b0b7ca,1,,,3,1.5,bamboo|air,by
+cutting_board,d7185f8d3e604e97bf63d11091503b4e,1,,,5,3,wood|air,by
+cutting_board,40aacfc183fc49beabfacd8c028a8947,1,,,2,3,wood,by
+cutting_board,4d9133f11b3740108b07ce28ad25d233,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),3,0.5,wood|plastic,by
+cutting_board,16bd2dc72d9f4da09c2aa4a50c46cb26,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),30,2.5,wood|metal|plastic|air,by
+cutting_board,c7daf20053234ab8921fa14304c3e53f,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,wood|plastic|metal|air,by
+cutting_board,40b16ee3af3943b9ab0d6df05c3e9e8c,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),100,5,wood|metal|air,by
+cutting_board,5343ba0b429d4319869a0014a0e1682c,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,1.5,wood|chocolate,by
+cutting_board,78483329303a45119de35f91c13899b0,1,,,2,0.5,plastic|air,by
+cutting_board,f43ebffb083f46b6b66db45c8c5b77fd,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,wood|mushroom|air,by
+cutting_board,b4d9f92049004494b50e650cb34fdd19,1,,,5,15,wood|air,by
+cutting_board,6dd82d950c3642749f3fc83bb869cfde,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,4b96420715c9445ba99dd12b64b141db,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,1.5,wood|ceramic|plastic|air,by
+cutting_board,a0216d3d531d4fe58fed2ef751000751,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,e14fda36dbc94ed289daf542062c67ec,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.5,ceramic|stone,by
+cutting_board,43b44305830748d08e9a807006df124e,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,15,metal|air,by
+cutting_board,e7682f1004014045839e3cdac9cf6259,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),75,20,wood|paper|ceramic|plastic|air,by
+cutting_board,feffe7c7ffe746f58cdc7d4f53b2aaf8,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,wood|plastic|air,by
+cutting_board,db1586fc6faf4ab5988ab96f7e7027b2,1,,,10,2,wood|air,by
+cutting_board,797cb9caee3d4bcb967a8e9a4d1250ba,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,556f57303c34421682f237e7219e0859,1,,,30,15,wood,by
+cutting_board,bf5bdd5ebfb94d5f8d1749a7a2b165c6,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,wood|bread|plastic|paper|air,by
+cutting_board,5fed23178ae74e51b9682e3268eff990,1,,,,,,
+cutting_board,ee4ef2239b2d4098af467d8a215a5c87,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),3,0.5,wood|vegetable|air,by
+cutting_board,821e1f2b7ea046109be9923eb6643d28,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),15,0.2,plastic|cardboard|air,by
+cutting_board,2a41b261197d4125851d2b47f9e8a4fa,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.5,plastic|air,by
+cutting_board,acf166a4c0c34d0285190d6ec3f8a05d,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),20,0.5,wood|paint,by
+cutting_board,8c3207335abd4d92ba28a3219e4ce32d,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.1,plastic,by
+cutting_board,b06118df30084877abf07eb84a230407,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,ccab95d1eeda47fbb0fbb69c8684cc54,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),15,0.3,plastic|air,by
+cutting_board,6b77c43a33d24588bddf0f428a36ce3f,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),10,2,wood|plastic|air,by
+cutting_board,72a2301b375c40eebf894d5d395d698a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),10,0.2,plastic|air,by
+cutting_board,750ac01df9da416e96e93c3f797a0a06,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),60,3,wood|air,by
+cutting_board,8ebcb5b1e91345bb9a0ad7435849191c,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),5,0.5,wood|fish|air,by
+cutting_board,f05973ba8fe04c1ab337ef0e0121e7ed,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),2,0.5,ceramic|wood|air,by
+cutting_board,320c27430e0e44c7ad4bd4753498b577,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),20,0.3,plastic|cardboard|paper|air,by
+cutting_board,b220eea1400d41cda3b2c670fcc5c605,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,b66d4f0759b44fa884c91847d9a3be14,1,,,,,,
+cutting_board,3127160fd6f540c6a9a53956dc467889,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,a2f7fa91ec324f53884e687414edb964,1,,,,,,
+cutting_board,a187c344220543fd88152b35c3e28079,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,2f8ccd790ce74c00907b1b92d3b8c878,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,f8b6bf5626914e1e9f05d784e7cecc19,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,0e26897911d94e7e909c7533fc20c7dc,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,a6e243447ced4905a78380fab51be170,1,,,,,,
+cutting_board,63fd8712d8164f29bdfbaf6fb0fde238,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,eec19e0deb6046cf9f909e63c5371203,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,100c1031bd244896ad8dd7c156ad6e7f,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,32248c4ec53541e18c5487e7273887e5,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,09b8de84eb8e4b14956a482cf9de2ebb,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,2d81c48fda8d4b05863c378e68042d7b,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,9220bbc708b64d79983a54a5f4ff198c,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,695cf729f1bc4a848f29016d07d35292,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,ad4e96c9e7e640069e5c93c43619806b,1,,,,,,
+cutting_board,6e91e8793ed942fdb6561976a893f4e2,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,ef59b9792e7d4fd99c26cf004e4e3194,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,4f310c5e1bfc4561a8bb278f5d0ce7ea,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,2070a8deb23c4df39c9c5bfd63345135,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,6f6cf0d96cbf4e7f8c639d6e2b7c0aea,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,03883aee33084ab0861288582ea76d6b,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,f397d7e2f05f4766b0589309339f8747,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,ee5a96f1d8564b199b702dc355513a01,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,60c96bc3faa54f6094ee3b8bf0b691b1,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,ea33d1d2147740db8f28799438b3298a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,f0a106e66e7243fdad67ea79ea29f2ff,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,ca0c929add654ba5b22bdfc61d2b30c7,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,f027d6138adf44ef974a9aac44407cfe,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,b74f01b2fb4b4e0d9cdbdd93ad1e838d,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,a2d43d4cd69b48f0aa57567a11a9ef05,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,38347ea815fc4cb4a88ae3d0a3225efa,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,a5e3f4f869b84afb921d795520c2254a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,7a018e9a55084b0981d37ec41e2f558d,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,572d925dbbcf4767b0e4020ee1a35b9a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,d4c6c8e0f3f64e8bb5ccc970e53a9891,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,709be93810c84ce793e77673612cad1f,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,54b0c7906b9047478aed14eb1b697f80,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,d951740736a647d5917e3bf451e34195,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,4f8fc3c05c2c4985a17a9b4b44d27e4a,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,f60e67989a6a4be187f2c6cc2f5ff07b,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+cutting_board,0d5f5baa97754547ad517b694ea8edc7,0,,not a clean cutting board (food/knife/scene/sign/other object/broken),,,,
+frying_pan,ba9407ad7d9c4f39b27b52a5972522f0,1,,,5,1.2,metal|non-stick coating|plastic|air,by
+frying_pan,20c3c9e4dbcf48bbb7f71dab1e3f249d,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|plastic|air,by
+frying_pan,ad93241454534401a44bc18597125e25,1,,,5,0.8,metal|non-stick coating|plastic|air,by
+frying_pan,318f698dd0cc48d99c06af3e60a3bb71,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|non-stick coating|wood|air,by
+frying_pan,9bcc9cda7b4d4db79ee6d7d105207f3b,1,upside down: set up_axis,,3,0.5,copper|steel|air,by
+frying_pan,beba5b2965f4445fa279aa2c4fe9988b,1,,,5,1.5,metal|plastic|air,by
+frying_pan,a050cd98f2a549e6808f25ca926b7114,1,,,5,2.5,cast iron,by
+frying_pan,ffebd77d0373462eb7c6d2d4941eb39c,1,,,5,1.2,metal|non-stick coating|plastic,by
+frying_pan,48e704cb9fa1471e93d6cf7d03e13c7e,1,,,5,1.5,metal|plastic|air,by-sa
+frying_pan,a3a5af14a6ef47fea2e513140503df1a,1,,,5,1.2,metal|non-stick coating|air,by
+frying_pan,9c219d7d26ac47beaa46539a9a4fa8da,1,,,5,0.8,metal|non-stick coating|plastic|air,by
+frying_pan,efdb4592d9b74f8fa0e68336d2d53c5c,1,,,5,0.8,metal|plastic|air,by
+frying_pan,11931f4dd90f45c7b05bd0694bb6e747,1,,,5,1.2,metal|non-stick coating|air,by
+frying_pan,2262807a307f4b3b8ea0a553ef3e47b4,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|food,by
+frying_pan,08036bd12504414fb4fa7ec9b36a56a9,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.5,metal|plastic|air,by
+frying_pan,75f47fcc8a084983a874ba68298bb093,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|non-stick coating|plastic|air,by
+frying_pan,b093c1c6676649668b7c34b1d9be22a6,1,,,5,0.8,metal|plastic|air,by
+frying_pan,a7c6610ef4144813b16a8dfa3abe40fd,1,,,5,1,metal|non-stick coating,by
+frying_pan,1fdc84a7be2c4348b281490c89d76062,1,,,5,1.2,metal|non-stick coating|air,by
+frying_pan,56d7acd7e9eb46a9aae4b048cf4bddef,1,,,5,1,metal|non-stick coating|air,by
+frying_pan,2c2ee6ce1deb42c2adc2e422d779b7e9,1,,,3,0.5,metal|air,by
+frying_pan,a976c9fadff94869919f4210b887586f,1,,,5,2.5,cast iron,by
+frying_pan,e4d4302319db4583ba109dd794dae232,1,,,5,0.8,metal|non-stick coating|plastic|air,by
+frying_pan,46a76e5f18d74591adb3a7022745a0e9,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.5,metal|plastic|air,by
+frying_pan,eee7a5bda96b48618eb3ee9fac3af71f,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|wood|air,by
+frying_pan,c1957e1339bb420b9d2d1a27125caef5,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",10,1.5,metal|plastic|air,by
+frying_pan,7621e21c57ee496bb17c66ac32683224,1,,,5,1.5,metal|wood|air,by
+frying_pan,48926d46aeb34b1cb0d9c9a8d5269cbd,1,,,5,1.5,metal|non-stick coating|air,by
+frying_pan,7ed6400f0ed34108b07acbfe38428e9e,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|plastic|air,by
+frying_pan,c9dc40dcf81a451e871f29d41eeb6546,1,,,5,1,metal|non-stick coating|plastic|air,by
+frying_pan,717ce160f4134f6c8a7aabd19172143c,1,,,3,1.5,metal|air,by
+frying_pan,127e434667c54313b9a9300404f7f8bd,1,,,5,1,metal|non-stick coating|plastic|air,by
+frying_pan,ca31c4bb63104cde93de36a1d656619c,1,,,5,1.5,metal|wood|air,by
+frying_pan,0e8fde91fdb5413494e878b0fef85cda,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|plastic|paint,by
+frying_pan,62a1514120e545068daddcfa37924eb3,1,,,5,0.8,metal|non-stick coating|air,by
+frying_pan,38dd2481ebbe4ed6b9d494cd2d1cfe30,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,cast iron|air,by
+frying_pan,6c8fb58495aa425d98a4c347fd01db1b,1,,,5,1.5,metal|coating|air,by
+frying_pan,e92f00ea8d6a48d38d591215142fa576,1,,,5,1,metal|plastic|air,by
+frying_pan,afa46d8967644c0ab790f0a2caaa2fbb,1,,,5,0.8,metal|wood|air,by
+frying_pan,8275e59e3ed44b8bb7f3e175c63e204d,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",10,2.5,metal|non-stick coating|plastic|air,by
+frying_pan,de918c5094e9407388283c1e6aae6ea3,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|non-stick coating|air,by
+frying_pan,1d3a40bd155a42718b3411b1ab6f0ce6,1,,,5,1.2,stainless steel|plastic|air,by
+frying_pan,8d09c5b3ec6f4b2d97ad367104aedcc9,1,,,5,0.8,metal|non-stick coating|plastic|air,by
+frying_pan,85b9942d170a48cda257991821dc1175,1,,,5,1.5,metal|paint,by
+frying_pan,52a8cf585c3a409b94030d109a098da8,1,,,5,2.5,cast iron|air,by
+frying_pan,04717a12f55c4b31987418737eb02788,1,,,5,1.5,metal|wood|air,by
+frying_pan,8371edcd8e644ef8908c8b77ea570b69,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,dbac7c1a1a5f4b79a1cb8bdacdd42aff,1,,,5,1.5,metal|wood|air,by
+frying_pan,4cbfd7400aa6477daa518b79712f1c43,1,,,5,0.8,metal|non-stick coating|plastic,by
+frying_pan,ed5204a418314ab6b68c1472fe03a27e,1,,,5,1.5,metal|non-stick coating|plastic,by
+frying_pan,7be1b98ec4e94722b3b6046ac08adc1b,1,,,5,0.5,metal|rust,by
+frying_pan,0836af0bceab4fa3aa71357d37ae09e2,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.5,metal|plastic|air,by
+frying_pan,ec6639324e41465ab4be38a26411cc3a,1,,,5,1,metal|non-stick coating|air,by
+frying_pan,4cd709a3d2c24d8c97dd7a83508f5a91,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|plastic|non-stick coating|air,by
+frying_pan,f1b66bbfba294a4a8b8980b7fce80d4a,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,304dcd5dd1854273b046f28cec350861,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|plastic|air,by
+frying_pan,6ab79f3016f240498f4a32f1ad999e73,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.2,metal|non-stick coating|plastic|air,by
+frying_pan,ca7c4355164a4e8dbfa67aafece15c12,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,78435766e9fa4a7e93dc5e450a036e00,1,,,5,1,metal|air,by
+frying_pan,6685b284b8ff4aab9ce1fb88072af3dc,1,upside down: set up_axis,,5,1.5,metal|non-stick coating|air,by
+frying_pan,e53e12ad33134875837c49c9bd84c740,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.2,metal|non-stick coating|air,by
+frying_pan,22810b18a1b0427386a8e659454601d5,1,,,5,0.8,metal|non-stick coating|plastic|air,by
+frying_pan,d9e08521692148639e088b388d5d4cd3,1,,,5,0.8,metal|plastic|air,by
+frying_pan,f3a09aa627074470b6447479d95bfe70,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.2,metal|non-stick coating|plastic|air,by
+frying_pan,bd8a50ef7f4848339a02371edc07e5af,1,,,,,,
+frying_pan,bbcf52c1dd784874a74d1d0a296d6459,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.2,metal|wood|plastic|air,by
+frying_pan,e9fa9e2baebd49f3916638750cb12646,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1,metal|non-stick coating|air,by
+frying_pan,560b11b306a24d43ac9d86088b34ff54,1,,,3,1.5,cast iron,by
+frying_pan,4aa1066d5da94c0e9e6dba2fcc33b708,1,,,,,,
+frying_pan,cbe6d772be4b443faaa2f7c8a4d6b4c5,1,standing on edge: set up_axis,,30,1.5,metal|non-stick coating|air,by
+frying_pan,f33796077c7b4f1f8030517038cb0d04,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|plastic|air,by
+frying_pan,1e89c2c245914d72ab3d3c6374a81c38,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.2,metal|plastic|air,by
+frying_pan,26698bfbc9df45a0a74161ae7af38046,1,upside down: set up_axis,,2,1.5,metal|non-stick coating|air,by
+frying_pan,8f36a5348ed54ebf95fbd0e4611a47f7,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",10,1.5,metal|food|air,by
+frying_pan,7891a92f707c4e3d9390bf7993db6feb,1,standing on edge: set up_axis,,30,1.5,metal|plastic|air,by
+frying_pan,1001e27e43c04dda8d0f304dd4582202,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|wood|food|air,by
+frying_pan,266f3c4b79c94c1cad910c063495c187,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.8,metal|non-stick coating|plastic,by
+frying_pan,c1b43842b8064490b55e95c0524cb46f,1,upside down: set up_axis,,5,0.8,metal|wood|air,by
+frying_pan,2d47c4297f4c4e499e1418e8d8a0b899,1,,,5,1.5,metal|wood|air,cc0
+frying_pan,09c0e8587a1148548a85014c34ee76c7,1,,,5,0.8,metal|non-stick coating|plastic|air,by
+frying_pan,81687784ba974e51a59fcfa5db4dc8fc,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,fccc20e822bf49b58ed5f183f2b3243e,1,,,5,1.2,metal|non-stick coating|plastic|air,by
+frying_pan,24c61ce559c64b3288a227b03bbae90f,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.5,metal|non-stick coating|air,by
+frying_pan,743a8da5f8ec4f289a5712853ea40bc8,1,upside down: set up_axis,,,,,
+frying_pan,1261dc97265547d08e9877061cf52782,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,b1e7fa44d3cf45e6886219431dcb772d,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|wood|non-stick coating|air,by
+frying_pan,1d23142b44be4c049870110d6417eb99,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",10,1.5,metal|plastic|air,by
+frying_pan,3fc801c24f014966ba9b81f39ffc8df7,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,1.5,metal|non-stick coating|air,by
+frying_pan,b8baf1d93b8648bdaa70b6495c0b8171,1,,,10,1.5,metal|wood|non-stick coating|air,by
+frying_pan,ffa9935c74014d6b9b5dc9e8db717dc8,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,69f87a1279f64406ad913e655a62f8a0,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,2a9b7a6fdee34189b118be34610c2453,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,634d6cf757a14800850aee869947be6d,1,,,5,1.5,cast iron|wood|metal|air,by
+frying_pan,95831af780dc497a89a80e9aefa8e5de,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,2,metal|food|air,by
+frying_pan,7b85f1393f244782b3eb2f9e9c4a521c,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",5,0.5,metal|wood|air,by
+frying_pan,a6e5c8787ad849f09ea6589e596a115b,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,ee5330b48f5642dea0fb8d6dd434f183,1,,,,,,
+frying_pan,9fe5db59fa36456a8e0b580b7c3e0a6a,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,abf7240397b642c78aced378bb0dc1f8,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,2eca6752f9c9431d972a7007356848ee,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,d682f62d729c4b828b78f733012bc079,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,af51ea1561cd49a1a8aa582572704082,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,832986831dd44b37aab2847b30dbe29b,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,dc063dd41013484190304d68ba0bcc3c,1,,,,,,
+frying_pan,cba4bcda468540c7a3ff843b08f22412,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,2517b867250643c482e0e316151ed758,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,c268b7cb334b4d2a8ccfaad3219603b3,1,,,10,1.5,metal|plastic|air,by
+frying_pan,93576531af4b4a10ba88bdbde9347fd2,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,2d609d3adf9e49ac945b62b5ce98573e,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,136448f5c07f477ab020105515e97a25,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,c0c22523d7734b45a9a4b745654eb148,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,7013da139fe14b70abf5742767110aa9,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,83bdabc8afd940439b1287236a460eaf,1,,,,,,
+frying_pan,1592ec9e7b4c4541a3543fc0d2112ddc,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",20,1.5,metal|plastic|air,by
+frying_pan,d501c3ff798945cebee84d7944edb19d,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,0d1971dfade24524aa4c3307b4104def,1,,,,,,
+frying_pan,99f8e23e8d38459eb75a82d5092251af,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,2131f71349d747a6b6bebfd30456245b,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",30,15,steel|air,by
+frying_pan,0b70368b44fe4e89b906f0d7eb55e0b6,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,cd1e63b16f804638873d21b822a23617,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,0b8c873633504663a02572aa12c096ae,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+frying_pan,2e8c766fcaa54804b24a345e9fd3a3d6,0,,"food in pan, wok/saucepan/pot, several objects, info panels, broken or tilted",,,,
+tray,3f3aeaa2974d49c09fe9304ddd20c703,1,,,3,0.5,wood|lacquer|air,by
+tray,2f8422301f55425eb47361ac6a382bc3,1,,,5,1.5,wood|air,by
+tray,01cace88a48c42438dbd8d1a6f23a55a,1,,,3,0.8,wood|air,by
+tray,1e2618cf8f244e50a435f54cafaa34be,1,,,3,1.5,wood|air,by
+tray,ac194d6f593a4651b00216128f19e884,1,,,5,1.5,wood|paint|glossy finish,by
+tray,bc55295ab41c41308ab16b48cfb0e18e,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",15,1.5,wood|air,by
+tray,962a1b6e639e4b1e8279bcf0280ec8cb,1,,,3,1.5,wood|paint|air,by
+tray,bca8263e099a4d6fbf968d0c6e774fe8,1,,,3,1.5,porcelain|glaze,by
+tray,c15f07f7cc1a4e858159b70c2f4ba1b5,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,1.5,metal|paper|dough|sugar|air,by
+tray,50be4f8b8f744730878916aa38b0f08f,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,wood|air,by
+tray,d8e83fc6631840a59ff11dd6ebb51b95,1,,,5,0.5,metal|air,by
+tray,659440f9183e4f4a97f302fa2bbc7894,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,1.5,metal|air,by
+tray,e9b536258ae4499abec7b31ebd231daf,1,,,5,0.5,plastic|air,by
+tray,28c97506d4fd475ab017c102b670ba12,1,,,5,0.5,plastic|air,by
+tray,6c285e1c60764f3ca3231b54e4afd0dc,1,,,5,0.5,plastic|air,by
+tray,857eb67de4114e899789eb17de16711a,1,,,5,1.5,wood|air,by
+tray,6329b1b72a7f42d182c37295c29b3335,1,,,5,0.8,plastic|metal|air,by
+tray,6551259392dc4ee19c6064d9b51d936a,1,,,2,0.5,plastic|air,by
+tray,1c9ac559f08a42fc87648be971aec607,1,,,5,1.5,wood|air,by
+tray,ee90e3b4c7f3468e8bc73bdb96cb995c,1,,,5,0.5,plastic|air,by-sa
+tray,277754390e2344ef87f529f35d072989,1,,,10,1.5,wood|metal|air,by
+tray,0e9735c07b184c5f9a19ca6e1a35e9b8,1,,,2,1.5,ceramic|air,by
+tray,eae79071ca8d48e980ea071c2fa70de1,1,,,3,0.5,plastic|air,by
+tray,1927e9976a9242438552f15d9716678f,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,b1b07103d6d8474f8321a906405f6698,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,1cb22d07325d46c5bf137bf8c1338a26,1,,,5,1.5,wood|air,by
+tray,013a692d833e4af2974b9b63be2b5e46,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,cf05411448b04910ab3af9f467ae4f68,1,,,5,2,wood|composite|air,by
+tray,11c71f42f23141e6bd32b13b58b5ee69,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",15,1.5,plastic|air,by
+tray,21d75fc3bd804ed283ba38df3e969d6e,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,2896d4d79a594c77ac1de12e5bbc8e7b,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,1.5,ceramic|air,by
+tray,daca25854f40444eb28cc532b0f5a818,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,04f8bfad8ad14795aced8a83ea30ca60,1,,,3,0.5,plastic|air,by
+tray,f450670590db4493a6b63289b0a9688a,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,1.5,ceramic|glaze|air,by
+tray,53b1ac283e374f469efc171bb1de4cc0,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",15,0.5,plastic|air,by
+tray,f16b1ea52920426095066b693190cf4e,1,,,5,0.5,plastic|air,by
+tray,7d6b8726fa4f40fe9c42ec01ae06a457,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,520108ff52354de5925cdb12b3927eb6,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,09a4e4937c1b469cbcc0975d15372a0d,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,665a37f3974443cba1263d575fe8a754,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,4b0a1295afe64b8a8ff5af87a30c7468,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,wicker|leaves|air,by
+tray,468b9fc2dfa8490fa914541f3b226205,1,,,5,1.5,wood|air,by
+tray,95a880d594e74fd4927a93df0452238a,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,f2a27c4ccad34c3d9e76ae72c13077a0,1,,,2,0.5,wood|varnish,by
+tray,f19728685fcc4bd2bd68476053fb4a6f,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,522297b0f33f4c0891a86cc296e402f8,1,,,3,0.5,wood|air,by
+tray,add9fd59e4a84ac0a58080d25334a4bf,1,,,5,1.5,metal|plastic|air,by
+tray,516d411d17214076aeab99e9396197d7,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,3afb71255dac4ea7aaa92732f8f8c471,1,,,3,0.5,plastic|metal,by
+tray,3e0d5cee154e44128a5c133f360487b7,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,bcd7de89ee814876ae1dbf457df93eb5,1,,,5,1.5,wood|metal|plastic|air,by
+tray,e736a1e7cdcb48a5a4f2ca4100d52d28,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,6cd3524e52fd4667a252b40e6688d064,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,cf91a6fa4b3f40d998dba6dbcfe38464,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,0871417f961b427e870e640ea17183ea,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,54e628ad643947efb34e8b55c46ec721,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.3,plastic|ink|air,by
+tray,6cb5cbc6e97c438f9066e687d02fa722,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.2,plastic|air,by
+tray,51f963b12fc64b1b9c13ce622bedd35b,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,1.5,wood|ceramic|plastic|air,by
+tray,48bd978336d8414db88ec5bb127fe988,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,83e327730cf44a7aa5580666ddc9e8c2,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,bc4988c092cd44a6ba0d38338dd21f30,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,c8c059c05e3748dcbd0973c3b7de18e9,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,bf2ba2b40fdf4ad897bf7ccf0f5a8a35,1,,,3,0.5,plastic|air,by
+tray,7fa126cf84e04434b1495106064a478e,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",15,1.5,plastic|acrylic|air,by
+tray,761b3b26638045dd92e473b71f2cc52f,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,8193135425d4424da26398c7f337412f,1,,,2,0.5,ceramic|plastic,by
+tray,2cc70e7754004d178204ed574c9bd422,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,b338781f6d714901b92f672174d8014d,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,0a65dd5b9dac45d591480787023c2f8a,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,aa7b726e472f4d28bbfc0c28e8ee12b2,1,,,3,0.5,bamboo|rattan|wood|air,by
+tray,9f843715f3c14dac89c2fd30d0dcc92d,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.2,plastic|air,by
+tray,c34f6d73a0ee40f39d604f82618c2924,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",2,0.5,plastic|air,by
+tray,5f4e38b267c44268ac6cf70d03636e13,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",2,0.5,acrylic|air,by
+tray,ba82000e9e3e440bb182d8a7487ad1f2,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,a4fab213e38c4a4bb155f06f23b3473e,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,4d8a989cfd634174899de3892d0c7f70,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,3b2d373d5f5447f785f95c5ef0d9ead1,1,,,3,0.5,plastic|air,by
+tray,1c7bf217a78646c7acc4ab510ded3aeb,1,,,5,0.5,wood|air,by
+tray,b5761e30f7464cd5a861c6e35797fc1f,1,,,5,0.5,bamboo|wood|air,by
+tray,c63dff390d704e4389fca95938a3a49a,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.2,plastic|air,by
+tray,426d3ab3a3144474a616c33c488b9927,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",2,0.5,acrylic|air,by
+tray,3d939874a22b4782ba8fa563f43e9227,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,7fe41b78a1bf4cd789c51affecdd2afe,1,,,5,0.5,plastic|air,by
+tray,cc97a534439247b9abfa297199d752f8,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,e8c04ad80de54f7a8b6ea2e41574df61,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,0aafd000e1c34581a9c146e0c5cd0adc,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,e678c849a0b247448c96e68ecaa5aced,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,1.5,wood|stone|air,by
+tray,e4796b79eafb4ea69e40360255b09d1a,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,1.5,plastic|air,by
+tray,3c12305c0d92452ebbb7393281c694a8,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,022a9d6eac844d36986a35e63cf9b5e1,1,,,5,0.5,plastic|air,by
+tray,953df0de5da341c0aa7dcc96d8e65ee2,1,,,5,0.5,plastic|air,by
+tray,a1e2d95bea9d4224852c86c5dc6fb4b3,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,11d2781b137c4ca0a949f693350f9154,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,37f9bae9b2d4428c9307ceebf0776acc,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,0e668fe03f564822ac2c97212f8b420a,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,97d5825e02414e3abec5740856766abc,1,,,5,0.5,plastic|air,by
+tray,ef73b7f793774244ba3ae542bfc4265c,1,,,5,0.3,plastic|air,by-sa
+tray,37d239396fa148858017dd63e9c01c6d,1,,,2,0.5,metal|air,by
+tray,a230b0ccb6a240899cc745216b1f692a,1,,,3,0.5,wood|air,by
+tray,67e95b1831b04849937a1d5b7305fbb1,0,,"not a serving tray (organiser/enclosure/basket/box), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,09ef259b2db0457b81ab2fb3c7691e01,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,f5f5d57021d14c3ab66c410e0c544482,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,0.5,plastic|air,by
+tray,063f43d785d3454b96221f9d25875639,1,,,5,2,stone|concrete|air,by
+tray,e441092b970847d8ac3da28f7c89ebfd,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,1.5,metal|plastic|air,by
+tray,03c8415dde9f407c9caacfa11bd9442c,1,,,3,0.5,plastic|air,by
+tray,ea0d0932e57544a79309e9a4a7188519,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,1b2eace1744e40b7881022d017b08247,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,ba37ebad6654487bb7ffce6c408d5ed9,1,,,5,0.3,plastic|air,by
+tray,37c3f1eefbab44bcbc8dc19e66c676f8,1,,,5,1.5,metal|air,by-sa
+tray,438669f85713477ba7f6821b191fd495,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,0.8,plastic|ceramic|paper|air,by
+tray,8998240c62684142af0910c2b2751ed7,1,,,3,0.5,plastic|air,by
+tray,359bd780e8b843d7b43b805cb658877c,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,614d2cbef71446f883459ed3fed6d465,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,351d724e9f054cd39e30a9a6716d174e,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,1.5,plastic|ceramic|paper|air,by
+tray,7e7f0ea6bf304190821498e9c6c28ae2,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,wood|air,by
+tray,f9d09581e17048d6a052e18f663fe229,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,0c5bfa01e35b48e3bc82cc80f4442710,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,77981640175e4e6fab8a08f419ba4134,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,1.5,wood|varnish|air,by
+tray,583fe74b57fd4857a4f71465d13f0e88,1,,,2,0.3,plastic|air,by
+tray,e5a8d9f265de46e2a7e54a8d55c51c40,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,0.5,plastic|paper|air,by
+tray,5d0ae57d92ea49ba965e6e19580321a9,1,,,5,0.5,wood|bamboo|air,by
+tray,4a169f8834274183b376490cfb89985f,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,wood|air,by
+tray,d220bad1f31b472299659fb669efa179,1,,,3,0.5,plastic|air,by
+tray,5aee9cf615eb4015ac79176f5edd3902,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,woven fabric|plastic|air,by
+tray,7922b52f9514427180792690b1dfe511,1,,,5,0.3,plastic|air,by
+tray,2e9cee3ed53345aba5c9e01bc6d9aba0,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,1.5,wood|varnish|air,by
+tray,e2cac77c4865448b9aca2115b734df6a,1,,,5,0.5,plastic|air,by
+tray,c424eaca72e6480399ecb22b9f76e75a,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,1.2,wood|ceramic|plastic|air,by
+tray,904038e5f00c402ca2a396d2cd9b8619,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,plastic|glass|air,by
+tray,704a3a8fc5aa4895b484724debf2094d,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",30,3,wood|ceramic|metal|glass|plastic|paper|soil|air,by
+tray,a135e3e2325448f9aa18797fd9903efc,1,,,5,1.5,ceramic|porcelain|gold paint|air,by
+tray,5f1fec18d90742c1abd9ee83c9622304,1,,,3,0.5,plastic|air,by
+tray,cfec05638de540b0acccff2091508500,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,1f284bd0208748fd834fdb594cd2558d,1,,,3,0.5,acrylic|air,by
+tray,76e4f262341d4a24b31b3694e5e404e7,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,7d4120f9ede943acbfd5edb5c8a5dca3,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",2,0.3,plastic|air,by
+tray,d46e03023cda4b2e83e25411ff13028c,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,12477139f10c4f6fb6232295670b5c80,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",20,0.5,plastic|paper|food|air,by
+tray,81d53361c1a34278bbd375edb731ceb8,1,,,5,0.3,plastic|air,by
+tray,f5c4c6638ea844fa936d43e60b83073f,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",30,2,metal|plastic|air,by
+tray,3b0baa42581b4836a30e218540b1d9e8,1,,,5,1.5,metal|plastic|air,by
+tray,fcdb29e16ab74078b886c29ad907fb59,1,,,5,0.5,plastic|air,by
+tray,964597850b0f413eb148ea138bc612c6,1,,,3,0.5,plastic|air,by
+tray,c58e62b9f02e4937a43e66fffa3c86f1,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,a37075d73bcb4b42934550469ee0adae,1,,,5,0.5,plastic|air,by
+tray,7eba6aea93934b97b0dc0985cf1473b5,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|metal|air,by
+tray,57b2548def274fb39dc442cd6fba242e,1,,,5,0.5,plastic|air,by
+tray,6dc53471fb804c158f01138203f155f9,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,a0cf648be87842db8d7b3b76950be963,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,db548922bd4f40b1980690d946d341fc,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,1fccff2c09854b869aa3c91f9da128af,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,1.5,plastic|ceramic|wood|air,by
+tray,29a60023cfed47a795baa083db8ebb26,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,8ab698417d4945e3a4a78fe1f93b6c68,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,cdb1762aecb64ecc9f87787b3f98a9aa,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,79dee0ce99754c5bb490658fa9a69d45,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,88d94b9b9cf44c0583274188d027c98f,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,88b1fde108fe45d0b0dc0c9e501650d6,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,95134f20c88e4493ac8ddab93fd3ea24,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,66ab24f51a304331b8a2501bdca14462,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,d9dd607fc2b94a0bac40b3c2acbeade8,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,2be3740c17a54af2ace945e1d265f358,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",2,0.2,plastic|air,by
+tray,a7f4ede5b5c04d3c8ff856f15b022f1c,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,68615d02333b4fb8b7d65fdb4bf5c4f5,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,682e45693b2447c39b6964ddcdab9f1a,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.2,plastic|air,by
+tray,bcae7ce9a8be40e69c6334e1231e3197,1,,,5,2,metal|wood|air,by
+tray,dfd144edaaa3458390982a2beb62e26b,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,1.5,wood|ceramic|liquid,by
+tray,47cb9f3c1d6e4134b2dec5a1ff02cdff,1,,,5,3,marble|metal|plastic|air,by
+tray,56a4dc9801b949e98e08c1e168a3bfa4,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,4046925e07d74fc9b1d1008682261917,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,6af7bd07f5b540d5a893aa9ec5cb2a8e,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,79f1209a0aac4c8ea60e2d9f27798106,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,928b1b52acc04fed9ffbc4a2b893d9c7,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,7e51151f644b456b9f38488d68f32b83,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by-sa
+tray,8c97345e4dff45708fd8bf8349a5fac2,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,f87347941d7341f58787c05f611d9731,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,425a2ee7789544678affb56dd38d5a47,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,wood|air,by
+tray,c190a6f691024858b39b51d3d99e3d04,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,b241ece9e40c4fd2ad2b0450a7dbc382,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",2,0.3,plastic|air,by
+tray,2bf465b5bbbb44db917da01d8a7c4581,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",3,0.5,plastic|air,by-sa
+tray,67f6fb38580d450dbd15e12f69388877,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,wood|air,by
+tray,f92df283467c426d866fab1b1c54cbdf,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,338fbd1485a64aaf861ddb9d39810392,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,828f8d2b0ded45089455b8a8cc82321e,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,metal|glass|air,by
+tray,b45c2daf53db4678aabfd8dc5950d615,1,,,5,0.5,plastic|air,by
+tray,657dd5c34cc840cabc00456ecf1c9097,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,2,wood|stone|air,by
+tray,4960a833a63f4237ae2b3390e955b4a8,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,5a75bc4131844c818d3cdfe0e8a8a027,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,9eb2b87398c042849377f59b0b15db51,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,0.5,plastic|paper|air,by
+tray,2f6b6be5b25441efba16c84fcab41ba3,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,6f5f27a0bfd0452eaeb9e10064162770,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,metal|glass|plastic|air,by
+tray,1d49fe3fa7f848c59d5cf3461f1a8ba1,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,a095621f2d5845af83db3f59f5685982,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,metal|air,by
+tray,ded541d8e73b454fb48bf4586dcdf784,1,,,5,0.5,wood|varnish,by-nc
+tray,a22038c719e04c7ea67d63f2b4653178,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,56e287b623c24a248ef2d0bc9d86c5a3,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.2,plastic|air,by
+tray,a8129828efca4d2390dee4f8b8f99514,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,wood|air,by
+tray,5f934acb178e4c3bb53e529af360a214,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",2,0.3,plastic|air,by
+tray,d7efd8b1c963424ebe1eee2ad81df3f4,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",30,2.5,glass|metal|plastic|air,by
+tray,b656d4a2149049518923f93c8deaacfb,1,,,5,0.5,plastic|air,by
+tray,0a18e52be17441578c13c1b6a44f4a38,1,,,3,0.5,plastic|air,by
+tray,a39d5927045449a8ac46badd31c274cd,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,8312a7ca723f4651b0e49ed2799f05ee,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,1c190f9ab9254dba9b4d51cd4844fc9a,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,6c3bd62b4cb14fa9865e99277ef296db,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,0.5,plastic|air,by
+tray,b3f5757a26ae4f8ca6a1dc72ba4ba94d,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,0.5,plastic|air,by
+tray,285f180c2c314502955112fc4967de99,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,c9d0361209ac46898fd36885e66a5b3e,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,5,plastic|metal|air,by
+tray,46d63adf76f240da94cf7572be5a646a,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,e262127543ff4cb1b3fdf03eb2735d32,1,,,5,0.5,plastic|air,by
+tray,0640943354244fb989a8c577f813b235,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,cac138869d5c4c1abe88bbe9d6c0e3ff,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,1.5,clay|air,by
+tray,180b8d0466134d8a9919f48ff7001353,1,,,5,1.5,wood|air,by
+tray,cc9d68fa8fbf405baa2d44f88fc02022,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,metal|resin|air,cc0
+tray,4d8519ae2baa407da3b251241ea7904f,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,ca0dcbfbd24d4ea199742cc17e2e4260,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,1.5,plastic|paper|liquid|food|air,by
+tray,16de121bb2a34551b0f40aaef8ea8586,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,bb3aa3857098480dbc0b3d491908fadf,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,a49ea6e6fd8b467b8f46d834022b7a6d,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,2,metal|fish|vegetables|air,by
+tray,3d164c56a4764e6ab4cdcdb14fb8224e,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|metal|air,by
+tray,7762884ae7f54c35ac847693f751018b,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,0.5,plastic|air,by
+tray,40a0fbffe629468087848ef5bb9368bc,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,f716929c44eb467c8bb12b8e2f9b5316,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.1,molded pulp|air,by
+tray,80f3e8ff021f4f298807123b17f968d8,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,494de211864c41af8abb14e21668c474,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,2ce82a73010045fc83bd687f9e08b275,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",3,0.5,plastic|air,by
+tray,94c86a1715e24894a728409d82bce4e1,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.5,plastic|air,by
+tray,4e4fa0dd67ed45b7a4dde207695df7f7,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",15,2,wood|ceramic|metal|air,by
+tray,0ca2de7ae84d44438013da1715495df6,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.2,plastic|air,by
+tray,3011dd32e39e4e1aa195de16eb993343,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",5,0.3,plastic|air,by
+tray,518b4616e9e84b8bb8b10a0bba450507,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",10,1.5,metal|air,by
+tray,c1e6ac573c37485f9e7acaaae418df30,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",2,1.5,wood,by
+tray,4b8d86761f9440cfb324d0b4d07336ff,1,,,5,0.5,wood|paper|air,by
+tray,2ad357476ea14818a64e2876d33b7c0d,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,cb6451947757498aadd36b41ed8757da,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,ea56d5c5e9d64eef971c264398350b85,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,ca7522798e8c4492a1358aba9a12cf8e,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,985b48efbd774f8f9fa74304508cad34,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,8c63e5e160064cd3862e4b5f8781032b,1,,,,,,
+tray,a8ddafed256e4123802aa0e42b2eacb6,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,a5941e7f539e4639b6c54586fe1adf33,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,f8a2cdc9970846da95585a428697d173,1,,,,,,
+tray,ac2b50d2542c4f458b4ea404b8ed5e4b,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,3ed0c8a70da84ee99816fa29e352ac16,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,baf3242c524f4e4483d7f6df5f0d9848,1,,,,,,
+tray,40fee272465042bb9d91788c916e9502,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,bdf6c05eb95e455aa2de8634716618cd,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,2f45a71206fe4a4eb665b43c69d407f7,1,,,,,,
+tray,3a406e651e69409e87323ab42a214874,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,7c7a9affeebe43e0b6f32729c3c8d0d9,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,82ef0bcc6d844131b3a3deb1ea09f73f,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,acca44bccd9e4d82ba0e2ed0eb1e478c,1,,,,,,
+tray,545d37a90a7d4c00b5e5bc551c71fbbf,1,,,,,,
+tray,398c1b3b8114409a89eb02f9b42f8064,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,74c95870e2a141a9903815715d25b8a7,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,c274989766c344ac97817f77a046c0e0,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,a285cd47bff94f0dbf726c33e3f44b70,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,085dca6d7eaa49a2bc459adfe3357da9,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,
+tray,558faeb71ea04a5dbeb9aadf76430a85,1,,,,,,
+tray,3e7747b1db4b44a4952d6d94488ee16e,1,,,3,0.2,plastic,by
+tray,3dc49a977873417088384f5ae78c5a6c,0,,"not a serving tray (organiser/enclosure/bin/board), objects on it, or duplicate",,,,

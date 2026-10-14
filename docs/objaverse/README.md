@@ -136,3 +136,25 @@ Findings:
 
 This matches the decision in `docs/utamp2_integration_notes.md`: numbers from
 geometry, and the VLM only for non-metric attributes.
+
+## Curated sets for the other four roles
+
+`other_roles_set.csv` lists every candidate that was rendered and checked by
+eye for mug, cutting board, frying pan and tray (`kept` = 1 or 0, with a
+reject reason). Pools:
+
+| Role | Pool | Checked | Kept |
+|---|---|---|---|
+| mug | ObjaTHOR category mug, quality ≥ 7: all 16 glass + best others | 100 | 71 |
+| cutting board | every candidate + Objaverse-LVIS `chopping_board` | 182 | 64 |
+| frying pan | candidates with a pan-like ObjaTHOR category + LVIS `frying_pan`, `pan_(for_cooking)` | 122 | 60 |
+| tray | ObjaTHOR category tray, quality ≥ 6, best 230 + LVIS `tray` | 260 | 78 |
+
+Common reject reasons:
+- food, knives or other objects on the item;
+- several objects in one model;
+- for trays: 3D-printed organisers and enclosures;
+- for pans: woks, saucepans and pots;
+- broken meshes and duplicates.
+
+Mugs with no visible handle in the render were left out. 13 kept models (7 pans, 6 boards) are modelled upside down or on edge; their `fix` column says so, and their `up_axis` still has to be set. A 50 MB pan model is too large to render and is marked as a failed render. Picks are from one 3/4 render per model.
