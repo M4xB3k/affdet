@@ -3,7 +3,7 @@
     python scripts/export_labels.py PICKS_JSON GLB_DIR SHAKER_CSV OUT_DIR --pairs DIR [DIR ...] [--grasp DIR ...] [--slide DIR ...]
 
 Pair directories hold `<top>_on_<base>.pkl` from sim_pair_batch.py (names as in affdet/sim/registry.py: `shaker<uid8>`, `<role><index>`),
-grasp directories `<role>_<uid8>.pkl` from sim_grasp_maps.py, slide directories `slide_<name>.pkl` from sim_slide_maps.py.
+grasp directories `grasp_<name>.pkl` from sim_grasp_maps.py, slide directories `slide_<name>.pkl` from sim_slide_maps.py.
 Writes OUT_DIR/pair/<pair>.A.npz and .B.npz, OUT_DIR/grasp/<object>.npz, OUT_DIR/slide/<object>.npz and OUT_DIR/index.json.
 """
 import argparse
@@ -61,14 +61,13 @@ def main():
             index["pair"].append({"pair": name, "top": ts, "base": bs, "supported_fraction_of_B": round(float(m["b_any"].mean()), 3),
                                   "best_margin_mm": round(float(m["b_margin_mm"].max()), 1), "faces_that_work": [k for k, v in m["a_face_margin_mm"].items() if v > 0]})
     for d in a.grasp:
-        for f in sorted(glob.glob(os.path.join(d, "*.pkl"))):
-            role, uid = os.path.basename(f)[:-4].rsplit("_", 1)
-            idx = [i for i, r in enumerate(reg.picks[role]) if r["object_uid"].startswith(uid)][0]
-            spec = f"{role}:{idx}"
+        for f in sorted(glob.glob(os.path.join(d, "grasp_*.pkl"))):
+            name = os.path.basename(f)[len("grasp_"):-4]
+            spec = spec_of(name, reg)
             g = pickle.load(open(f, "rb"))
             lab = le.grasp_labels(g, mesh(spec))
-            le.save(os.path.join(a.out, "grasp", f"{role}{idx}.npz"), lab, {"object": spec, "step": g["step"], "yaws": g["yaws"]})
-            index["grasp"].append({"object": spec, "held_cells": int(g["held"].any(2).sum()), "stable_cells": int((g["held"] & (g["swing_deg"] < 30)).any(2).sum()), "cells": int(g["held"].any(2).size)})
+            le.save(os.path.join(a.out, "grasp", f"{name}.npz"), lab, {"object": spec, "step": g["step"], "yaws": g["yaws"]})
+            index["grasp"].append({"object": spec, "step": g["step"], "held_cells": int(g["held"].any(2).sum()), "stable_cells": int((g["held"] & (g["swing_deg"] < 30)).any(2).sum()), "cells": int(g["held"].any(2).size)})
     for d in a.slide:
         for f in sorted(glob.glob(os.path.join(d, "slide_*.pkl"))):
             name = os.path.basename(f)[len("slide_"):-4]
