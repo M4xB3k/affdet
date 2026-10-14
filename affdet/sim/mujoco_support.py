@@ -437,9 +437,22 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
             "stable": bool(on_top), "release_penetration_m": info["initial_penetration_m"], "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
             "surface_depth_m": float(base_top - (np.concatenate([p.vertices for p in top.parts]) @ data.body(top.name).xmat.reshape(3, 3).T + data.body(top.name).xpos)[:, 2].min()) if release == "descend" else float(base_top - surface_z),
             "release_z": info.get("release_z"), "descent_m": info.get("descent_m"),
-            "contacts_window_world": np.array(window_pts).reshape(-1, 3), "contacts_world": contacts,
+            "contacts_window_world": np.array(window_pts).reshape(-1, 3),
+            "contacts_window_base": _compact(window_pts, data.body(base.name)), "contacts_window_top": _compact(window_pts, data.body(top.name)), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
             "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}
+
+
+def _compact(world_pts, body, cell=0.002, cap=64) -> np.ndarray:
+    """The contact points collected over the last second, in `body`'s own frame, merged to one per 2 mm cell and capped (float16)."""
+    if not len(world_pts):
+        return np.zeros((0, 3), np.float16)
+    local = (np.asarray(world_pts) - body.xpos) @ body.xmat.reshape(3, 3)
+    _, keep = np.unique(np.round(local / cell).astype(np.int64), axis=0, return_index=True)
+    local = local[np.sort(keep)]
+    if len(local) > cap:
+        local = local[np.linspace(0, len(local) - 1, cap).astype(int)]
+    return local.astype(np.float16)
 
 
 def heat_on_mesh(mesh: trimesh.Trimesh, points: np.ndarray, radius=0.008) -> np.ndarray:

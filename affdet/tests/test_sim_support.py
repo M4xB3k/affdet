@@ -252,3 +252,18 @@ def test_a_single_placement_and_a_stored_map_use_the_same_stability_rule():
         for i, x in enumerate(m["xs"]):
             assert stack_test(base, top, offset=(float(x), float(y)))["stable"] == bool(m["stable"][j, i])
     assert m["stable"][1, 1] and not m["stable"].all() or m["stable"].all()  # the centre holds
+
+
+def test_support_labels_paint_where_the_stable_placements_touch():
+    """Two stable cells touch B at x = 0 (margin 30) and x = 0.05 (margin 10); only vertices within 1 cm of those points are lit,
+    each with the best margin of the placements touching it."""
+    from affdet.sim.label_export import support_labels
+    base = _on_table(trimesh.creation.box([0.2, 0.1, 0.02]))
+    v = base.vertices
+    stable = np.zeros((1, 2), bool); stable[0, :] = True
+    pts = np.empty((1, 2), dtype=object)
+    pts[0, 0] = np.array([[0.0, 0.0, 0.02]], np.float16); pts[0, 1] = np.array([[0.05, 0.0, 0.02]], np.float16)
+    m = {"stable": stable, "margin_mm": np.array([[30.0, 10.0]]), "contact_pts_base": pts, "contact_pts_top": pts}
+    sup = support_labels({"per_face": {"under": m}}, np.array([[0.0, 0.0, 0.02], [0.05, 0.0, 0.02], [0.2, 0.0, 0.02]]), v)
+    assert list(sup["B"]["support_mm"]) == [30.0, 10.0, 0.0]
+    assert sup["B"]["support_score"][0] == 1.0 and abs(sup["B"]["support_score"][1] - 0.5) < 1e-9

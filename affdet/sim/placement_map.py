@@ -33,9 +33,9 @@ def _one(xy):
     except Exception as e:  # a solver failure (e.g. out of arena memory with hundreds of contacts) fails that placement, not the sweep
         import sys
         print(f"stack_test failed at {tuple(xy)}: {e}", file=sys.stderr, flush=True)
-        return (0, 0.0, 180.0, 1.0, 0.0, 1.0, 99.0, 99.0, 1.0)
+        return (0, 0.0, 180.0, 1.0, 0.0, 1.0, 99.0, 99.0, 1.0, None, None)
     return (r["n_contacts"], r["drop_m"], r["tilt_deg"], r["drift_m"], r["surface_depth_m"], r["excess_drop_m"], r["w_end"],
-            r["v_end"], r["release_penetration_m"])
+            r["v_end"], r["release_penetration_m"], r["contacts_window_base"], r["contacts_window_top"])
 
 
 def placement_map(base: Body, top: Body, extent_xy, step=0.01, base_face="under", top_face="under", procs=8,
@@ -58,6 +58,11 @@ def placement_map(base: Body, top: Body, extent_xy, step=0.01, base_face="under"
            "w_end": np.array([r[6] for r in res]).reshape(shape), "v_end": np.array([r[7] for r in res]).reshape(shape),
            "release_penetration_m": np.array([r[8] for r in res]).reshape(shape)}
     out["n_contacts"] = contacts
+    # where each placement touched A and B (object frames), kept for the cells that end up stable: the label of which part of B carries A
+    pb = np.empty(shape, dtype=object); pt = np.empty(shape, dtype=object)
+    for k, r in enumerate(res):
+        pb.flat[k], pt.flat[k] = r[9], r[10]
+    out["contact_pts_base"], out["contact_pts_top"] = pb, pt
     return finalize(out, max_tilt, max_drift, max_excess_drop, max_w, max_v, max_release_penetration)
 
 

@@ -86,6 +86,8 @@ def pair_labels(pair: dict, top_mesh: trimesh.Trimesh, base_mesh: trimesh.Trimes
              "face": face_of}
     for t, (_, fm) in variants.items():
         out_a[f"margin_mm_tilt{int(t)}"] = patch_heat(a.vertices, {f: v for f, v in fm.items() if f not in pair["skipped"]})
+    sup = support_labels(pair, b.vertices, a.vertices)
+    out_a.update(sup["A"]); out_b.update(sup["B"])
     return {"A": out_a, "B": out_b}
 
 
@@ -118,6 +120,32 @@ def slide_labels(slide: dict, mesh: trimesh.Trimesh, max_edge=0.006) -> dict:
     out = {"vertices": m.vertices, "faces": m.faces, "valid": side}
     for key, name in (("success", "slide_score"), ("moved_frac", "moved_frac"), ("tilt_deg", "tilt_deg"), ("yaw_deg", "yaw_deg")):
         out[name] = np.where(side, np.asarray(slide[key], float)[ifr, ia], 0.0)
+    return out
+
+
+def support_labels(pair: dict, base_vertices: np.ndarray, top_vertices: np.ndarray, radius_m=0.010) -> dict:
+    """Which part of each object carries the other, over ALL stable placements: for every vertex, the best margin (mm) among the stable
+    placements whose contact points (collected over the last second of the run, in the object's frame) lie within `radius_m` of it.
+
+    `margin_mm` on B paints where A's centre can be (the position map); this paints where A actually touches B (a plate that rests
+    across a mug's rim lights up the rim, not the floor). Returns {'B': {...}, 'A': {...}} with `support_mm` and `support_score`."""
+    from scipy.spatial import cKDTree
+    out = {}
+    for side, verts, key in (("B", base_vertices, "contact_pts_base"), ("A", top_vertices, "contact_pts_top")):
+        best = np.zeros(len(verts))
+        tree = cKDTree(verts)
+        for f, m in pair["per_face"].items():
+            if key not in m:
+                continue
+            js, is_ = np.nonzero(m["stable"])
+            for j, i in zip(js, is_):
+                pts = m[key][j, i]
+                if pts is None or not len(pts):
+                    continue
+                hits = tree.query_ball_point(np.asarray(pts, float), radius_m)
+                idx = np.unique(np.concatenate([np.asarray(h, int) for h in hits])) if any(len(h) for h in hits) else np.zeros(0, int)
+                best[idx] = np.maximum(best[idx], m["margin_mm"][j, i])
+        out[side] = {"support_mm": best, "support_score": margin_score(best)}
     return out
 
 
