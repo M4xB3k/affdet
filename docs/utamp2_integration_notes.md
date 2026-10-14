@@ -7,7 +7,18 @@ file. Branch: `claude/dino-geometry-affordances-e32leg` (pushed, in sync).
 Supervisors (Pouya Niaz, Alejandro Agostini) want the thesis work integrated
 into UTAMP-2 (Niaz, Piater, Agostini, arXiv:2608.25641) for two affordances:
 **can grasp** and **can support**, using their predicate definitions.
-Supervisor meeting was Oct 14, 14:30 — record its outcome here.
+Supervisor meeting Oct 14, 14:30, outcome:
+- **Inter-object affordances.** The model looks at both objects and outputs pairwise
+  support (`isP2PSupportive`), not unary face labels matched afterwards.
+- **Labels must be exact,** from physics simulation (MuJoCo / PyBullet / CoppeliaSim
+  were named), not VLM guesses.
+- **Contact regions as heatmaps:** which pixels of each object take part, for support
+  and for grasping. A heatmap is more precise and less restrictive than a box face.
+- **Scope:** can grasp + can support first; can lift + can slide (swing when lifted)
+  later, with the same simulation machinery.
+
+See `reports/Inter-object affordances - heatmaps and simulation.md` for the research
+and the MuJoCo prototype (`affdet/sim/`).
 
 ## UTAMP-2 facts (read from the paper PDF)
 - Predicates (Table I): `isSupportive ?obj ?part`, `isSupportable ?obj ?part`,
@@ -204,4 +215,3 @@ predicate-noise → plan-success study on the 127 configurations.
    with the width rule.
 7. Licences: check the ~60 non-commercial objects and the 5 without a licence;
    confirm the ObjaTHOR annotation licence before redistributing the joined CSV.
-8. Supervisor meeting (Oct 14, 14:30): its outcome is still to be recorded here.

@@ -1,0 +1,271 @@
+"""MuJoCo prototype: simulation-checked support labels and contact heatmaps.
+
+Objects come from affdet.geometry.prepare (upright, metric, base at the
+origin). Collision shapes are a CoACD convex decomposition of the visual mesh,
+so concave objects (mugs, pans, trays) keep their cavities. Mass is spread
+uniformly over the decomposed volume (a solid-object approximation; hollow
+objects need a shell model later).
+
+- rest_test: put an object on a table with a given box face down, let go,
+  simulate, and report whether it stays (tilt and drift below thresholds).
+- stack_test: put object A on the table and object B centred on A's top
+  (the placement UTAMP-2 assumes), simulate, and report whether B stays on A.
+  It also returns the contact points between A and B, which become the
+  contact heatmap labels.
+"""
+from __future__ import annotations
+
+import math
+import os
+import tempfile
+from dataclasses import dataclass, field
+
+import numpy as np
+import trimesh
+
+FACE_DOWN = {  # rotation (axis, angle) that puts this face of the object down
+    "under": ([1, 0, 0], 0.0),
+    "on": ([1, 0, 0], math.pi),
+    "front": ([1, 0, 0], math.pi / 2),
+    "back": ([1, 0, 0], -math.pi / 2),
+    "left": ([0, 1, 0], -math.pi / 2),
+    "right": ([0, 1, 0], math.pi / 2),
+}
+
+
+def decompose(mesh: trimesh.Trimesh, threshold: float = 0.05, max_hulls: int = 24) -> list[trimesh.Trimesh]:
+    """Convex parts (CoACD). Falls back to the convex hull when decomposition fails."""
+    import coacd
+    coacd.set_log_level("error")
+    try:
+        parts = coacd.run_coacd(coacd.Mesh(mesh.vertices, mesh.faces), threshold=threshold,
+                                max_convex_hull=max_hulls, preprocess_mode="auto")
+        hulls = [trimesh.Trimesh(v, f).convex_hull for v, f in parts]
+        hulls = [h for h in hulls if h.volume > 1e-9]
+        if hulls:
+            return hulls
+    except Exception:
+        pass
+    return [mesh.convex_hull]
+
+
+@dataclass
+class Body:
+    name: str
+    parts: list  # convex trimesh parts in the object frame
+    mass: float
+    friction: float = 0.6
+    mesh_files: list = field(default_factory=list)
+
+    @property
+    def volume(self):
+        return sum(p.volume for p in self.parts)
+
+
+def _write_parts(body: Body, d: str):
+    body.mesh_files = []
+    for i, p in enumerate(body.parts):
+        f = os.path.join(d, f"{body.name}_{i}.obj")
+        p.export(f)
+        body.mesh_files.append(f)
+
+
+def _quat(axis, ang):
+    axis = np.asarray(axis, float)
+    return np.r_[math.cos(ang / 2), math.sin(ang / 2) * axis / np.linalg.norm(axis)]
+
+
+SIM = {"timestep": 0.002, "solref": "0.02 1", "roll": 0.0005}  # MuJoCo default contacts + small rolling friction (m)
+
+
+def build_xml(bodies: list[Body], poses: list[tuple[np.ndarray, np.ndarray]], timestep=None) -> str:
+    timestep = timestep or SIM["timestep"]
+    assets, worldbodies = [], []
+    for b, (pos, quat) in zip(bodies, poses):
+        dens = b.mass / b.volume
+        geoms = []
+        for i, f in enumerate(b.mesh_files):
+            assets.append(f'<mesh name="{b.name}_{i}" file="{f}"/>')
+            geoms.append(f'<geom type="mesh" mesh="{b.name}_{i}" density="{dens:.3f}" '
+                         f'friction="{b.friction} 0.005 {SIM["roll"]}" condim="6" solref="{SIM["solref"]}" rgba="0.6 0.7 0.9 1"/>')
+        worldbodies.append(f'<body name="{b.name}" pos="{pos[0]:.5f} {pos[1]:.5f} {pos[2]:.5f}" '
+                           f'quat="{quat[0]:.6f} {quat[1]:.6f} {quat[2]:.6f} {quat[3]:.6f}">'
+                           f'<freejoint/>{"".join(geoms)}</body>')
+    return f"""<mujoco>
+  <option timestep="{timestep}" gravity="0 0 -9.81" cone="elliptic" impratio="10"/>
+  <asset>{''.join(assets)}</asset>
+  <worldbody>
+    <geom name="table" type="plane" size="2 2 0.01" friction="0.6 0.005 {SIM["roll"]}" condim="6" solref="{SIM["solref"]}"/>
+    {''.join(worldbodies)}
+  </worldbody>
+</mujoco>"""
+
+
+def _lowest_z(parts, R):
+    return min((p.vertices @ R.T)[:, 2].min() for p in parts)
+
+
+def _place(body: Body, R: np.ndarray, xy=(0.0, 0.0), z_base=0.0, gap=0.001):
+    """Position so the rotated body's lowest point sits `gap` above z_base."""
+    z = z_base - _lowest_z(body.parts, R) + gap
+    return np.array([xy[0], xy[1], z])
+
+
+def _tilt_deg(q0, q1):
+    import mujoco
+    r0 = np.zeros(9); r1 = np.zeros(9)
+    mujoco.mju_quat2Mat(r0, q0); mujoco.mju_quat2Mat(r1, q1)
+    z0, z1 = r0.reshape(3, 3)[:, 2], r1.reshape(3, 3)[:, 2]
+    return math.degrees(math.acos(np.clip(z0 @ z1, -1, 1)))
+
+
+def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0):
+    """Build and step the scene. watch(data) is called every step of the last `window` seconds."""
+    import mujoco
+    with tempfile.TemporaryDirectory() as d:
+        for b in bodies:
+            _write_parts(b, d)
+        m = mujoco.MjModel.from_xml_string(build_xml(bodies, poses))
+    data = mujoco.MjData(m)
+    if kick is not None:  # initial (angular, linear) velocity of the last body
+        w, v = kick
+        a = m.jnt_dofadr[m.body(bodies[-1].name).jntadr[0]]
+        data.qvel[a:a + 3] = v
+        data.qvel[a + 3:a + 6] = w
+    mujoco.mj_forward(m, data)
+    q_start = [data.body(b.name).xquat.copy() for b in bodies]
+    p_start = [data.body(b.name).xpos.copy() for b in bodies]
+    n = int(seconds / m.opt.timestep)
+    n_watch = int(window / m.opt.timestep)
+    for k in range(n):
+        mujoco.mj_step(m, data)
+        if watch is not None and k >= n - n_watch:
+            watch(data)
+    return m, data, q_start, p_start
+
+
+def rest_test(body: Body, face: str, tilt_deg: float = 5.0, seed: int = 0, tilt_dir_deg: float | None = None,
+              ref_normal=None, settle_deg=3.0, max_drift=0.002, seconds=3.0) -> dict:
+    """Set the object down on `face` (tilted by tilt_deg about a horizontal axis), release it,
+    and watch the last second. It holds if the face normal ends within settle_deg of the
+    reference rest direction and the centre of mass has stopped moving.
+
+    ref_normal: the face normal's world direction in the untilted rest pose (from a first,
+    untilted drop); defaults to straight down. Tapered bodies rest a few degrees off their
+    box face, so the reference pose matters. This is the dynamic version of the static
+    tip-angle rule: a flat face rocks back; a round side stays tilted or rolls away.
+    """
+    from affdet.geometry.face_labels import FACES
+    axis, ang = FACE_DOWN[face]
+    R = trimesh.transformations.rotation_matrix(ang, axis)[:3, :3]
+    if tilt_deg:
+        if tilt_dir_deg is None:
+            ax = np.random.default_rng(seed).normal(size=3); ax[2] = 0
+        else:
+            a = math.radians(tilt_dir_deg); ax = np.array([math.cos(a), math.sin(a), 0.0])
+        R = trimesh.transformations.rotation_matrix(math.radians(tilt_deg), ax)[:3, :3] @ R
+    q = trimesh.transformations.quaternion_from_matrix(np.block([[R, np.zeros((3, 1))], [np.zeros((1, 3)), 1]]))
+    pos = _place(body, R)
+    n_obj = np.asarray(FACES[face], float)
+    ref = np.array([0, 0, -1.0]) if ref_normal is None else np.asarray(ref_normal, float)
+    offs, coms, last = [], [], {}
+
+    def watch(data):
+        n_world = data.body(body.name).xmat.reshape(3, 3) @ n_obj
+        offs.append(math.degrees(math.acos(np.clip(n_world @ ref, -1, 1))))
+        coms.append(data.body(body.name).xipos[:2].copy())
+        last["n"] = n_world
+
+    _simulate([body], [(pos, q)], seconds, watch=watch)
+    moving = float(np.linalg.norm(coms[-1] - coms[0]))  # centre-of-mass travel in the last second
+    worst = float(max(offs))
+    down_off = math.degrees(math.acos(np.clip(-last["n"][2], -1, 1)))
+    return {"face": face, "face_off_deg": worst, "late_motion_m": moving, "n_final": last["n"],
+            "down_off_deg": down_off, "stable": worst < settle_deg and moving < max_drift}
+
+
+def face_holds(body: Body, face: str, tilt_deg=8.0, directions=(0, 45, 90, 135, 180, 225, 270, 315),
+               max_rest_off_deg=20.0) -> dict:
+    """The face holds if (1) an untilted drop settles with the face within max_rest_off_deg of
+    down and stops moving, and (2) after tilting by tilt_deg in every direction it returns to
+    that same rest pose."""
+    ref = rest_test(body, face, tilt_deg=0, settle_deg=max_rest_off_deg)
+    if not ref["stable"]:
+        return {"face": face, "pass_frac": 0.0, "rest_off_deg": ref["down_off_deg"], "worst_off_deg": 180.0,
+                "holds": False}
+    res = [rest_test(body, face, tilt_deg=tilt_deg, tilt_dir_deg=d, ref_normal=ref["n_final"]) for d in directions]
+    return {"face": face, "pass_frac": sum(r["stable"] for r in res) / len(res), "rest_off_deg": ref["down_off_deg"],
+            "worst_off_deg": max(r["face_off_deg"] for r in res), "holds": all(r["stable"] for r in res)}
+
+
+def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
+               max_tilt=10.0, max_drift=0.01, seconds=2.0) -> dict:
+    """Put `top` centred (plus offset) on `base`'s upward side; does it stay on?"""
+    import mujoco
+    Rb = trimesh.transformations.rotation_matrix(FACE_DOWN[base_face][1], FACE_DOWN[base_face][0])
+    Rt = trimesh.transformations.rotation_matrix(FACE_DOWN[top_face][1], FACE_DOWN[top_face][0])
+    pb = _place(base, Rb[:3, :3])
+    base_top = max((p.vertices @ Rb[:3, :3].T)[:, 2].max() for p in base.parts) + pb[2]
+    # centre of the base's top box face; the top object drops onto whatever is there
+    pt = _place(top, Rt[:3, :3], xy=offset, z_base=base_top, gap=0.002)
+    qb = trimesh.transformations.quaternion_from_matrix(Rb)
+    qt = trimesh.transformations.quaternion_from_matrix(Rt)
+    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds)
+    tilt = _tilt_deg(q0[1], data.body(top.name).xquat)
+    drift = float(np.linalg.norm(data.body(top.name).xpos[:2] - p0[1][:2]))
+    drop = float(p0[1][2] - data.body(top.name).xpos[2])
+    base_id, top_id = m.body(base.name).id, m.body(top.name).id
+    contacts = []
+    for c in data.contact[: data.ncon]:
+        b1, b2 = m.geom_bodyid[c.geom1], m.geom_bodyid[c.geom2]
+        if {b1, b2} == {base_id, top_id}:
+            contacts.append(c.pos.copy())
+    contacts = np.array(contacts).reshape(-1, 3)
+    # contact points in each object's own (upright) frame, for heatmaps on the meshes
+    def to_local(name, R0):
+        # body-local coordinates are the object's own (upright) frame: geoms were built there
+        x = data.body(name).xpos; Rw = data.body(name).xmat.reshape(3, 3)
+        return (contacts - x) @ Rw
+    on_top = drop < 0.02 and tilt < max_tilt and drift < max_drift and len(contacts) > 0
+    poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
+             for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
+    return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": len(contacts), "poses": poses,
+            "stable": bool(on_top), "contacts_world": contacts,
+            "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,
+            "contacts_top": to_local(top.name, Rt) if len(contacts) else contacts}
+
+
+def heat_on_mesh(mesh: trimesh.Trimesh, points: np.ndarray, radius=0.008) -> np.ndarray:
+    """Per-vertex heat in [0, 1]: Gaussian falloff from the nearest contact point."""
+    if len(points) == 0:
+        return np.zeros(len(mesh.vertices))
+    from scipy.spatial import cKDTree
+    d, _ = cKDTree(points).query(mesh.vertices)
+    return np.exp(-0.5 * (d / radius) ** 2)
+
+
+def contact_region_heat(mesh_a: trimesh.Trimesh, pose_a, mesh_b: trimesh.Trimesh, pose_b,
+                        eps=0.003, max_edge=0.004):
+    """Heat on A's surface where it touches B in the settled pose (distance to B below eps).
+
+    MuJoCo reports only a few contact points per convex pair (3 for flat on flat), so the
+    label uses proximity instead: A is subdivided to max_edge and every vertex within eps of
+    B's surface is hot. pose = (xpos, xmat) of each body after the simulation.
+    Returns (subdivided A mesh in its own frame, per-vertex heat in [0, 1]).
+    """
+    v, f = trimesh.remesh.subdivide_to_size(mesh_a.vertices, mesh_a.faces, max_edge=max_edge, max_iter=12)
+    a = trimesh.Trimesh(v, f, process=False)
+    xa, Ra = pose_a[0], pose_a[1]
+    xb, Rb = pose_b[0], pose_b[1]
+    pts_world = a.vertices @ Ra.T + xa
+    b_world = mesh_b.copy()
+    b_world.apply_transform(np.block([[Rb, xb[:, None]], [np.zeros((1, 3)), 1]]))
+    # only vertices near B's bounding box need an exact distance
+    lo, hi = b_world.bounds
+    near = np.all((pts_world > lo - 2 * eps) & (pts_world < hi + 2 * eps), axis=1)
+    d = np.full(len(pts_world), np.inf)
+    if near.any():
+        _, dist, _ = trimesh.proximity.closest_point(b_world, pts_world[near])
+        d[near] = dist
+    heat = np.clip(1 - d / eps, 0, 1)
+    return a, heat

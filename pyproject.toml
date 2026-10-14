@@ -37,6 +37,11 @@ geometry = [
     "networkx>=3.0",
     "pyrender>=0.1.45",
 ]
+# Physics-checked support labels and contact heatmaps (affdet/sim).
+sim = [
+    "mujoco>=3.2",
+    "coacd>=1.0",
+]
 
 [project.scripts]
 affdet = "affdet.cli:app"
