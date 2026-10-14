@@ -148,3 +148,19 @@ def test_pair_map_has_a_map_on_each_side():
     assert set(m["a_face_margin_mm"]) == {"under", "front"}
     assert m["a_face_margin_mm"]["under"] > 0 and m["a_face_margin_mm"]["front"] > 0
     assert m["b_best_face"].max() <= 1
+
+
+def test_a_placement_that_overlaps_the_base_at_release_is_not_stable():
+    """A 10 cm box laid down across two thin walls 9.2 cm apart: the height probes under its footprint (within 80 % of
+    its half length) miss the walls, so it is released at the floor and starts inside them. It must not count as stable
+    however the solver pushes it out."""
+    from affdet.sim.mujoco_support import stack_test
+    floor = trimesh.creation.box([0.2, 0.2, 0.01]); floor.apply_translation([0, 0, 0.005])
+    w1 = trimesh.creation.box([0.006, 0.2, 0.1]); w1.apply_translation([-0.046, 0, 0.05])
+    w2 = trimesh.creation.box([0.006, 0.2, 0.1]); w2.apply_translation([0.046, 0, 0.05])
+    slot = Body("slot", [floor, w1, w2], 1.0)
+    bar = Body("bar", [_on_table(trimesh.creation.box([0.10, 0.03, 0.03]))], 0.2)
+    r = stack_test(slot, bar, "under", "under", offset=(0.0, 0.0), seconds=0.0)
+    assert r["release_penetration_m"] > 0.003 and not r["stable"]
+    small = Body("small", [_on_table(trimesh.creation.box([0.03, 0.03, 0.03]))], 0.1)
+    assert stack_test(slot, small, "under", "under", offset=(0.0, 0.0), seconds=0.0)["release_penetration_m"] <= 0.003
