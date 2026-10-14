@@ -138,6 +138,8 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, inf
             _write_parts(b, d)
         m = mujoco.MjModel.from_xml_string(build_xml(bodies, poses))
     data = mujoco.MjData(m)
+    if info is not None:
+        info["model"] = m
     if kick is not None:  # initial (angular, linear) velocity of the last body
         w, v = kick
         a = m.jnt_dofadr[m.body(bodies[-1].name).jntadr[0]]
@@ -311,7 +313,14 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     qb = trimesh.transformations.quaternion_from_matrix(Rb)
     qt = trimesh.transformations.quaternion_from_matrix(Rt)
     info = {}
-    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration)
+    touching = [0]  # most base-top contacts seen at any step of the last second: one step can show none while B rests on A (soft contacts jitter)
+
+    def watch(data):
+        mm = info["model"]
+        ids = {mm.body(base.name).id, mm.body(top.name).id}
+        touching[0] = max(touching[0], sum(1 for c in data.contact[: data.ncon] if {mm.geom_bodyid[c.geom1], mm.geom_bodyid[c.geom2]} == ids))
+
+    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch)
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
     # which says nothing about whether B stays on A
     def _mat(q):
@@ -353,10 +362,10 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     settled = w_end < 0.3 and v_end < 0.03
     clear = info["initial_penetration_m"] <= max_release_penetration
     on_top = (clear and settled and excess_drop < 0.01 and drop < 0.02 + expected_fall and tilt < max_tilt and drift < max_drift
-              and len(contacts) > 0)
+              and max(len(contacts), touching[0]) > 0)
     poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
-    return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": len(contacts), "poses": poses,
+    return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": max(len(contacts), touching[0]), "poses": poses,
             "stable": bool(on_top), "release_penetration_m": info["initial_penetration_m"], "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
             "surface_depth_m": float(base_top - surface_z), "contacts_world": contacts,
             "contacts_base": to_local(base.name, Rb) if len(contacts) else contacts,

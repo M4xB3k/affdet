@@ -1,6 +1,7 @@
 """Video of the placement simulation behind a pair map: A is released on B at chosen points and left to settle.
 
-    python scripts/sim_pair_video.py PAIR_PKL PICKS_JSON GLB_DIR SHAKER_CSV TOP_PREFIX BASE_ROLE BASE_INDEX OUT_MP4
+    python scripts/sim_pair_video.py PAIR_PKL PICKS_JSON GLB_DIR SHAKER_CSV TOP_SPEC BASE_SPEC OUT_MP4
+    (specs as in affdet/sim/registry.py, e.g. shaker:d00ef026 mug:0 bowl:1)
 
 Four clips side by side, picked from the stored map: the most robust placement, the same face at a point just
 outside the stable region, the middle of B (the planner's default), and a point far from every stable one. Each clip replays exactly what `stack_test` simulates (release 2 mm above the local surface,
@@ -97,17 +98,19 @@ def make_clip(base, top, face, x, y, size=360, seconds=2.0, fps=60):
 
 
 def main():
-    pkl, picks_json, glb, shaker_csv, top_prefix, base_role, base_idx, out = sys.argv[1:9]
+    import argparse
     import pickle
-    m = pickle.load(open(pkl, "rb"))
-    picks = json.load(open(picks_json))
-    cache = os.path.join(os.path.dirname(pkl), "coacd")
-    srow = [r for r in csv.DictReader(open(shaker_csv)) if r["object_uid"].startswith(top_prefix)][0]
-    top, _ = load_body(os.path.join(glb, srow["object_uid"] + ".glb"), float(srow["target_height_cm"]) / 100,
-                       float(srow["target_mass_kg"]), f"shaker_{top_prefix}", cache_dir=cache, convex=True)
-    r = picks[base_role][int(base_idx)]
-    base, _ = load_body(os.path.join(glb, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100,
-                        float(r["objathor_mass_kg"]), f"{base_role}{base_idx}", cache_dir=cache)
+
+    from affdet.sim.registry import Registry
+    ap = argparse.ArgumentParser()
+    ap.add_argument("pkl"); ap.add_argument("picks"); ap.add_argument("glb"); ap.add_argument("shaker_csv")
+    ap.add_argument("top"); ap.add_argument("base"); ap.add_argument("out")
+    a = ap.parse_args()
+    m = pickle.load(open(a.pkl, "rb"))
+    reg = Registry(a.picks, a.glb, a.shaker_csv, os.path.join(os.path.dirname(os.path.abspath(a.pkl)), "coacd"))
+    top, _ = reg.get(a.top)
+    base, _ = reg.get(a.base)
+    out = a.out
     clips = clips_from_map(m)
     allf = []
     for label, face, x, y, _ in clips:
@@ -134,7 +137,7 @@ def main():
                 dr.text((px + 4, py + 4), label, fill=(20, 110, 40) if stable else (170, 30, 30))
             t = min(max(i - hold, 0), n - 2 * hold - 1) / 60
             phase = "start pose, nothing moving yet" if i < hold else ("result" if i >= n - hold else "simulating")
-            dr.text((4, 744), f"t={t:.2f}s ({phase}). Playback at 40% speed. Released just above the surface under it. Green: stays on B.", fill="black")
+            dr.text((4, 744), f"{a.top} on {a.base}: t={t:.2f}s ({phase}). 40% speed. Green: stays on B.", fill="black")
             g.save(os.path.join(d, f"{i:04d}.png"))
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", "24", "-i", os.path.join(d, "%04d.png"),
                         "-c:v", "libx264", "-pix_fmt", "yuv420p", out], check=True)

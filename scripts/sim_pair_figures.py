@@ -1,6 +1,6 @@
 """Figure for a pair map: A placed on B, with a heatmap on each object.
 
-    python scripts/sim_pair_figures.py PAIR_PKL SHAKER_GLB SHAKER_HEIGHT_M BASE_GLB BASE_HEIGHT_M OUT_PNG [--cache DIR]
+    python scripts/sim_pair_figures.py PAIR_PKL PICKS_JSON GLB_DIR SHAKER_CSV TOP_SPEC BASE_SPEC OUT_PNG [--title T]
 
 Row 1 (on B): the grid map of how robustly A can be put down at each point (best over A's faces), and the same
 value painted on B's own surface, from above and at an angle. Row 2 (on A): how robustly each face works as the
@@ -28,13 +28,15 @@ from scripts.sim_map_render import lookup, render  # noqa: E402
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("pkl"); ap.add_argument("top_glb"); ap.add_argument("top_h", type=float)
-    ap.add_argument("base_glb"); ap.add_argument("base_h", type=float); ap.add_argument("out")
+    ap.add_argument("pkl"); ap.add_argument("picks"); ap.add_argument("glb"); ap.add_argument("shaker_csv")
+    ap.add_argument("top"); ap.add_argument("base"); ap.add_argument("out")
     ap.add_argument("--title", default="A on B")
     a = ap.parse_args()
     m = pickle.load(open(a.pkl, "rb"))
-    _, top = prepare(a.top_glb, a.top_h, "+y")
-    _, base = prepare(a.base_glb, a.base_h, "+y")
+    from affdet.sim.registry import Registry
+    reg = Registry(a.picks, a.glb, a.shaker_csv, "/tmp")
+    _, top = prepare(*reg.glb(a.top), "+y")
+    _, base = prepare(*reg.glb(a.base), "+y")
     faces = m["faces"]
     vmax = max(1.0, max(m["a_face_margin_mm"].values()))
     vb = max(1.0, float(m["b_margin_mm"].max()))
