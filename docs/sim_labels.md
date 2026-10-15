@@ -55,3 +55,21 @@ spread over parts by surface area, not by material. See the part-2 report for th
 point (inward, along the line to the object's centre) slides the object 12 cm without tipping it more than 10 degrees or turning
 it more than 25 degrees; 0 otherwise. `moved_frac`, `tilt_deg` and `yaw_deg` carry the measured outcome. The map is sampled at
 12 azimuths and 4 heights and painted on the mesh by nearest sample. The object settles for 1 s before the push.
+
+## Channel list (final export)
+
+| file | channel | dtype | meaning |
+|---|---|---|---|
+| `pair/*.B.npz` | `valid` | bool | upward-facing vertices (the position map is defined here) |
+| | `margin_mm`, `score` | f16 | where A's centre can be: robustness of the best face, and `clip(margin/20, 0, 1)` |
+| | `margin_mm_tilt5`, `margin_mm_tilt15` | f16 | the same with the tilt limit at 5 and 15 degrees |
+| | `best_face` | i8 | face of A achieving it (index into `meta.faces`, -1 none) |
+| | `support_mm`, `support_score` | f16 | where A touches B: best margin of the stable placements whose contact points lie within 1 cm of the vertex. Defined on every vertex (a rim's side walls count), not only on `valid` ones |
+| | `contact`, `contact_gap_mm` | i8, f16 | the contact region of the single most robust placement (`meta.contact_placement`), within 1 cm of a contact point |
+| `pair/*.A.npz` | `valid` | bool | vertices on the resting patch of a face that holds on a flat table |
+| | `margin_mm`, `score`, `margin_mm_tilt5`, `margin_mm_tilt15`, `face` | | the same per face of A |
+| | `support_mm`, `support_score`, `contact`, `contact_gap_mm` | | the same for A's own surface |
+| `grasp/*.npz` | `valid`, `held_frac`, `stable_frac` | | share of gripper yaws that lift and hold, and that also keep it within 30 degrees of level |
+| `slide/*.npz` | `valid`, `slide_score`, `moved_frac`, `tilt_deg`, `yaw_deg` | | outcome of the nearest push |
+
+Contact regions exist for 274 of the 276 pairs (two pairs have no stable placement). Every file lists its mesh in `meta.mesh` (`mesh/<name>.npz`); `affdet.sim.label_export.load(path, mesh_dir)` returns both.

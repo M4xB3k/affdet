@@ -18,6 +18,8 @@ Scope is unchanged: the proof of concept covers isP2PSupportive and canGrasp, ea
 
 The laptop needed more than an hour for 60 pairs at a coarse grid. The IFI cluster did 276 pairs at twice the resolution in about an hour, using one 16-core job per top object. One job ran at 4.4 s per 100 simulations against 19.7 s on the laptop, which was under memory pressure at the time. Code runs from a clone of your fork (`~/affdet-sim`), data under `/scratch/maksym.bek/sim/`, wrappers in `scripts/slurm_sim_*.sh`.
 
+Robustness of the final run: no solver failures and no crashes in about 540,000 simulations (the per-cell failure handler never fired), a median of 92 s per pair on 16 cores (90th percentile 188 s, maximum 318 s), and 2 of the 276 pairs have no stable placement at all (the 1.5 kg pan on two of the mugs).
+
 Results are saved outside git in `data/sim_results/2026-10-15/` (gitignored): raw maps, labels and the cluster logs' summaries.
 
 ## 2. Bugs the scale-up exposed

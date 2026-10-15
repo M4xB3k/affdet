@@ -35,3 +35,4 @@ Started 2026-10-15 00:00. Planned to run about 4 hours without input. Rules: pus
 - 01:44 Scale-out test: the other 35 single-object shakers as tops on the 18 bases (16 cells, full sweeps), 7 jobs x 5 shakers.
 - 02:25 v5 (with per-cell contact points) done; v4 vs v5: all 539,201 cell verdicts identical in all 276 maps (different nodes). Rebuilding labels from v5 with support channels, tilt variants and contact regions.
 - 02:28 Final galleries (support-channel mug gallery), refreshed pair figures, hex-shaker video with final rules; artifact updated (version 4); banners on parts 1 and 2 pointing to part 3.
+- 02:37 Final labels built from v5 (support channels, tilt variants, contact regions merged for 274 pairs); saved to data/sim_results/2026-10-15/labels (+ pair_maps_v5). Zero solver failures/crashes in the final matrix; 2 pairs with no stable placement.
