@@ -73,3 +73,20 @@ it more than 25 degrees; 0 otherwise. `moved_frac`, `tilt_deg` and `yaw_deg` car
 | `slide/*.npz` | `valid`, `slide_score`, `moved_frac`, `tilt_deg`, `yaw_deg` | | outcome of the nearest push |
 
 Contact regions exist for 274 of the 276 pairs (two pairs have no stable placement). Every file lists its mesh in `meta.mesh` (`mesh/<name>.npz`); `affdet.sim.label_export.load(path, mesh_dir)` returns both.
+
+## Loading a label (example)
+
+```python
+import numpy as np
+from affdet.sim.label_export import load
+
+root = "data/sim_results/2026-10-15/labels"
+arrays, meta = load(f"{root}/pair/bowl1_on_mug0.B.npz", mesh_dir=f"{root}/mesh")
+V, F = arrays["vertices"], arrays["faces"]             # the supporting object (mug 0) in its own upright metric frame
+support = arrays["support_score"].astype(float)         # 1 where a 2 cm placement error is tolerated, 0 where nothing holds
+on_rim = (support > 0.5) & (V[:, 2] > 0.10)             # e.g. the rim of a 12 cm mug carries the bowl
+print(meta["pair"], meta["faces"], f"{on_rim.sum()} of {len(V)} vertices carry the bowl robustly")
+```
+
+For a model that predicts a heatmap in image space, render these per-vertex values through the camera the detector sees
+(`scripts/sim_map_render.py` does it for the figures) and use `valid` to mask surfaces that cannot carry the label.

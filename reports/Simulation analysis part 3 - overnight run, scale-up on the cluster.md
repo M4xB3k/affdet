@@ -14,7 +14,7 @@ Scope is unchanged: the proof of concept covers isP2PSupportive and canGrasp, ea
 | canGrasp maps | 22 | one per object, grid scaled to the object's size |
 | canSlide maps | 22 | 12 push directions at 4 heights each |
 | Contact-region labels | 274 | the part of A that touches the part of B at the most robust placement |
-| Label files | 552 + 22 + 22 | per-vertex arrays, 113 MB without contacts; format in `docs/sim_labels.md` |
+| Label files | 552 + 22 + 22 | per-vertex arrays (position map, support, tilt variants, contact regions), 137 MB with the meshes; format in `docs/sim_labels.md` |
 
 The laptop needed more than an hour for 60 pairs at a coarse grid. The IFI cluster did 276 pairs at twice the resolution in about an hour, using one 16-core job per top object. One job ran at 4.4 s per 100 simulations against 19.7 s on the laptop, which was under memory pressure at the time. Code runs from a clone of your fork (`~/affdet-sim`), data under `/scratch/maksym.bek/sim/`, wrappers in `scripts/slurm_sim_*.sh`.
 
@@ -49,7 +49,7 @@ Share of B's grid that can carry the top with some face (mean over the pairs in 
 
 Sanity checks that hold: nothing stands on a bowl or wok base (they are round), almost nothing round sits on a mug, everything fits on a flat plate or board, and a square shaker (six resting faces) is supported far more widely than a round one (one resting face). The margins are large on boards and trays (10 to 15 cm) and small on mugs (1 to 4 cm).
 
-Figures: `figures/overnight/video_*.mp4` (six pairs, four placements each, 40% speed), `gallery_hex_shaker_faces_by_base.png`, and for the same mug painted for eight tops `figures/overnight/gallery_mug_*.png`.
+Figures: `figures/overnight/video_*.mp4` (six pairs, four placements each, 40% speed), `gallery_hex_shaker_faces_by_base.png`, and `gallery_mug.png`: the same mug painted with where each of eight tops touches it (the support channel). Round shakers use the floor and rim; the wide objects (bowl, wok, plate, pan) light only the rim.
 
 ## 4. How much do the choices matter
 
@@ -125,11 +125,11 @@ A flat pusher pushes an object that has settled on the table, horizontally towar
 - **Mass** is spread by surface area, not by material; friction is 0.6 everywhere.
 - **Bowls** are the weakest case for the analytic grasp model, and round-bottomed bowls show up as "slides" or "tips" depending on how they settle.
 - **The label scale** (score = margin / 20 mm, capped) is a choice; `margin_mm` is stored.
-- **canLift** is the lift phase of the grasp test (`held`); **canSlide** needs a second push direction convention (inward push only) before it can be called a label.
+- **canLift** is the lift phase of the grasp test (`held`); **canSlide** pushes only inward along the line to the object's centre, at 12 azimuths and 4 heights; pushes at other angles and with other pusher shapes are not tested, so it stays a prototype.
 
 ## 9. Suggested next steps
 
-1. Look at the 276 maps at full resolution for outliers, starting from the pairs whose most robust placement did not stay stable on re-run (14 of 274).
+1. Look through the 276 maps for outliers, starting with the pairs whose best margin is one grid cell (they are knife-edge placements, like the round shaker across a mug's rim ring).
 2. Decide the score definition and the tilt limit with your supervisor; both are cheap to change from the stored raw metrics.
 3. Add objects from other classes (bottles, plates, cups, boxes) to the matrix; the pipeline runs without changes (specs in `affdet/sim/registry.py`).
 4. Train a first model on `labels/` to see whether the heatmaps are learnable from images.
