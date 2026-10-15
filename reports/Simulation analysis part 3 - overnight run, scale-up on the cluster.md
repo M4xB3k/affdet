@@ -33,6 +33,7 @@ Every one of these changed numbers. None of them showed in the 46-shaker study o
 5. **Two stability definitions.** A single placement test used 0.3 rad/s and 1 cm limits, the stored maps 1.5 rad/s and 3 cm. For 14 of 274 best placements the two disagreed. One shared function now defines "stays" for both, with a test that every cell of a small map equals the single test there.
 6. **Videos did not show what the labels computed.** The clip builder still used the old release while the labels used the new one. It now calls the same lowering routine and warns if its final pose differs from the label run's by more than 5 mm.
 7. **The map on B painted where A's centre can be, not where A touches B.** A plate resting across a mug's rim lit up the mug's floor. Section 5 describes the extra support channel that fixes this.
+8. **The shaker up axis was ignored.** The shaker CSV gives two shakers an up axis of -x, and the object registry loaded every shaker with +y, so those two were simulated lying on their side. The pair maps for them (36) were wrong. The scale-out check in section 4d found it (their faces disagreed with the face study), the registry now passes the axis (and the renderers too), a test covers it, and the two were re-run. None of the 22 curated objects, nor any exported label, was affected: the other shakers and all role objects use +y.
 
 ## 3. isP2PSupportive: the 16 x 18 matrix
 
@@ -87,6 +88,24 @@ placements that overhang an edge and lean, a stricter limit makes the two sides 
 support polygon to work with and is simply wrong, while the simulator finds the real rim contacts (a pan balanced on a mug's rim, a plate on a rim):
 those are the cases a simulator is needed for. `docs/objaverse/static_vs_sim_placement_boards*.json`.
 
+## 4d. Scale-out: all single-object shakers as tops
+
+The 4 shakers of the matrix were joined by the other 35 single-object curated shakers (39 in total; 5 of the 44 curated rows contain two shakers in one mesh and are left out), each on the same 18 bases
+at 16 grid cells along the long side (630 more pair maps, 702 in all; full sweeps, `docs/objaverse/shaker_pair_maps_vs_face_study.json`). Which faces of each shaker get supported by at least one base, against the earlier
+simulated face study (`salt_shaker_sim_vs_static.csv`, tilt test plus a 5 mm settled margin) and against the static labeller:
+
+| | faces | agree |
+|---|---|---|
+| pair maps vs simulated face study | 234 | 234 (100.0 %) |
+| pair maps vs static labeller | 234 | 207 (88.5 %) |
+
+The agreement with the simulated study is expected to be high (both use the same face test), and what this checks is that every face that holds on a table does find a base that carries it, across 18 very different bases and 39 different shakers. Across the 39 shakers, 13 have one face that works, 11 two, 1 four, 6 five and 8 all six. The static labeller's 87 to 88 % matches the part 1 figure (87 %). Before the up-axis fix this check showed 5 mismatches, all from the two shakers
+that had been loaded lying down.
+
+## 4e. What the score means: survival under position error
+
+@@CAL@@
+
 ## 5. Which part of B carries A
 
 The map on B (`margin_mm`) answers "where can A's centre be". For a label of which part of B does the carrying that is the wrong question: the plate that rests across a mug's rim lights up the mug's floor. The export therefore has a second pair of channels, `support_mm` and `support_score`: for every vertex, the best margin among all stable placements whose contact points lie within 1 cm of it. Contact points are MuJoCo's own, collected over the last second and stored per sweep cell (object frames).
@@ -119,7 +138,7 @@ A flat pusher pushes an object that has settled on the table, horizontally towar
 
 ## 8. Limits and open items
 
-- **No independent reference.** There are no pair-level labels for these objects, so what validates the maps is the physics checks above, the agreement with the shaker face study (24 of 24 faces), and visual review of the videos.
+- **No independent reference.** There are no pair-level labels for these objects, so what validates the maps is the physics checks above, the agreement with the shaker face study (24 of 24 faces for the matrix shakers, 234 (100.0 %) for all of them), the geometry check on flat bases, and visual review of the videos and the audit.
 - **Coarse grids on large objects.** 32 cells along the long side gives 1 to 2 cm cells on boards and trays; margins are quantised to that.
 - **Faces that do not hold on a flat table are not swept**, so a round cap resting inside an opening is missed.
 - **Mass** is spread by surface area, not by material; friction is 0.6 everywhere.

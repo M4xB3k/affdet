@@ -1,0 +1,400 @@
+{
+ "shakers": 39,
+ "faces": 234,
+ "agree_with_study_sim": 234,
+ "agree_with_static_labeller": 207,
+ "pair_maps": 702,
+ "mismatches_vs_sim": [],
+ "rows": [
+  {
+   "shaker": "05308bf4",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "12a6366c",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left"
+   ]
+  },
+  {
+   "shaker": "1c1efeac",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "1e74c880",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "1f4e8a33",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "23a809f7",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "270b9b45",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "3437607e",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "38f7cb1a",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "3b9067f1",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "back",
+    "right"
+   ]
+  },
+  {
+   "shaker": "5ba5959e",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back"
+   ]
+  },
+  {
+   "shaker": "76fcdf15",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "77a7cef9",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "84430c48",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "86450daa",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "88067fa6",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "8ba8b8ba",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "9336ba99",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "9e4437be",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "a121f6c1",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "back"
+   ]
+  },
+  {
+   "shaker": "a7ebb51c",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "a991699c",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "af0dd478",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on"
+   ]
+  },
+  {
+   "shaker": "af166237",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "back"
+   ]
+  },
+  {
+   "shaker": "b1e7f11f",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "b8a406f8",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "b9e4fbb2",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "c1b8dde2",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "c442c916",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "c70225db",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "c994f981",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "cf8640d4",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "d00ef026",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "d8e2236b",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "right"
+   ]
+  },
+  {
+   "shaker": "e07a892b",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "left"
+   ]
+  },
+  {
+   "shaker": "e0b380d2",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  },
+  {
+   "shaker": "e2e86e27",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "e83afd6d",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under"
+   ]
+  },
+  {
+   "shaker": "f71db294",
+   "bases": 18,
+   "no_face_holds": 0,
+   "faces_that_work": [
+    "under",
+    "on",
+    "front",
+    "back",
+    "left",
+    "right"
+   ]
+  }
+ ]
+}
