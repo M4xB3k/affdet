@@ -1,5 +1,7 @@
 # Simulation analysis, part 2: pan grasp, mass model and pair support maps
 
+> **Updated 2026-10-15.** Section 1 (grasp) used pads that overshoot while closing (about 57 N with light pads, about 930 N with heavy ones instead of 30 N), and section 3 used the older release rule. The pan-handle cause (light pads sinking in) stands; the numbers are superseded by `Simulation analysis part 3 - overnight run, scale-up on the cluster.md`, which also lists what else changed.
+
 Scope: the proof of concept covers two predicates, **isP2PSupportive** (A placed on B) and **canGrasp**. Each label is a heatmap. canLift is the lift phase of the grasp test, and canSlide comes later. The simulator is the label source. Part 1 is `Simulation analysis - static vs simulated labels and actionability heatmaps.md`.
 
 ## 1. Pan grasp: found and fixed

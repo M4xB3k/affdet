@@ -1,5 +1,7 @@
 # Simulation analysis: static vs simulated labels, and actionability heatmaps
 
+> **Updated 2026-10-15.** The shaker face study (section 2) stands. The placement and grasp maps in sections 3 and later were made with earlier versions of the simulator; the corrected, full-resolution results are in `Simulation analysis part 3 - overnight run, scale-up on the cluster.md` (grasp pads, release rule, stability definition, 276 pair maps).
+
 Follow-up to `Inter-object affordances - heatmaps and simulation.md`. Everything here was re-run from scratch on
 the branch `sim-heatmap-analysis`; numbers come from the scripts listed in §7. Nothing was checked against a real
 robot or the UTAMP-2 scene.

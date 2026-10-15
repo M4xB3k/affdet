@@ -33,3 +33,5 @@ Started 2026-10-15 00:00. Planned to run about 4 hours without input. Rules: pus
 - 01:35 Audit of 36 random placements: fresh run reproduces the map 36/36; visual review of final frames: 34 physically right, 2 fragile (round shaker across mug rim ring, margin 5 mm), 1 undecidable view. Grasp/hex/contact galleries made; part-3 report drafted.
 - 01:43 Static geometry vs simulator on the 3 boards (48 pairs, 88,847 cells): flat faces agree on 84.9% (89.7% with a 3 deg tilt limit; the rest is boundary cells); on rim/ring faces the geometric rule has no support polygon (46%), where the simulator finds the real contacts.
 - 01:44 Scale-out test: the other 35 single-object shakers as tops on the 18 bases (16 cells, full sweeps), 7 jobs x 5 shakers.
+- 02:25 v5 (with per-cell contact points) done; v4 vs v5: all 539,201 cell verdicts identical in all 276 maps (different nodes). Rebuilding labels from v5 with support channels, tilt variants and contact regions.
+- 02:28 Final galleries (support-channel mug gallery), refreshed pair figures, hex-shaker video with final rules; artifact updated (version 4); banners on parts 1 and 2 pointing to part 3.

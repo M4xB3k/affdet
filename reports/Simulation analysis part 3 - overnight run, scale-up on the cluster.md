@@ -55,7 +55,7 @@ Figures: `figures/overnight/video_*.mp4` (six pairs, four placements each, 40% s
 - **Slide limit (3 cm).** 1 cm lowers the share by 3.6 points (68 maps move); 5 cm changes nothing.
 - **Friction.** 23 pairs at friction 0.4, 0.6 and 0.8: none moves by more than 10 points (most by 0 to 2, worst 7). Support labels barely depend on friction, as expected for horizontal surfaces. Grasp labels were not tested for it.
 - **Coarse-to-fine sweeps** (`placement_map_adaptive`): saves 39 to 60% of the simulations at factor 2 with 96.6 to 98.4% of cells unchanged against a fresh full sweep, and the same best margin in every case. They miss narrow stable regions: on a pan-on-tray map the stable set came out as a thin plus-shape with speckled borders. They are not used for the final labels.
-- **Reproducibility.** @@REPRO@@
+- **Reproducibility.** The final matrix was run twice on different cluster nodes (once without and once with per-cell contact points, same code otherwise): **all 539,201 cell verdicts are identical**, in all 276 maps. (A comparison made earlier in the night, between a stored map and a fresh run under different body names, had differed in 5 to 22 % of cells; that was dominated by two bugs since fixed, the single-step contact test and the stability definitions, and by cells at the very edge of the base.)
 
 ## 4b. Audit: are the verdicts physically right?
 
