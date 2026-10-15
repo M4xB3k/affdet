@@ -26,3 +26,26 @@ or none stable already.
 
 Combined estimate (not run end to end): refinement 0.52 x abort+reuse 0.64 = about 0.33 of the full cost, with the cell loss above.
 Lossless only: abort + reuse = 0.64.
+
+## End to end on the cluster (12 pairs, full 32-cell sweeps)
+
+Run: `--adaptive 2 --grow 1 --abort --reuse-model` against the same code without options, on the same node (job 1729217, 16 cores).
+Data: `docs/objaverse/speed_pilot_end_to_end.json`, script `scripts/sim_fast_vs_full.py`.
+Pairs: shakers (3) on mug / tray / board, pans on tray and board, mug on board and tray, bowl on mug, plate on bowl, wok on pan, tray on board, bowl on tray.
+
+| | fast | full | ratio |
+|---|---|---|---|
+| simulations | 11,735 | 19,720 | 0.595 |
+| wall time | 387 s | 764 s | 0.51 |
+| cells with the same verdict | 19,623 of 19,720 | | 99.5 % |
+| stable cells lost / invented | 79 / 18 (of 9,574 stable) | | 0.8 % lost |
+| best B-side margin | identical in all 12 pairs | | |
+| best margin of one face | one face off by 11 mm (pan 0 on tray 0) | | |
+
+The full run reproduced the stored labels exactly on the 11 pairs found in the stored set (0 cells differing).
+
+The measured cost is 0.51, not the 0.33 estimated from the separate pieces. The adaptive sweep simulated 59.5 % of the cells instead of
+52 % (more cells are refined on real sweeps than in the replay), and abort and model reuse save less once pool start-up and the two
+passes of the adaptive sweep are included. Per pair, the saving is large where most cells fail or the stable set is compact (shaker on
+mug 0.22, mug on tray 0.32, bowl on mug 0.39) and small where nearly all cells are stable (pan on board, tray on board 0.74).
+The adaptive sweep stores the contact points of an inherited cell from its nearest simulated corner, an approximation for the support labels.
