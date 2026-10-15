@@ -172,8 +172,11 @@ def lower_until_touching(m, data, body_name: str, z_lo: float, z_hi: float, tol=
     return z_star
 
 
+_MODELS = {}  # (key) -> (MjModel, MjData): the last model built with a `model_key`, see `_simulate`
+
+
 def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None, descend=None,
-              abort=None, skip_on_table=False):
+              abort=None, skip_on_table=False, model_key=None):
     """Build and step the scene. watch(data) is called every step of the last `window` seconds.
 
     If `info` is a dict it receives `initial_penetration_m`: how deeply the last body overlaps anything at t = 0.
@@ -184,13 +187,27 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, inf
 
     Speed options (off by default, so stored results are unchanged): `skip_on_table` returns without stepping when the descent
     reached the table, i.e. the body is not over anything; `abort(m, data, q_start, p_start)` is called every 25 steps and stops
-    the run when it returns True (`info["aborted_at"]` = seconds simulated)."""
+    the run when it returns True (`info["aborted_at"]` = seconds simulated). With `model_key` the compiled model is kept (one per
+    process) and the next call with the same key only resets it and sets the new start poses, instead of writing the meshes and
+    compiling again; the bodies must be the same, only their start poses may differ."""
     import mujoco
-    with tempfile.TemporaryDirectory() as d:
-        for b in bodies:
-            _write_parts(b, d)
-        m = mujoco.MjModel.from_xml_string(build_xml(bodies, poses))
-    data = mujoco.MjData(m)
+    cached = _MODELS.get(model_key) if model_key is not None else None
+    if cached is not None:
+        m, data = cached
+        mujoco.mj_resetData(m, data)
+        for b, (pos, quat) in zip(bodies, poses):
+            adr = m.jnt_qposadr[m.body(b.name).jntadr[0]]
+            data.qpos[adr:adr + 3] = pos
+            data.qpos[adr + 3:adr + 7] = quat
+    else:
+        with tempfile.TemporaryDirectory() as d:
+            for b in bodies:
+                _write_parts(b, d)
+            m = mujoco.MjModel.from_xml_string(build_xml(bodies, poses))
+        data = mujoco.MjData(m)
+        if model_key is not None:
+            _MODELS.clear()
+            _MODELS[model_key] = (m, data)
     if info is not None:
         info["model"] = m
     if kick is not None:  # initial (angular, linear) velocity of the last body
@@ -351,7 +368,7 @@ def surface_height(base: Body, Rb, pb, points) -> float:
 
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
                max_tilt=STABILITY["max_tilt"], max_drift=STABILITY["max_drift"], seconds=2.0, release="descend",
-               max_release_penetration=STABILITY["max_release_penetration"], fast=None) -> dict:
+               max_release_penetration=STABILITY["max_release_penetration"], fast=None, reuse_model=False) -> dict:
     """Put `top` at `offset` on `base`'s upward side; does it stay on?
 
     release="descend" (default): B is held above the offset point and lowered straight down until it first touches
@@ -366,7 +383,8 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
 
     `fast` (default None = the full run that made the stored labels) is a dict of speed options: `on_table` (skip placements
     where B is not over A at all), `abort_drift_m` / `abort_tilt_deg` (stop once B has clearly left A: drifted or tilted far
-    beyond the limits). A cut-short placement is reported with 0 contacts, so the map's finalizer rejects it too.
+    beyond the limits). `reuse_model=True` keeps the compiled model between calls on the same bodies and faces (a sweep), which
+    saves the mesh export and compile of every placement. A cut-short placement is reported with 0 contacts, so the map's finalizer rejects it too.
     """
     import mujoco
     Rb = trimesh.transformations.rotation_matrix(FACE_DOWN[base_face][1], FACE_DOWN[base_face][0])
@@ -421,7 +439,8 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
             d = Ra.T @ (xt.xpos - xa.xpos) - ra.T @ (p_s[1] - p_s[0])
             return tilt_now > lim_t or float(np.linalg.norm(d[:2])) > lim_d
     m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch, descend=descend,
-                                abort=abort, skip_on_table=bool(fast.get("on_table")))
+                                abort=abort, skip_on_table=bool(fast.get("on_table")),
+                                model_key=(base.name, top.name, base_face, top_face, id(base), id(top)) if reuse_model else None)
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
     # which says nothing about whether B stays on A
     def _mat(q):

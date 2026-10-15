@@ -17,6 +17,8 @@ from affdet.sim.registry import Registry  # noqa: E402
 
 VARIANTS = {
     "full": dict(seconds=2.0, fast=None),
+    "reuse": dict(seconds=2.0, fast=None, reuse_model=True),
+    "abort+reuse": dict(seconds=2.0, fast={"abort_drift_m": 0.06, "abort_tilt_deg": 30.0}, reuse_model=True),
     "table": dict(seconds=2.0, fast={"on_table": True}),
     "abort": dict(seconds=2.0, fast={"abort_drift_m": 0.06, "abort_tilt_deg": 30.0}),
     "abort_tight": dict(seconds=2.0, fast={"abort_drift_m": 0.045, "abort_tilt_deg": 20.0}),
@@ -36,7 +38,7 @@ def _run(a):
     t = time.time()
     r = stack_test(G["base"], G["top"], "under", face, offset=xy, **VARIANTS[v])
     ok = bool(placement_stable(r["n_contacts"], r["tilt_deg"], r["drift_m"], r["excess_drop_m"], r["w_end"], r["v_end"], r["release_penetration_m"]))
-    return ok, time.time() - t, r["aborted_at"], r["on_table"]
+    return ok, time.time() - t, r["aborted_at"], r["on_table"], (r["tilt_deg"], r["drift_m"], r["w_end"], r["v_end"])
 
 
 def main():
@@ -44,7 +46,7 @@ def main():
     ap.add_argument("picks"); ap.add_argument("glb"); ap.add_argument("shaker_csv"); ap.add_argument("cache"); ap.add_argument("out")
     ap.add_argument("--pairs", nargs="+", required=True); ap.add_argument("--n", type=int, default=120)
     ap.add_argument("--procs", type=int, default=16); ap.add_argument("--cells", type=int, default=32)
-    ap.add_argument("--variants", nargs="+", default=list(VARIANTS))
+    ap.add_argument("--variants", nargs="+", default=list(VARIANTS))  # e.g. --variants full reuse abort+reuse
     a = ap.parse_args()
     reg = Registry(a.picks, a.glb, a.shaker_csv, a.cache)
     rng = np.random.default_rng(0)
@@ -65,11 +67,13 @@ def main():
                 rr = p.map(_run, [(f, xy, v) for f, xy in pick], chunksize=2)
             wall = time.time() - t0
             ok = np.array([r[0] for r in rr]); cpu = sum(r[1] for r in rr)
+            met = np.array([r[4] for r in rr])
             if v == "full":
-                ref, ref_cpu = ok, cpu
+                ref, ref_cpu, ref_met = ok, cpu, met
             out["variants"][v] = {"stable_ref": int(ref.sum()), "agree": int((ok == ref).sum()), "false_stable": int((ok & ~ref).sum()),
                                   "false_fail": int((~ok & ref).sum()), "cpu_s": round(cpu, 1), "cpu_vs_full": round(cpu / ref_cpu, 3),
-                                  "wall_s": round(wall, 1), "aborted": int(sum(r[2] is not None for r in rr)), "on_table": int(sum(r[3] for r in rr))}
+                                  "wall_s": round(wall, 1), "aborted": int(sum(r[2] is not None for r in rr)), "on_table": int(sum(r[3] for r in rr)),
+                                  "max_abs_diff_tilt_drift_w_v": [float(x) for x in np.abs(met - ref_met).max(0)]}
             print(pr, v, out["variants"][v], flush=True)
         res.append(out)
         json.dump(res, open(a.out, "w"), indent=1)
