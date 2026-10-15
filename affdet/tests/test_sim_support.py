@@ -283,3 +283,19 @@ def test_registry_passes_the_per_object_up_axis_to_the_shakers_and_to_rendering(
     reg = Registry(str(tmp_path / "picks.json"), str(tmp_path), str(csv_path), str(tmp_path))
     assert reg.glb("shaker:aaaaaaaa")[2] == "-x" and reg.glb("shaker:bbbbbbbb")[2] == "+y"
     assert reg.glb("shaker:aaaaaaaa")[1] == 0.09
+
+
+def test_speed_options_keep_the_verdicts_of_a_small_sweep():
+    """Aborting a placement that has clearly left the base, and reusing the compiled model, give the full run's verdicts; the adaptive
+    sweep with `grow` simulates a superset of the cells of the one without it and agrees with the full sweep on this slab."""
+    from affdet.sim.placement_map import placement_map, placement_map_adaptive
+    base = Body("slab", [_on_table(trimesh.creation.box([0.12, 0.12, 0.02]))], 1.0)
+    top = Body("box", [_on_table(trimesh.creation.box([0.05, 0.05, 0.05]))], 0.2)
+    ext = (0.2, 0.2)  # reaches well beyond the slab: some cells are off it
+    full = placement_map(base, top, ext, step=0.025, procs=2)
+    fast = placement_map(base, top, ext, step=0.025, procs=2, fast={"abort_drift_m": 0.06, "abort_tilt_deg": 30.0}, reuse_model=True)
+    assert (fast["stable"] == full["stable"]).all() and full["stable"].any() and not full["stable"].all()
+    a0 = placement_map_adaptive(base, top, ext, step=0.025, factor=2, procs=2)
+    a1 = placement_map_adaptive(base, top, ext, step=0.025, factor=2, grow=1, procs=2, fast={"abort_drift_m": 0.06, "abort_tilt_deg": 30.0}, reuse_model=True)
+    assert a1["n_simulated"] >= a0["n_simulated"]
+    assert (a1["stable"] == full["stable"]).mean() >= 0.9

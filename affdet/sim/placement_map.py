@@ -13,7 +13,7 @@ from __future__ import annotations
 from multiprocessing import Pool
 
 import numpy as np
-from scipy.ndimage import distance_transform_edt
+from scipy.ndimage import binary_dilation, distance_transform_edt
 
 from affdet.sim.mujoco_support import Body, placement_stable, stack_test
 
@@ -23,13 +23,13 @@ ON_TOP_DEPTH_M = 0.015  # B resting this far or less below A's highest point is 
 _G = {}
 
 
-def _init(base, top, base_face, top_face):
-    _G.update(base=base, top=top, base_face=base_face, top_face=top_face)
+def _init(base, top, base_face, top_face, fast=None, reuse_model=False):
+    _G.update(base=base, top=top, base_face=base_face, top_face=top_face, fast=fast, reuse_model=reuse_model)
 
 
 def _one(xy):
     try:
-        r = stack_test(_G["base"], _G["top"], _G["base_face"], _G["top_face"], offset=tuple(xy))
+        r = stack_test(_G["base"], _G["top"], _G["base_face"], _G["top_face"], offset=tuple(xy), fast=_G["fast"], reuse_model=_G["reuse_model"])
     except Exception as e:  # a solver failure (e.g. out of arena memory with hundreds of contacts) fails that placement, not the sweep
         import sys
         print(f"stack_test failed at {tuple(xy)}: {e}", file=sys.stderr, flush=True)
@@ -40,12 +40,12 @@ def _one(xy):
 
 def placement_map(base: Body, top: Body, extent_xy, step=0.01, base_face="under", top_face="under", procs=8,
                   max_tilt=10.0, max_drift=0.03, max_excess_drop=0.01, max_w=1.5, max_v=0.1,
-                  max_release_penetration=RELEASE_PENETRATION_M) -> dict:
+                  max_release_penetration=RELEASE_PENETRATION_M, fast=None, reuse_model=False) -> dict:
     """Grid sweep over x, y in [-extent/2, +extent/2] (A's object frame, centred footprint)."""
     xs = np.arange(-extent_xy[0] / 2, extent_xy[0] / 2 + 1e-9, step)
     ys = np.arange(-extent_xy[1] / 2, extent_xy[1] / 2 + 1e-9, step)
     pts = [(x, y) for y in ys for x in xs]
-    with Pool(procs, initializer=_init, initargs=(base, top, base_face, top_face)) as p:
+    with Pool(procs, initializer=_init, initargs=(base, top, base_face, top_face, fast, reuse_model)) as p:
         res = p.map(_one, pts, chunksize=4)
     shape = (len(ys), len(xs))
     contacts = np.array([r[0] for r in res]).reshape(shape)
@@ -67,12 +67,16 @@ def placement_map(base: Body, top: Body, extent_xy, step=0.01, base_face="under"
 
 
 def placement_map_adaptive(base: Body, top: Body, extent_xy, step=0.01, factor=3, base_face="under", top_face="under", procs=8,
-                           **kw) -> dict:
+                           grow=0, fast=None, reuse_model=False, **kw) -> dict:
     """Coarse-to-fine version of `placement_map`: the same fine grid, far fewer simulations.
 
     Every `factor`-th cell is simulated first. A fine cell whose four enclosing coarse cells all agree (all stable or all
     failing) inherits that value; the rest, the cells near a boundary, are simulated. A stable island narrower than the
     coarse spacing can be missed, so `factor` trades cost against that risk. `n_simulated` / `n_cells` report the saving.
+
+    `grow=k` also simulates every cell within k cells (4-neighbourhood) of a stable coarse cell, which makes the margins at the edge
+    of a stable region exact (scripts/sim_grid_pilot.py). `fast` and `reuse_model` are passed to `stack_test`. An inherited cell
+    copies the metrics and contact points of its nearest simulated corner.
     """
     xs = np.arange(-extent_xy[0] / 2, extent_xy[0] / 2 + 1e-9, step)
     ys = np.arange(-extent_xy[1] / 2, extent_xy[1] / 2 + 1e-9, step)
@@ -86,13 +90,15 @@ def placement_map_adaptive(base: Body, top: Body, extent_xy, step=0.01, factor=3
     fields = ("n_contacts", "drop_m", "tilt_deg", "drift_m", "surface_depth_m", "excess_drop_m", "w_end", "v_end", "release_penetration_m")
     arr = {k: np.zeros((ny, nx)) for k in fields}
     done = np.zeros((ny, nx), bool)
+    pb = np.empty((ny, nx), dtype=object); pt = np.empty((ny, nx), dtype=object)
 
     def run(cells):
-        with Pool(procs, initializer=_init, initargs=(base, top, base_face, top_face)) as p:
+        with Pool(procs, initializer=_init, initargs=(base, top, base_face, top_face, fast, reuse_model)) as p:
             res = p.map(_one, [(xs[i], ys[j]) for j, i in cells], chunksize=4)
         for (j, i), r in zip(cells, res):
             for k, v in zip(fields, r):
                 arr[k][j, i] = v
+            pb[j, i], pt[j, i] = r[9], r[10]
             done[j, i] = True
 
     run([(j, i) for j in cy for i in cx])
@@ -107,6 +113,15 @@ def placement_map_adaptive(base: Body, top: Body, extent_xy, step=0.01, factor=3
             corners = {probe[lo_y[j], lo_x[i]], probe[lo_y[j], hi_x[i]], probe[hi_y[j], lo_x[i]], probe[hi_y[j], hi_x[i]]}
             if len(corners) > 1:
                 need.append((j, i))
+    if grow:
+        seeds = np.zeros((ny, nx), bool)
+        for j in cy:
+            for i in cx:
+                seeds[j, i] = probe[j, i]
+        near = binary_dilation(seeds, iterations=grow) & ~done
+        have = set(need)
+        need += [(j, i) for j, i in zip(*np.nonzero(near)) if (j, i) not in have]
+    need.sort(key=lambda c: (c[0], c[1]))
     run(need)
     # inherited cells copy the metrics of their nearest simulated corner, so `finalize` gives them the same verdict
     for j in range(ny):
@@ -116,8 +131,10 @@ def placement_map_adaptive(base: Body, top: Body, extent_xy, step=0.01, factor=3
                 ii = lo_x[i] if (i - lo_x[i]) <= (hi_x[i] - i) else hi_x[i]
                 for k in fields:
                     arr[k][j, i] = arr[k][jj, ii]
+                pb[j, i], pt[j, i] = pb[jj, ii], pt[jj, ii]
     out = {"xs": xs, "ys": ys, "step": step, **arr}
     out["n_contacts"] = arr["n_contacts"].astype(int)
+    out["contact_pts_base"], out["contact_pts_top"] = pb, pt
     out = finalize(out, **kw)
     out["n_simulated"] = int(done.sum()); out["n_cells"] = int(done.size)
     return out

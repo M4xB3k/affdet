@@ -35,7 +35,8 @@ def face_supports(top: Body, face: str) -> bool:
 
 
 def pair_map(base: Body, top: Body, extent_xy, step=0.01, faces=tuple(FACE_DOWN), prefilter=True, procs=8,
-             face_ok: dict | None = None, reuse: dict | None = None, adaptive: int = 0, **kw) -> dict:
+             face_ok: dict | None = None, reuse: dict | None = None, adaptive: int = 0, grow: int = 0, fast: dict | None = None,
+             reuse_model: bool = False, **kw) -> dict:
     per_face, skipped = {}, []
     for f in faces:
         if prefilter:
@@ -46,9 +47,9 @@ def pair_map(base: Body, top: Body, extent_xy, step=0.01, faces=tuple(FACE_DOWN)
         if reuse and f in reuse:
             per_face[f] = reuse[f]
         elif adaptive >= 2:
-            per_face[f] = placement_map_adaptive(base, top, extent_xy, step=step, factor=adaptive, top_face=f, procs=procs, **kw)
+            per_face[f] = placement_map_adaptive(base, top, extent_xy, step=step, factor=adaptive, top_face=f, procs=procs, grow=grow, fast=fast, reuse_model=reuse_model, **kw)
         else:
-            per_face[f] = placement_map(base, top, extent_xy, step=step, top_face=f, procs=procs, **kw)
+            per_face[f] = placement_map(base, top, extent_xy, step=step, top_face=f, procs=procs, fast=fast, reuse_model=reuse_model, **kw)
     if not per_face:
         raise ValueError("no face of the top object holds on a table")
     return aggregate(per_face, faces, skipped, step)

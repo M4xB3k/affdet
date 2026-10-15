@@ -27,6 +27,9 @@ def main():
     ap.add_argument("--cells", type=int, default=16, help="grid cells along the base's longer side")
     ap.add_argument("--adaptive", type=int, default=0, help="coarse-to-fine factor (2 recommended), 0 = full sweeps")
     ap.add_argument("--skip-same", action="store_true", help="skip a spec on itself")
+    ap.add_argument("--grow", type=int, default=0, help="with --adaptive: also simulate cells within this many cells of a stable coarse cell")
+    ap.add_argument("--abort", action="store_true", help="stop a placement once the top has clearly left the base (drift > 6 cm or tilt > 30 deg); same verdicts, less time")
+    ap.add_argument("--reuse-model", action="store_true", help="keep the compiled model between placements of a sweep (about 11 %% faster)")
     ap.add_argument("--friction", type=float, default=0.6, help="friction coefficient of all objects (sensitivity runs)")
     ap.add_argument("--procs", type=int, default=8, help="worker processes (one per CPU core you have)")
     a = ap.parse_args()
@@ -50,7 +53,8 @@ def main():
             step = max(0.005, round(max(ext[:2]) / a.cells, 3))
             t0 = time.time()
             try:
-                m = pair_map(base, top, ext[:2], step=step, face_ok=face_ok[top_s], adaptive=a.adaptive, procs=a.procs)
+                m = pair_map(base, top, ext[:2], step=step, face_ok=face_ok[top_s], adaptive=a.adaptive, grow=a.grow, procs=a.procs,
+                             fast={"abort_drift_m": 0.06, "abort_tilt_deg": 30.0} if a.abort else None, reuse_model=a.reuse_model)
             except ValueError as e:
                 rec = {"pair": name, "top": top_s, "base": base_s, "error": str(e), "face_ok": face_ok[top_s]}
             else:
@@ -63,7 +67,7 @@ def main():
                        "a_face_margin_mm": {f: round(v, 1) for f, v in m["a_face_margin_mm"].items()},
                        "a_face_stable_frac": {f: round(v, 3) for f, v in m["a_face_stable_frac"].items()},
                        "best_b_margin_mm": round(float(m["b_margin_mm"].max()), 1), "simulations": sims, "cells": cells,
-                       "adaptive": a.adaptive, "seconds": round(time.time() - t0, 1)}
+                       "adaptive": a.adaptive, "grow": a.grow, "abort": a.abort, "reuse_model": a.reuse_model, "seconds": round(time.time() - t0, 1)}
             with open(log, "a") as f:
                 f.write(json.dumps(rec) + "\n")
             print(json.dumps(rec), flush=True)
