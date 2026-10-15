@@ -58,7 +58,7 @@ def main():
         ext = bm.extents; step = max(0.005, round(max(ext[:2]) / a.cells, 3))
         xs = np.arange(-ext[0] / 2, ext[0] / 2 + 1e-9, step); ys = np.arange(-ext[1] / 2, ext[1] / 2 + 1e-9, step)
         cells = [(f, (float(x), float(y))) for f in faces for y in ys for x in xs]
-        pick = [cells[i] for i in rng.choice(len(cells), min(a.n, len(cells)), replace=False)]
+        pick = sorted((cells[i] for i in rng.choice(len(cells), min(a.n, len(cells)), replace=False)), key=lambda c: c[0])  # grouped by face, as in a sweep (the model cache is per face)
         out = {"pair": pr, "faces": faces, "grid_cells_per_face": len(xs) * len(ys), "n": len(pick), "variants": {}}
         ref = None
         for v in a.variants:
