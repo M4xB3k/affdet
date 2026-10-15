@@ -37,3 +37,4 @@ Started 2026-10-15 00:00. Planned to run about 4 hours without input. Rules: pus
 - 02:28 Final galleries (support-channel mug gallery), refreshed pair figures, hex-shaker video with final rules; artifact updated (version 4); banners on parts 1 and 2 pointing to part 3.
 - 02:37 Final labels built from v5 (support channels, tilt variants, contact regions merged for 274 pairs); saved to data/sim_results/2026-10-15/labels (+ pair_maps_v5). Zero solver failures/crashes in the final matrix; 2 pairs with no stable placement.
 - 02:38 BUG found by validating 36 shakers against the face study: two shakers (a121f6c1, e07a892b) have up_axis=-x in the CSV and the registry ignored it, so their pair maps (36) were simulated lying down. Registry now passes the up axis (also to rendering); re-running those two.
+- 02:39 Removed the invalid records of the two -x shakers from the scale-out groups and re-submitted them (fix job).
