@@ -172,14 +172,19 @@ def lower_until_touching(m, data, body_name: str, z_lo: float, z_hi: float, tol=
     return z_star
 
 
-def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None, descend=None):
+def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, info=None, skip_if_penetration=None, descend=None,
+              abort=None, skip_on_table=False):
     """Build and step the scene. watch(data) is called every step of the last `window` seconds.
 
     If `info` is a dict it receives `initial_penetration_m`: how deeply the last body overlaps anything at t = 0.
     With `skip_if_penetration` set, a start deeper than that returns without stepping (the result is already decided).
     With `descend=(z_lo, z_hi)` the last body is first lowered straight down from z_hi to the lowest height in [z_lo, z_hi]
     at which it overlaps nothing (bisection on the body's height), i.e. until it first touches something, as a robot does
-    when it puts an object down; it is then released 0.5 mm above that height."""
+    when it puts an object down; it is then released 0.5 mm above that height.
+
+    Speed options (off by default, so stored results are unchanged): `skip_on_table` returns without stepping when the descent
+    reached the table, i.e. the body is not over anything; `abort(m, data, q_start, p_start)` is called every 25 steps and stops
+    the run when it returns True (`info["aborted_at"]` = seconds simulated)."""
     import mujoco
     with tempfile.TemporaryDirectory() as d:
         for b in bodies:
@@ -206,12 +211,19 @@ def _simulate(bodies, poses, seconds=2.0, kick=None, watch=None, window=1.0, inf
         if skip_if_penetration is not None and info["initial_penetration_m"] > skip_if_penetration:
             seconds = 0.0
             info["skipped"] = True
+    if skip_on_table and descend is not None and info is not None and info["descent_m"] >= descend[1] - descend[0] - 1e-6:
+        seconds = 0.0
+        info["on_table"] = True
     q_start = [data.body(b.name).xquat.copy() for b in bodies]
     p_start = [data.body(b.name).xpos.copy() for b in bodies]
     n = int(seconds / m.opt.timestep)
     n_watch = int(window / m.opt.timestep)
     for k in range(n):
         mujoco.mj_step(m, data)
+        if abort is not None and k % 25 == 24 and abort(m, data, q_start, p_start):
+            if info is not None:
+                info["aborted_at"] = (k + 1) * m.opt.timestep
+            break
         if watch is not None and k >= n - n_watch:
             watch(data)
     return m, data, q_start, p_start
@@ -339,7 +351,7 @@ def surface_height(base: Body, Rb, pb, points) -> float:
 
 def stack_test(base: Body, top: Body, base_face="under", top_face="under", offset=(0.0, 0.0),
                max_tilt=STABILITY["max_tilt"], max_drift=STABILITY["max_drift"], seconds=2.0, release="descend",
-               max_release_penetration=STABILITY["max_release_penetration"]) -> dict:
+               max_release_penetration=STABILITY["max_release_penetration"], fast=None) -> dict:
     """Put `top` at `offset` on `base`'s upward side; does it stay on?
 
     release="descend" (default): B is held above the offset point and lowered straight down until it first touches
@@ -351,6 +363,10 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     A placement where B already overlaps A by more than `max_release_penetration` at release (a 9 cm shaker laid
     down across a 8 cm mug) cannot be made by a robot, and the solver pushes it out in arbitrary directions: it does
     not count as stable. `seconds=0` runs only this check.
+
+    `fast` (default None = the full run that made the stored labels) is a dict of speed options: `on_table` (skip placements
+    where B is not over A at all), `abort_drift_m` / `abort_tilt_deg` (stop once B has clearly left A: drifted or tilted far
+    beyond the limits). A cut-short placement is reported with 0 contacts, so the map's finalizer rejects it too.
     """
     import mujoco
     Rb = trimesh.transformations.rotation_matrix(FACE_DOWN[base_face][1], FACE_DOWN[base_face][0])
@@ -389,7 +405,23 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
         if step_no[0] % 20 == 0:
             window_pts.extend(here)
 
-    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch, descend=descend)
+    fast = fast or {}
+    abort = None
+    if "abort_drift_m" in fast or "abort_tilt_deg" in fast:
+        lim_d, lim_t = fast.get("abort_drift_m", 1e9), fast.get("abort_tilt_deg", 1e9)
+
+        def abort(mm, dd, q_s, p_s):
+            # B's motion relative to A, the same measures as the verdict below
+            ra, rt = np.zeros(9), np.zeros(9)
+            mujoco.mju_quat2Mat(ra, q_s[0]); mujoco.mju_quat2Mat(rt, q_s[1])
+            ra, rt = ra.reshape(3, 3), rt.reshape(3, 3)
+            xa, xt = dd.body(base.name), dd.body(top.name)
+            Ra = xa.xmat.reshape(3, 3)
+            tilt_now = math.degrees(math.acos(np.clip((np.trace((ra.T @ rt).T @ (Ra.T @ xt.xmat.reshape(3, 3))) - 1) / 2, -1, 1)))
+            d = Ra.T @ (xt.xpos - xa.xpos) - ra.T @ (p_s[1] - p_s[0])
+            return tilt_now > lim_t or float(np.linalg.norm(d[:2])) > lim_d
+    m, data, q0, p0 = _simulate([base, top], [(pb, qb), (pt, qt)], seconds, info=info, skip_if_penetration=max_release_penetration, watch=watch, descend=descend,
+                                abort=abort, skip_on_table=bool(fast.get("on_table")))
     # motion of the top object relative to the base: soft contacts let the whole stack creep a few mm,
     # which says nothing about whether B stays on A
     def _mat(q):
@@ -429,11 +461,13 @@ def stack_test(base: Body, top: Body, base_face="under", top_face="under", offse
     w_end = float(np.linalg.norm(vt[:3] - vb[:3]))
     v_end = float(np.linalg.norm(vt[3:] - vb[3:]))
     n_touch = max(len(contacts), touching[0])
+    if "aborted_at" in info or info.get("on_table"):
+        n_touch = 0  # B left A (or was never over it): the verdict is 'does not stay'
     on_top = bool(placement_stable(n_touch, tilt, drift, excess_drop, w_end, v_end, info["initial_penetration_m"], max_tilt=max_tilt,
                                    max_drift=max_drift, max_release_penetration=max_release_penetration))
     poses = {k: (data.body(n).xpos.copy(), data.body(n).xmat.reshape(3, 3).copy(), R0[:3, :3])
              for k, n, R0 in (("base", base.name, Rb), ("top", top.name, Rt))}
-    return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": max(len(contacts), touching[0]), "poses": poses,
+    return {"tilt_deg": tilt, "drift_m": drift, "drop_m": drop, "n_contacts": n_touch, "aborted_at": info.get("aborted_at"), "on_table": info.get("on_table", False), "poses": poses,
             "stable": bool(on_top), "release_penetration_m": info["initial_penetration_m"], "expected_fall_m": expected_fall, "excess_drop_m": excess_drop, "w_end": w_end, "v_end": v_end,
             "surface_depth_m": float(base_top - (np.concatenate([p.vertices for p in top.parts]) @ data.body(top.name).xmat.reshape(3, 3).T + data.body(top.name).xpos)[:, 2].min()) if release == "descend" else float(base_top - surface_z),
             "release_z": info.get("release_z"), "descent_m": info.get("descent_m"),
