@@ -41,8 +41,7 @@ def main():
 
     def mesh(spec):
         if spec not in meshes:
-            glb, h = reg.glb(spec)
-            meshes[spec] = prepare(glb, h, "+y")[1]
+            meshes[spec] = prepare(*reg.glb(spec))[1]
         return meshes[spec]
 
     for d in ("pair", "grasp", "slide", "mesh"):

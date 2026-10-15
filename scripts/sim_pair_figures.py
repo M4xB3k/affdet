@@ -35,8 +35,8 @@ def main():
     m = pickle.load(open(a.pkl, "rb"))
     from affdet.sim.registry import Registry
     reg = Registry(a.picks, a.glb, a.shaker_csv, "/tmp")
-    _, top = prepare(*reg.glb(a.top), "+y")
-    _, base = prepare(*reg.glb(a.base), "+y")
+    _, top = prepare(*reg.glb(a.top))
+    _, base = prepare(*reg.glb(a.base))
     faces = m["faces"]
     vmax = max(1.0, max(m["a_face_margin_mm"].values()))
     vb = max(1.0, float(m["b_margin_mm"].max()))

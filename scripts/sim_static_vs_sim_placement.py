@@ -52,7 +52,7 @@ def main():
         tn, bn = name.split("_on_")
         ts, bs = spec_of(tn), spec_of(bn)
         top, _ = reg.get(ts)
-        bmesh = prepare(*reg.glb(bs), "+y")[1]
+        bmesh = prepare(*reg.glb(bs))[1]
         v = bmesh.vertices
         outline = MultiPoint(v[v[:, 2] > v[:, 2].max() - 0.0015][:, :2].tolist()).convex_hull  # the base's top face
         com_local = centre_of_mass(top.parts, top.part_mass)

@@ -46,7 +46,7 @@ def main():
     ap.add_argument("--out", required=True); ap.add_argument("--cols", type=int, default=4)
     a = ap.parse_args()
     reg = Registry(a.picks, a.glb, a.shaker_csv, "/tmp")
-    mesh = lambda spec: prepare(*reg.glb(spec), "+y")[1]
+    mesh = lambda spec: prepare(*reg.glb(spec))[1]
     panels = []
     if a.base:
         obj = mesh(a.base)

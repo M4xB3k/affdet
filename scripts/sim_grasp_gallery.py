@@ -36,7 +36,7 @@ def main():
         if not hit:
             continue
         g = pickle.load(open(hit[0], "rb"))
-        mesh = prepare(*reg.glb(spec), "+y")[1]
+        mesh = prepare(*reg.glb(spec))[1]
         held = g["held"].mean(2); stable = (g["held"] & (g["swing_deg"] < 30)).mean(2)
         row = []
         for grid in (held, stable):

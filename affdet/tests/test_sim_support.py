@@ -267,3 +267,19 @@ def test_support_labels_paint_where_the_stable_placements_touch():
     sup = support_labels({"per_face": {"under": m}}, np.array([[0.0, 0.0, 0.02], [0.05, 0.0, 0.02], [0.2, 0.0, 0.02]]), v)
     assert list(sup["B"]["support_mm"]) == [30.0, 10.0, 0.0]
     assert sup["B"]["support_score"][0] == 1.0 and abs(sup["B"]["support_score"][1] - 0.5) < 1e-9
+
+
+def test_registry_passes_the_per_object_up_axis_to_the_shakers_and_to_rendering(tmp_path):
+    """Two curated shakers have up_axis = -x in their CSV row: loading them with the default +y would lay them on their side."""
+    import csv
+    import json
+    from affdet.sim.registry import Registry
+    csv_path = tmp_path / "s.csv"
+    with open(csv_path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["object_uid", "target_height_cm", "target_mass_kg", "up_axis"])
+        w.writeheader(); w.writerow({"object_uid": "a" * 32, "target_height_cm": "9", "target_mass_kg": "0.2", "up_axis": "-x"})
+        w.writerow({"object_uid": "b" * 32, "target_height_cm": "9", "target_mass_kg": "0.2", "up_axis": ""})
+    (tmp_path / "picks.json").write_text(json.dumps({}))
+    reg = Registry(str(tmp_path / "picks.json"), str(tmp_path), str(csv_path), str(tmp_path))
+    assert reg.glb("shaker:aaaaaaaa")[2] == "-x" and reg.glb("shaker:bbbbbbbb")[2] == "+y"
+    assert reg.glb("shaker:aaaaaaaa")[1] == 0.09

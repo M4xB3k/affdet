@@ -42,7 +42,7 @@ def main():
             ts, bs = spec_of(tn), spec_of(bn)
             m = pickle.load(open(f, "rb"))
             top, _ = reg.get(ts); base, _ = reg.get(bs)
-            tm = prepare(*reg.glb(ts), "+y")[1]; bm = prepare(*reg.glb(bs), "+y")[1]
+            tm = prepare(*reg.glb(ts))[1]; bm = prepare(*reg.glb(bs))[1]
             lab, info = le.contact_labels(m, top, base, tm, bm)
             if lab is None:
                 continue

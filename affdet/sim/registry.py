@@ -32,7 +32,8 @@ class Registry:
             if kind == "shaker":
                 r = self.shakers[ident]
                 self._bodies[spec] = load_body(os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["target_height_cm"]) / 100,
-                                               float(r["target_mass_kg"]), f"shaker_{ident}", cache_dir=self.cache, convex=True, friction=self.friction)
+                                               float(r["target_mass_kg"]), f"shaker_{ident}", up_axis=r.get("up_axis") or "+y",
+                                               cache_dir=self.cache, convex=True, friction=self.friction)
             else:
                 r = self.picks[kind][int(ident)]
                 self._bodies[spec] = load_body(os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100,
@@ -40,13 +41,13 @@ class Registry:
         return self._bodies[spec]
 
     def glb(self, spec: str):
-        """(glb path, height in m) for rendering."""
+        """(glb path, height in m, up axis): the arguments of `affdet.geometry.prepare.prepare`, for rendering."""
         kind, ident = spec.split(":")
         if kind == "shaker":
             r = self.shakers[ident]
-            return os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["target_height_cm"]) / 100
+            return os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["target_height_cm"]) / 100, r.get("up_axis") or "+y"
         r = self.picks[kind][int(ident)]
-        return os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100
+        return os.path.join(self.glb_dir, r["object_uid"] + ".glb"), float(r["objathor_height_cm"]) / 100, "+y"
 
     def specs(self, kind: str) -> list[str]:
         return [f"{kind}:{i}" for i in range(len(self.picks[kind]))]
