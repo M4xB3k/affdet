@@ -3,6 +3,7 @@
 Branch `sim-heatmap-analysis`, pushed to your fork only (`M4xB3k/affdet`), nothing merged, nothing pushed to `pniaz20`.
 
 **Read first**
+0. In one line: 276 pair maps (16 tops x 18 bases) + 702 with all 39 shakers, grasp and slide maps for 22 objects, per-vertex labels, eight bugs found and fixed on the way, checks that the maps are reproducible (identical across nodes), physically right (audit), consistent with geometry on flat faces, consistent with the earlier face study (234 of 234 faces) and that the score means what it says (survival under position error).
 1. `reports/Simulation analysis part 3 - overnight run, scale-up on the cluster.md`: what was run, the seven bugs the scale-up exposed, the matrix, the checks.
 2. The artifact (same content with pictures): https://claude.ai/artifact/5QmGaeENDLFoKe9A6uSgKm
 3. `reports/overnight_log.md`: every step with its time, including dead ends.
