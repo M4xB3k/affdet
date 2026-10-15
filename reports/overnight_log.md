@@ -39,3 +39,4 @@ Started 2026-10-15 00:00. Planned to run about 4 hours without input. Rules: pus
 - 02:38 BUG found by validating 36 shakers against the face study: two shakers (a121f6c1, e07a892b) have up_axis=-x in the CSV and the registry ignored it, so their pair maps (36) were simulated lying down. Registry now passes the up axis (also to rendering); re-running those two.
 - 02:39 Removed the invalid records of the two -x shakers from the scale-out groups and re-submitted them (fix job).
 - 03:35 Scale-out done: 39 shakers x 18 bases (702 pair maps): faces supported by some base agree with the simulated face study on 234 of 234 and with the static labeller on 207 of 234 (88.5%). Up-axis bug fixed first (two shakers had been simulated lying down).
+- 03:39 Margin calibration (small, serial): survival under 3 mm position error 85% at 5-10 mm margin, 96% at 10-20 mm, 100% from 20 mm. Report sections 4d/4e filled.

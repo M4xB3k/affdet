@@ -104,7 +104,18 @@ that had been loaded lying down.
 
 ## 4e. What the score means: survival under position error
 
-@@CAL@@
+Stable placements were sampled in margin ranges (16 per range) and each was re-run 3 times with the release point shifted by a random error of up to 3 mm in x and y
+(`scripts/sim_margin_calibration.py`, `docs/objaverse/margin_calibration.json`). Share of runs that still stayed:
+
+| margin of the original placement | placements | runs | stayed |
+|---|---|---|---|
+| 5 to 10 mm (the smallest margins the grids can produce) | 16 | 48 | 85 % |
+| 10 to 20 mm | 16 | 48 | 96 % |
+| 20 to 40 mm | 16 | 48 | 100 % |
+| 40 mm and more | 16 | 48 | 100 % |
+
+The survival rate rises with the margin and reaches 100 % at 20 mm, which is where the score `margin / 20 mm` saturates. The sample is small (48 runs per range, one grid), so
+this supports the direction and the 20 mm cap, not the exact percentages. Margins below 5 mm do not occur: a margin is a whole number of grid cells, and the cells are at least 5 mm.
 
 ## 5. Which part of B carries A
 

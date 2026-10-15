@@ -75,8 +75,12 @@ def main():
                 d = a.jitter_mm / 1000
                 jobs.append((*c, rng.uniform(-d, d), rng.uniform(-d, d)))
                 owner.append(b)
-    with Pool(a.procs, initializer=init, initargs=((a.picks, a.glb, a.shaker_csv, a.coacd),)) as p:
-        res = p.map(one, jobs, chunksize=4)
+    if a.procs <= 1:  # serial: no worker pool (a pool can stall when memory is short)
+        init((a.picks, a.glb, a.shaker_csv, a.coacd))
+        res = [one(j) for j in jobs]
+    else:
+        with Pool(a.procs, initializer=init, initargs=((a.picks, a.glb, a.shaker_csv, a.coacd),)) as p:
+            res = p.map(one, jobs, chunksize=4)
     out = {}
     for b in BINS:
         r = [x for x, o in zip(res, owner) if o == b]

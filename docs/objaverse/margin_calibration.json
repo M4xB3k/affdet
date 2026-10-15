@@ -1,0 +1,32 @@
+{
+ "0-5 mm": {
+  "cells": 0,
+  "runs": 0,
+  "survival": null,
+  "available_cells": 0
+ },
+ "5-10 mm": {
+  "cells": 16,
+  "runs": 48,
+  "survival": 0.854,
+  "available_cells": 17320
+ },
+ "10-20 mm": {
+  "cells": 16,
+  "runs": 48,
+  "survival": 0.958,
+  "available_cells": 47135
+ },
+ "20-40 mm": {
+  "cells": 16,
+  "runs": 48,
+  "survival": 1.0,
+  "available_cells": 46041
+ },
+ "40-inf mm": {
+  "cells": 16,
+  "runs": 48,
+  "survival": 1.0,
+  "available_cells": 78700
+ }
+}
