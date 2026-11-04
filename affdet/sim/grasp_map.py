@@ -36,29 +36,49 @@ SQUEEZE_SPEED = 0.01   # m/s: closing speed once a pad touches (100 um per step)
 PARK_Z = 2.0  # pads start parked above the ray cast start so the height probes only see the object
 PAD_FRICTION = (1.0, 0.01, 0.001)  # sliding, torsional (m), rolling (m)
 
+# Every setting of one grasp test, so a sweep can vary them (grasp_params) and each result records what it used.
+# MuJoCo gives a contact the element-wise MAX of the two geoms' friction when their priorities are equal, so with
+# pad_priority 0 the pad's 1.0 wins over the objects' 0.6: lowering grasp friction needs pad_priority 1 (the pad's value is used).
+DEFAULTS = dict(force=FORCE_N, pad_half=PAD["half"], open_half=PAD["open_half"], travel=PAD["travel"], pad_friction=PAD_FRICTION,
+                pad_priority=0, pad_mass=PAD_MASS_KG, pad_below_top=PAD_BELOW_TOP_M, lift=LIFT_M, lift_time=PHASES["lift"],
+                hold=PHASES["hold"], close_max=PHASES["close_max"])
 
-def _pad_xml(name, x, y, z, yaw):
+
+def grasp_params(**over) -> dict:
+    """DEFAULTS with some settings replaced; an unknown name is an error (a typo must not silently run the default)."""
+    unknown = set(over) - set(DEFAULTS)
+    if unknown:
+        raise ValueError(f"unknown grasp settings: {sorted(unknown)}")
+    p = {**DEFAULTS, **over}
+    p["pad_half"], p["pad_friction"] = tuple(map(float, p["pad_half"])), tuple(map(float, p["pad_friction"]))
+    return p
+
+
+def _pad_xml(name, x, y, z, yaw, p=None):
     """A dynamic pad welded to a mocap target. (A mocap body has zero velocity as far as contacts are concerned,
     so a teleporting mocap pad can squeeze but never drag an object along with friction.)"""
-    hx, hy, hz = PAD["half"]
+    p = p or DEFAULTS
+    hx, hy, hz = p["pad_half"]
+    fr = p["pad_friction"]
+    prio = 1 if (PAD_SOLREF or p["pad_priority"]) else 0
     q = f"{math.cos(yaw / 2):.6f} 0 0 {math.sin(yaw / 2):.6f}"
     return (f'<body name="t{name}" mocap="true" pos="{x:.5f} {y:.5f} {z:.5f}" quat="{q}"/>'
             f'<body name="{name}" pos="{x:.5f} {y:.5f} {z:.5f}" quat="{q}"><freejoint/>'
-            f'<geom type="box" size="{hx} {hy} {hz}" pos="0 0 {hz}" friction="{PAD_FRICTION[0]} {PAD_FRICTION[1]} '
-            f'{PAD_FRICTION[2]}" condim="6" mass="{PAD_MASS_KG}" solref="{PAD_SOLREF or ms.SIM["solref"]}" priority="{1 if PAD_SOLREF else 0}" '
+            f'<geom type="box" size="{hx} {hy} {hz}" pos="0 0 {hz}" friction="{fr[0]} {fr[1]} '
+            f'{fr[2]}" condim="6" mass="{p["pad_mass"]}" solref="{PAD_SOLREF or ms.SIM["solref"]}" priority="{prio}" '
             f'rgba="0.3 0.3 0.3 1"/></body>')
 
 
 _WELD = ('<equality><weld body1="fl" body2="tfl" solref="0.008 1"/><weld body1="fr" body2="tfr" solref="0.008 1"/></equality>')
 
 
-def _regulate(s, force, v, dt):
+def _regulate(s, force, v, dt, target=FORCE_N, travel=PAD["travel"]):
     """One step of the squeeze controller for a pad whose target has closed `s` metres: advance while the contact force is
-    below FORCE_N (fast in free air, slowly once touching, so a stiff contact does not overshoot), back off when it is more than
-    15 % above. Without the back-off a pad's hold force is set by how far its target overshot, not by FORCE_N."""
-    if force < FORCE_N:
-        return min(s + (v if force < 3.0 else SQUEEZE_SPEED) * dt, PAD["travel"])
-    if force > 1.15 * FORCE_N:
+    below `target` (fast in free air, slowly once touching, so a stiff contact does not overshoot), back off when it is more than
+    15 % above. Without the back-off a pad's hold force is set by how far its target overshot, not by the target."""
+    if force < target:
+        return min(s + (v if force < 3.0 else SQUEEZE_SPEED) * dt, travel)
+    if force > 1.15 * target:
         return max(s - SQUEEZE_SPEED * dt, 0.0)
     return s
 
@@ -76,24 +96,26 @@ def _pad_force(m, data, body_id, obj_id):
     return tot
 
 
-def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: float = 30.0, record=None) -> dict:
+def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: float = 30.0, record=None, params=None) -> dict:
     """One grasp: close at (x, y) with the gripper yawed `yaw_deg` about z, lift, hold.
 
     The two pads are moved kinematically (mocap): each closes at 5 cm/s until its contact force with the object
-    reaches FORCE_N, then stops (a force-limited gripper). The object is then lifted LIFT_M and held. `record(m,
-    data)` is called every step (for rendering)."""
+    reaches the target force, then regulates it (a force-limited gripper). The object is then lifted and held.
+    `params` (see grasp_params; None = DEFAULTS) sets force, pad size and friction, lift and hold. `record(m, data)`
+    is called every step (for rendering)."""
     import mujoco
+    p = params or DEFAULTS
     yaw = math.radians(yaw_deg)
     u = np.array([-math.sin(yaw), math.cos(yaw)])  # closing direction in the world (hand y axis)
     R = np.eye(3)
     pos = ms._place(body, R)
-    c0 = PAD["open_half"] + PAD["half"][1]
+    c0 = p["open_half"] + p["pad_half"][1]
     with tempfile.TemporaryDirectory() as d:
         ms._write_parts(body, d)
         xml = ms.build_xml([body], [(pos, np.array([1.0, 0, 0, 0]))])
         # pads start open at the grasp centre; the height is set below once the surface under it is known
-        xml = xml.replace("</worldbody>", _pad_xml("fl", x - c0 * u[0], y - c0 * u[1], PARK_Z, yaw)
-                          + _pad_xml("fr", x + c0 * u[0], y + c0 * u[1], PARK_Z, yaw) + "</worldbody>")
+        xml = xml.replace("</worldbody>", _pad_xml("fl", x - c0 * u[0], y - c0 * u[1], PARK_Z, yaw, p)
+                          + _pad_xml("fr", x + c0 * u[0], y + c0 * u[1], PARK_Z, yaw, p) + "</worldbody>")
         xml = xml.replace("</mujoco>", _WELD + "</mujoco>")
         m = mujoco.MjModel.from_xml_string(xml)
     data = mujoco.MjData(m)
@@ -112,10 +134,10 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
     if z_top <= 0.0:
         return {"x": x, "y": y, "yaw": yaw_deg, "held": False, "lifted_m": 0.0, "swing_deg": 0.0, "slip_m": 0.0,
                 "success": False, "com0": data.xipos[oid].copy(), "on_object": False}
-    z0 = max(0.003, z_top - PAD_BELOW_TOP_M)
+    z0 = max(0.003, z_top - p["pad_below_top"])
     # a pad may not start inside the object: whatever is under either pad footprint (a pan's floor next to its rim
     # wall) sets the lowest height the finger can reach; if that is above the surface being pinched, no grasp here
-    hx, hy, _ = PAD["half"]
+    hx, hy, _ = p["pad_half"]
     t = np.array([-u[1], u[0]])  # the pad's long side runs along the world direction perpendicular to closing
     floor = 0.0
     for sgn in (-1, 1):
@@ -135,23 +157,27 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
     mujoco.mj_forward(m, data)
     com0 = data.xipos[oid].copy()
     R0 = data.xmat[oid].reshape(3, 3).copy()
-    t_lift, t_hold, t_close_max = PHASES["lift"], PHASES["hold"], PHASES["close_max"]
+    t_lift, t_hold, t_close_max = p["lift_time"], p["hold"], p["close_max"]
+    F = p["force"]
     sl = sr = 0.0  # how far each pad has closed (m)
     v = 0.10       # closing speed (m/s)
     rel0 = None
     t_start = None  # time the lift starts: both pads at full force, or the closing time ran out
+    f_hold = []    # pad forces during the hold (to check the regulated force)
     k = 0
     while True:
         t = k * dt
         fl_, fr_ = _pad_force(m, data, bl, oid), _pad_force(m, data, br, oid)
-        if t_start is None and ((fl_ >= FORCE_N and fr_ >= FORCE_N) or t >= t_close_max):
+        if t_start is None and ((fl_ >= F and fr_ >= F) or t >= t_close_max):
             t_start = t + 0.1  # let the squeeze settle
-        sl = _regulate(sl, fl_, v, dt)
-        sr = _regulate(sr, fr_, v, dt)
+        if t_start is not None and t > t_start + t_lift:
+            f_hold.append(0.5 * (fl_ + fr_))
+        sl = _regulate(sl, fl_, v, dt, F, p["travel"])
+        sr = _regulate(sr, fr_, v, dt, F, p["travel"])
         data.mocap_pos[il][:2] = [x - (c0 - sl) * u[0], y - (c0 - sl) * u[1]]
         data.mocap_pos[ir][:2] = [x + (c0 - sr) * u[0], y + (c0 - sr) * u[1]]
         s_ = 0.0 if t_start is None else np.clip((t - t_start) / t_lift, 0, 1)
-        lift = LIFT_M * (3 * s_ * s_ - 2 * s_ ** 3)
+        lift = p["lift"] * (3 * s_ * s_ - 2 * s_ ** 3)
         data.mocap_pos[il][2] = data.mocap_pos[ir][2] = z0 + lift
         mujoco.mj_step(m, data)
         if rel0 is None and t_start is not None and t >= t_start:
@@ -172,26 +198,34 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
                    m.geom_bodyid[data.contact[i].geom2]) for i in range(data.ncon))
     held = bool(np.isfinite(com1).all()) and not on_table and lifted > 0.05 and slip < 0.05
     return {"x": x, "y": y, "yaw": yaw_deg, "held": bool(held), "lifted_m": lifted, "swing_deg": swing, "slip_m": slip,
-            "success": bool(held and swing < max_swing_deg), "com0": com0, "on_object": True}
+            "success": bool(held and swing < max_swing_deg), "com0": com0, "on_object": True,
+            "hold_force_n": float(np.mean(f_hold)) if f_hold else 0.0, "params": dict(p)}
 
 
 _G = {}
 
 
-def _init(body):
+def _init(body, params=None):
     _G["body"] = body
+    _G["params"] = params
 
 
 def _one(a):
-    return grasp_test(_G["body"], *a)
+    return grasp_test(_G["body"], *a, params=_G["params"])
 
 
-def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150), procs=8, max_swing_deg=30.0) -> dict:
+def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150), procs=8, max_swing_deg=30.0, params=None) -> dict:
+    """`params` (grasp_params) is handed to every worker through the pool initializer; each test reports what it used and
+    the map keeps the workers' copy, so a stored map proves its own settings."""
+    params = params or DEFAULTS
     xs = np.arange(-extent_xy[0] / 2, extent_xy[0] / 2 + 1e-9, step)
     ys = np.arange(-extent_xy[1] / 2, extent_xy[1] / 2 + 1e-9, step)
     jobs = [(x, y, yaw, max_swing_deg) for y in ys for x in xs for yaw in yaws]
-    with Pool(procs, initializer=_init, initargs=(body,)) as p:
+    with Pool(procs, initializer=_init, initargs=(body, params)) as p:
         res = p.map(_one, jobs, chunksize=4)
+    used = {r["params"].__repr__() for r in res if "params" in r}
+    if len(used) > 1 or (used and next(iter(used)) != dict(params).__repr__()):
+        raise RuntimeError(f"workers ran with other grasp settings than requested: {used}")
     shape = (len(ys), len(xs), len(yaws))
     ok = np.array([r["success"] for r in res]).reshape(shape)
     swing = np.array([r["swing_deg"] for r in res]).reshape(shape)
@@ -199,5 +233,8 @@ def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150),
     blocked = np.array([r.get("blocked", False) for r in res]).reshape(shape)  # a pad could not reach the pinched surface
     lifted = np.array([r["lifted_m"] for r in res]).reshape(shape)
     slip = np.array([r["slip_m"] for r in res]).reshape(shape)
+    on_obj = np.array([r["on_object"] for r in res]).reshape(shape)
+    hold_f = np.array([r.get("hold_force_n", 0.0) for r in res]).reshape(shape)
     return {"xs": xs, "ys": ys, "yaws": list(yaws), "success": ok, "held": held, "swing_deg": swing,
-            "blocked": blocked, "lifted_m": lifted, "slip_m": slip, "score": ok.mean(2), "best_yaw_idx": ok.argmax(2), "com": res[0]["com0"], "step": step}
+            "blocked": blocked, "lifted_m": lifted, "slip_m": slip, "score": ok.mean(2), "best_yaw_idx": ok.argmax(2), "com": res[0]["com0"], "step": step,
+            "on_object": on_obj, "hold_force_n": hold_f, "params": dict(params)}

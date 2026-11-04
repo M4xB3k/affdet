@@ -299,3 +299,39 @@ def test_speed_options_keep_the_verdicts_of_a_small_sweep():
     a1 = placement_map_adaptive(base, top, ext, step=0.025, factor=2, grow=1, procs=2, fast={"abort_drift_m": 0.06, "abort_tilt_deg": 30.0}, reuse_model=True)
     assert a1["n_simulated"] >= a0["n_simulated"]
     assert (a1["stable"] == full["stable"]).mean() >= 0.9
+
+
+def test_grasp_params_reject_an_unknown_setting():
+    from affdet.sim.grasp_map import DEFAULTS, grasp_params
+    assert grasp_params() == {**DEFAULTS, "pad_half": tuple(DEFAULTS["pad_half"]), "pad_friction": tuple(DEFAULTS["pad_friction"])}
+    with pytest.raises(ValueError):
+        grasp_params(forse=70.0)
+
+
+def test_grasp_force_setting_reaches_the_pads_and_is_recorded():
+    """The squeeze regulates to the requested force (30 N default, 70 N = Panda continuous), and the result says so."""
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    bar = Body("bar", [_on_table(trimesh.creation.box([0.2, 0.03, 0.02]))], 1.2)
+    r30 = grasp_test(bar, 0.0, 0.0, 0.0)
+    r70 = grasp_test(bar, 0.0, 0.0, 0.0, params=grasp_params(force=70.0))
+    assert r30["held"] and r70["held"]
+    assert 25 < r30["hold_force_n"] < 36 and 60 < r70["hold_force_n"] < 82
+    assert r30["params"]["force"] == 30.0 and r70["params"]["force"] == 70.0
+
+
+def test_pad_friction_only_counts_when_the_pad_has_priority():
+    """MuJoCo takes the larger friction of two geoms with equal priority: pads at 0.1 still grip with the object's 0.6 unless
+    pad_priority=1 makes the pad's value the contact's. A 1.2 kg bar at 30 N needs mu >= m g / 2F = 0.2."""
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    bar = Body("bar", [_on_table(trimesh.creation.box([0.2, 0.03, 0.02]))], 1.2)
+    low = (0.1, 0.01, 0.001)
+    assert grasp_test(bar, 0.0, 0.0, 0.0, params=grasp_params(pad_friction=low))["held"]
+    assert not grasp_test(bar, 0.0, 0.0, 0.0, params=grasp_params(pad_friction=low, pad_priority=1))["held"]
+
+
+def test_grasp_map_workers_run_with_the_requested_settings():
+    from affdet.sim.grasp_map import grasp_map, grasp_params
+    bar = Body("bar", [_on_table(trimesh.creation.box([0.2, 0.03, 0.02]))], 1.2)
+    m = grasp_map(bar, (0.02, 0.0), step=0.02, yaws=(0,), procs=2, params=grasp_params(force=70.0))
+    assert m["params"]["force"] == 70.0
+    assert m["held"].any() and 60 < m["hold_force_n"][m["held"]].mean() < 82
