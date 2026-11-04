@@ -1,0 +1,571 @@
+{
+ "variants": [
+  "base",
+  "f70",
+  "panda",
+  "mu05",
+  "tors005",
+  "hold2"
+ ],
+ "params": {
+  "base": {
+   "force": 30.0,
+   "pad_half": [
+    0.01,
+    0.004,
+    0.0125
+   ],
+   "open_half": 0.04,
+   "travel": 0.045,
+   "pad_friction": [
+    1.0,
+    0.01,
+    0.001
+   ],
+   "pad_priority": 0,
+   "pad_mass": 5.0,
+   "pad_below_top": 0.03,
+   "lift": 0.5,
+   "lift_time": 1.5,
+   "hold": 0.4,
+   "close_max": 1.2
+  },
+  "f70": {
+   "force": 70.0,
+   "pad_half": [
+    0.01,
+    0.004,
+    0.0125
+   ],
+   "open_half": 0.04,
+   "travel": 0.045,
+   "pad_friction": [
+    1.0,
+    0.01,
+    0.001
+   ],
+   "pad_priority": 0,
+   "pad_mass": 5.0,
+   "pad_below_top": 0.03,
+   "lift": 0.5,
+   "lift_time": 1.5,
+   "hold": 0.4,
+   "close_max": 1.2
+  },
+  "panda": {
+   "force": 70.0,
+   "pad_half": [
+    0.0085,
+    0.004,
+    0.0085
+   ],
+   "open_half": 0.04,
+   "travel": 0.045,
+   "pad_friction": [
+    1.0,
+    0.005,
+    0.0001
+   ],
+   "pad_priority": 0,
+   "pad_mass": 5.0,
+   "pad_below_top": 0.03,
+   "lift": 0.5,
+   "lift_time": 1.5,
+   "hold": 0.4,
+   "close_max": 1.2
+  },
+  "mu05": {
+   "force": 30.0,
+   "pad_half": [
+    0.01,
+    0.004,
+    0.0125
+   ],
+   "open_half": 0.04,
+   "travel": 0.045,
+   "pad_friction": [
+    0.5,
+    0.01,
+    0.001
+   ],
+   "pad_priority": 1,
+   "pad_mass": 5.0,
+   "pad_below_top": 0.03,
+   "lift": 0.5,
+   "lift_time": 1.5,
+   "hold": 0.4,
+   "close_max": 1.2
+  },
+  "tors005": {
+   "force": 30.0,
+   "pad_half": [
+    0.01,
+    0.004,
+    0.0125
+   ],
+   "open_half": 0.04,
+   "travel": 0.045,
+   "pad_friction": [
+    1.0,
+    0.005,
+    0.001
+   ],
+   "pad_priority": 1,
+   "pad_mass": 5.0,
+   "pad_below_top": 0.03,
+   "lift": 0.5,
+   "lift_time": 1.5,
+   "hold": 0.4,
+   "close_max": 1.2
+  },
+  "hold2": {
+   "force": 30.0,
+   "pad_half": [
+    0.01,
+    0.004,
+    0.0125
+   ],
+   "open_half": 0.04,
+   "travel": 0.045,
+   "pad_friction": [
+    1.0,
+    0.01,
+    0.001
+   ],
+   "pad_priority": 0,
+   "pad_mass": 5.0,
+   "pad_below_top": 0.03,
+   "lift": 0.5,
+   "lift_time": 1.5,
+   "hold": 2.0,
+   "close_max": 1.2
+  }
+ },
+ "stats": {
+  "base": {
+   "bowl0": {
+    "success": 0.05251141552511415,
+    "held": 0.3242009132420091,
+    "cells_any": 0.1506849315068493,
+    "hold_force": 31.993654904531486,
+    "swing_held": 41.4535923959793
+   },
+   "cutting_board0": {
+    "success": 0.0,
+    "held": 0.0,
+    "cells_any": 0.0,
+    "hold_force": 0.0,
+    "swing_held": NaN
+   },
+   "frying_pan0": {
+    "success": 0.009259259259259259,
+    "held": 0.18518518518518517,
+    "cells_any": 0.05555555555555555,
+    "hold_force": 32.863007412819634,
+    "swing_held": 52.61076548341367
+   },
+   "frying_pan1": {
+    "success": 0.0,
+    "held": 0.1323529411764706,
+    "cells_any": 0.0,
+    "hold_force": 32.08111739957427,
+    "swing_held": 77.77956797686355
+   },
+   "mug0": {
+    "success": 0.14930555555555555,
+    "held": 0.18055555555555555,
+    "cells_any": 0.375,
+    "hold_force": 31.732938634987917,
+    "swing_held": 13.299634170693457
+   },
+   "mug1": {
+    "success": 0.18333333333333332,
+    "held": 0.19,
+    "cells_any": 0.46,
+    "hold_force": 31.93357593901578,
+    "swing_held": 11.171332522240544
+   },
+   "shaker270b9b45": {
+    "success": 0.9637681159420289,
+    "held": 0.9637681159420289,
+    "cells_any": 1.0,
+    "hold_force": 32.818924478518795,
+    "swing_held": 3.8187972290849155
+   },
+   "shaker86450daa": {
+    "success": 1.0,
+    "held": 1.0,
+    "cells_any": 1.0,
+    "hold_force": 32.01873782539771,
+    "swing_held": 4.4350202340602785
+   },
+   "tray0": {
+    "success": 0.0,
+    "held": 0.10714285714285714,
+    "cells_any": 0.0,
+    "hold_force": 32.43006804307748,
+    "swing_held": 66.4028038136399
+   },
+   "wok0": {
+    "success": 0.0,
+    "held": 0.17105263157894737,
+    "cells_any": 0.0,
+    "hold_force": 32.563092877238354,
+    "swing_held": 56.73945413330029
+   }
+  },
+  "f70": {
+   "bowl0": {
+    "success": 0.05251141552511415,
+    "held": 0.3242009132420091,
+    "cells_any": 0.1506849315068493,
+    "hold_force": 74.84942554427917,
+    "swing_held": 41.026427869990314
+   },
+   "cutting_board0": {
+    "success": 0.0,
+    "held": 0.0,
+    "cells_any": 0.0,
+    "hold_force": 0.0,
+    "swing_held": NaN
+   },
+   "frying_pan0": {
+    "success": 0.07407407407407407,
+    "held": 0.18981481481481483,
+    "cells_any": 0.3055555555555556,
+    "hold_force": 73.26454224605219,
+    "swing_held": 39.668042349506905
+   },
+   "frying_pan1": {
+    "success": 0.004901960784313725,
+    "held": 0.14705882352941177,
+    "cells_any": 0.029411764705882353,
+    "hold_force": 75.92044937537777,
+    "swing_held": 50.40745895906486
+   },
+   "mug0": {
+    "success": 0.1527777777777778,
+    "held": 0.1840277777777778,
+    "cells_any": 0.375,
+    "hold_force": 73.22639820210321,
+    "swing_held": 14.804536883331957
+   },
+   "mug1": {
+    "success": 0.17666666666666667,
+    "held": 0.18666666666666668,
+    "cells_any": 0.46,
+    "hold_force": 74.13959985128983,
+    "swing_held": 11.561684863011704
+   },
+   "shaker270b9b45": {
+    "success": 0.9619565217391305,
+    "held": 0.9619565217391305,
+    "cells_any": 1.0,
+    "hold_force": 73.79896396781484,
+    "swing_held": 4.049205197917846
+   },
+   "shaker86450daa": {
+    "success": 1.0,
+    "held": 1.0,
+    "cells_any": 1.0,
+    "hold_force": 74.9108429052472,
+    "swing_held": 4.813995647515876
+   },
+   "tray0": {
+    "success": 0.0,
+    "held": 0.17857142857142858,
+    "cells_any": 0.0,
+    "hold_force": 76.03960085948248,
+    "swing_held": 54.08307693444381
+   },
+   "wok0": {
+    "success": 0.0,
+    "held": 0.18859649122807018,
+    "cells_any": 0.0,
+    "hold_force": 74.07405449489833,
+    "swing_held": 50.104855931533415
+   }
+  },
+  "panda": {
+   "bowl0": {
+    "success": 0.05251141552511415,
+    "held": 0.3287671232876712,
+    "cells_any": 0.1506849315068493,
+    "hold_force": 74.76798373510246,
+    "swing_held": 41.96677705693913
+   },
+   "cutting_board0": {
+    "success": 0.0,
+    "held": 0.0,
+    "cells_any": 0.0,
+    "hold_force": 0.0,
+    "swing_held": NaN
+   },
+   "frying_pan0": {
+    "success": 0.05092592592592592,
+    "held": 0.19444444444444445,
+    "cells_any": 0.2777777777777778,
+    "hold_force": 73.91204930213605,
+    "swing_held": 48.530831652473125
+   },
+   "frying_pan1": {
+    "success": 0.0,
+    "held": 0.16176470588235295,
+    "cells_any": 0.0,
+    "hold_force": 75.65427172060257,
+    "swing_held": 52.435980966434855
+   },
+   "mug0": {
+    "success": 0.16319444444444445,
+    "held": 0.19791666666666666,
+    "cells_any": 0.3958333333333333,
+    "hold_force": 78.63100976960538,
+    "swing_held": 14.46819952298858
+   },
+   "mug1": {
+    "success": 0.17666666666666667,
+    "held": 0.19666666666666666,
+    "cells_any": 0.46,
+    "hold_force": 74.15568541135508,
+    "swing_held": 13.650003016498314
+   },
+   "shaker270b9b45": {
+    "success": 0.9510869565217391,
+    "held": 0.9510869565217391,
+    "cells_any": 1.0,
+    "hold_force": 73.24524378421938,
+    "swing_held": 4.1540066416981105
+   },
+   "shaker86450daa": {
+    "success": 1.0,
+    "held": 1.0,
+    "cells_any": 1.0,
+    "hold_force": 74.14063454999311,
+    "swing_held": 4.704013099732427
+   },
+   "tray0": {
+    "success": 0.001984126984126984,
+    "held": 0.1765873015873016,
+    "cells_any": 0.011904761904761904,
+    "hold_force": 75.25129519527256,
+    "swing_held": 56.4406253306636
+   },
+   "wok0": {
+    "success": 0.0,
+    "held": 0.18859649122807018,
+    "cells_any": 0.0,
+    "hold_force": 74.15258805682488,
+    "swing_held": 51.50415155554929
+   }
+  },
+  "mu05": {
+   "bowl0": {
+    "success": 0.0502283105022831,
+    "held": 0.319634703196347,
+    "cells_any": 0.1506849315068493,
+    "hold_force": 31.761206395402223,
+    "swing_held": 40.733478387040364
+   },
+   "cutting_board0": {
+    "success": 0.0,
+    "held": 0.0,
+    "cells_any": 0.0,
+    "hold_force": 0.0,
+    "swing_held": NaN
+   },
+   "frying_pan0": {
+    "success": 0.0,
+    "held": 0.046296296296296294,
+    "cells_any": 0.0,
+    "hold_force": 31.50650652917897,
+    "swing_held": 70.67863403666652
+   },
+   "frying_pan1": {
+    "success": 0.0,
+    "held": 0.024509803921568627,
+    "cells_any": 0.0,
+    "hold_force": 30.779323293314945,
+    "swing_held": 67.89613893958897
+   },
+   "mug0": {
+    "success": 0.1423611111111111,
+    "held": 0.1701388888888889,
+    "cells_any": 0.375,
+    "hold_force": 31.781619711346245,
+    "swing_held": 12.27083696415612
+   },
+   "mug1": {
+    "success": 0.17,
+    "held": 0.17666666666666667,
+    "cells_any": 0.46,
+    "hold_force": 31.881941528819535,
+    "swing_held": 12.135170286617859
+   },
+   "shaker270b9b45": {
+    "success": 0.8242753623188406,
+    "held": 0.8242753623188406,
+    "cells_any": 0.9891304347826086,
+    "hold_force": 32.32188133083297,
+    "swing_held": 4.434332921467241
+   },
+   "shaker86450daa": {
+    "success": 0.9777777777777777,
+    "held": 0.9777777777777777,
+    "cells_any": 1.0,
+    "hold_force": 32.22448523604239,
+    "swing_held": 0.9993844292712957
+   },
+   "tray0": {
+    "success": 0.0,
+    "held": 0.001984126984126984,
+    "cells_any": 0.0,
+    "hold_force": 32.59142296475828,
+    "swing_held": 67.25377773084
+   },
+   "wok0": {
+    "success": 0.0,
+    "held": 0.10964912280701754,
+    "cells_any": 0.0,
+    "hold_force": 32.34208373331742,
+    "swing_held": 57.786394281580684
+   }
+  },
+  "tors005": {
+   "bowl0": {
+    "success": 0.0502283105022831,
+    "held": 0.3242009132420091,
+    "cells_any": 0.1506849315068493,
+    "hold_force": 32.01308927071345,
+    "swing_held": 41.72631096500004
+   },
+   "cutting_board0": {
+    "success": 0.0,
+    "held": 0.0,
+    "cells_any": 0.0,
+    "hold_force": 0.0,
+    "swing_held": NaN
+   },
+   "frying_pan0": {
+    "success": 0.009259259259259259,
+    "held": 0.18055555555555555,
+    "cells_any": 0.05555555555555555,
+    "hold_force": 32.97469226503712,
+    "swing_held": 52.21803578361228
+   },
+   "frying_pan1": {
+    "success": 0.0,
+    "held": 0.14215686274509803,
+    "cells_any": 0.0,
+    "hold_force": 31.791915828394075,
+    "swing_held": 81.05320358642089
+   },
+   "mug0": {
+    "success": 0.14583333333333334,
+    "held": 0.1736111111111111,
+    "cells_any": 0.375,
+    "hold_force": 31.692802804353345,
+    "swing_held": 17.01751113072708
+   },
+   "mug1": {
+    "success": 0.18666666666666668,
+    "held": 0.19333333333333333,
+    "cells_any": 0.46,
+    "hold_force": 31.65277506769651,
+    "swing_held": 12.074921404178454
+   },
+   "shaker270b9b45": {
+    "success": 0.9637681159420289,
+    "held": 0.9637681159420289,
+    "cells_any": 1.0,
+    "hold_force": 32.811711556580065,
+    "swing_held": 3.784676106067577
+   },
+   "shaker86450daa": {
+    "success": 1.0,
+    "held": 1.0,
+    "cells_any": 1.0,
+    "hold_force": 31.98694962230213,
+    "swing_held": 4.356741348414294
+   },
+   "tray0": {
+    "success": 0.0,
+    "held": 0.09722222222222222,
+    "cells_any": 0.0,
+    "hold_force": 32.311182312830844,
+    "swing_held": 66.57897491140668
+   },
+   "wok0": {
+    "success": 0.0,
+    "held": 0.17105263157894737,
+    "cells_any": 0.0,
+    "hold_force": 32.30020196180177,
+    "swing_held": 57.48521914559291
+   }
+  },
+  "hold2": {
+   "bowl0": {
+    "success": 0.05251141552511415,
+    "held": 0.3242009132420091,
+    "cells_any": 0.1506849315068493,
+    "hold_force": 32.08002176449618,
+    "swing_held": 41.53141312538653
+   },
+   "cutting_board0": {
+    "success": 0.0,
+    "held": 0.0,
+    "cells_any": 0.0,
+    "hold_force": 0.0,
+    "swing_held": NaN
+   },
+   "frying_pan0": {
+    "success": 0.004629629629629629,
+    "held": 0.18518518518518517,
+    "cells_any": 0.027777777777777776,
+    "hold_force": 32.96261522364365,
+    "swing_held": 53.95843906770459
+   },
+   "frying_pan1": {
+    "success": 0.0,
+    "held": 0.1323529411764706,
+    "cells_any": 0.0,
+    "hold_force": 31.444129627178704,
+    "swing_held": 78.4709907448835
+   },
+   "mug0": {
+    "success": 0.14930555555555555,
+    "held": 0.18055555555555555,
+    "cells_any": 0.375,
+    "hold_force": 31.84767552711506,
+    "swing_held": 14.234808007797348
+   },
+   "mug1": {
+    "success": 0.18333333333333332,
+    "held": 0.19,
+    "cells_any": 0.46,
+    "hold_force": 31.689189489052904,
+    "swing_held": 11.238177885797468
+   },
+   "shaker270b9b45": {
+    "success": 0.9637681159420289,
+    "held": 0.9637681159420289,
+    "cells_any": 1.0,
+    "hold_force": 32.881247506977765,
+    "swing_held": 3.8171111558421247
+   },
+   "tray0": {
+    "success": 0.0,
+    "held": 0.10317460317460317,
+    "cells_any": 0.0,
+    "hold_force": 32.512777044304634,
+    "swing_held": 67.30781524028728
+   },
+   "wok0": {
+    "success": 0.0,
+    "held": 0.17105263157894737,
+    "cells_any": 0.0,
+    "hold_force": 32.81017427021348,
+    "swing_held": 57.443017549207376
+   }
+  }
+ }
+}
