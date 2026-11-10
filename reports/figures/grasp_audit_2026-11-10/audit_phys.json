@@ -1,0 +1,4511 @@
+{
+ "cutting_board13": {
+  "spec": "cutting_board:13",
+  "unblocked": 0,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.0000000000000004,
+  "width_cm": 40.99999618530261,
+  "mass": 1.5,
+  "rows": [],
+  "depth_cm": -1.3877787807814457e-15
+ },
+ "cutting_board20": {
+  "spec": "cutting_board:20",
+  "unblocked": 12,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.1399999999999997,
+  "width_cm": 44.88202086362023,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     32,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.699018980477213,
+    "lifted_m": -0.001007324331649637,
+    "slip_m": 0.50000468293351,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.21465167842775182,
+    "lifted_m": -0.0010073235880118138,
+    "slip_m": 0.5000593098676154,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     32,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8421052454037145,
+    "lifted_m": -0.0010073245379341508,
+    "slip_m": 0.500036172692531,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     15,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8655973538103785,
+    "lifted_m": -0.0010073235898325587,
+    "slip_m": 0.5000401338667374,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     31,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.20136593677650008,
+    "lifted_m": -0.0010073243040777183,
+    "slip_m": 0.5000066472272788,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -7.979727989493313e-15
+ },
+ "cutting_board22": {
+  "spec": "cutting_board:22",
+  "unblocked": 2,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.0,
+  "width_cm": 29.999999999999925,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     4,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.4353343504828375,
+    "lifted_m": -0.001003267243847441,
+    "slip_m": 0.5001011500511776,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     4,
+     1,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.5226139618909573,
+    "lifted_m": -0.0010032315232938217,
+    "slip_m": 0.5000922756009993,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "cutting_board23": {
+  "spec": "cutting_board:23",
+  "unblocked": 10,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.4699999999999935,
+  "width_cm": 44.8630699723956,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     16,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5357977405432267,
+    "lifted_m": -0.0010142947984773856,
+    "slip_m": 0.5000442199238643,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.8191912726612007,
+    "lifted_m": -0.0010142937458595264,
+    "slip_m": 0.5001610785416684,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     16,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8604813337318302,
+    "lifted_m": -0.0010142941562532194,
+    "slip_m": 0.5000441521519549,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     2,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.8220053018207139,
+    "lifted_m": -0.0010142935704224934,
+    "slip_m": 0.5001666328255558,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     16,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.5812452709059965,
+    "lifted_m": -0.0010142940803971705,
+    "slip_m": 0.500483117739811,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 0.0
+ },
+ "cutting_board0": {
+  "spec": "cutting_board:0",
+  "unblocked": 16,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.9999999999999998,
+  "width_cm": 41.1020110205216,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     31,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.9478333495578417,
+    "lifted_m": -0.00173537958821641,
+    "slip_m": 0.5007399472736295,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.23908176777146853,
+    "lifted_m": -0.001766283176972647,
+    "slip_m": 0.5006657604659533,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     21,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.07244199146766947,
+    "lifted_m": -0.0017964325386651218,
+    "slip_m": 0.5006096633554356,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     21,
+     31,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.21859133894826835,
+    "lifted_m": -0.0017346245110152706,
+    "slip_m": 0.5006098404193303,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.0031319176397115,
+    "lifted_m": -0.0017674008182987592,
+    "slip_m": 0.5006162942470772,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "cutting_board21": {
+  "spec": "cutting_board:21",
+  "unblocked": 7,
+  "held": 0,
+  "success": 0,
+  "height_cm": 3.8099999999999996,
+  "width_cm": 44.97636622403785,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.1195017641405793,
+    "lifted_m": -0.0010061479861171521,
+    "slip_m": 0.5000300984721179,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8689324134506753,
+    "lifted_m": -0.001006148016162705,
+    "slip_m": 0.500024999330906,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     17,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.3123937359131006,
+    "lifted_m": -0.0010061480271938046,
+    "slip_m": 0.5000096407843979,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     18,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.4681465204812143,
+    "lifted_m": -0.0010061494100449264,
+    "slip_m": 0.5001194090226364,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.07952867798769886,
+    "lifted_m": -0.0010061479521320527,
+    "slip_m": 0.5000174393778423,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -2.7755575615628914e-15
+ },
+ "cutting_board2": {
+  "spec": "cutting_board:2",
+  "unblocked": 14,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.9999999999999998,
+  "width_cm": 41.17646943326634,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.169638694843586,
+    "lifted_m": -0.0010005910243665681,
+    "slip_m": 0.5000260421636474,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.16217899211946388,
+    "lifted_m": -0.0010008893792446232,
+    "slip_m": 0.5000161238252048,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     21,
+     1,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.6257052695663492,
+    "lifted_m": -0.000999348442342918,
+    "slip_m": 0.5000331598714391,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     21,
+     31,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.11124042101683303,
+    "lifted_m": -0.0010011784170372573,
+    "slip_m": 0.5001301650783027,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     31,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8571582302011255,
+    "lifted_m": -0.0010011784385305887,
+    "slip_m": 0.500161752341602,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "cutting_board4": {
+  "spec": "cutting_board:4",
+  "unblocked": 0,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.5199999999999998,
+  "width_cm": 20.00158405802933,
+  "mass": 0.3,
+  "rows": [],
+  "depth_cm": -1.0408340855860843e-14
+ },
+ "cutting_board10": {
+  "spec": "cutting_board:10",
+  "unblocked": 34,
+  "held": 3,
+  "success": 0,
+  "height_cm": 4.48,
+  "width_cm": 45.00833755764364,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     13,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.5190787873240947,
+    "lifted_m": -0.0012498140772825295,
+    "slip_m": 0.5002494831892085,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     0,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.4493003556235746,
+    "lifted_m": -0.0012497617461182838,
+    "slip_m": 0.5000655946644377,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     5,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 138.58099115089482,
+    "lifted_m": 0.12005029357491288,
+    "slip_m": 0.36511421251034476,
+    "hold_force_n": 0.0,
+    "reason": "slipped in the grip (36.5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     5,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 92.19329271985517,
+    "lifted_m": 0.1638031759180449,
+    "slip_m": 0.059413488178459185,
+    "hold_force_n": 0.0,
+    "reason": "slipped in the grip (5.9 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     5,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 152.4362746255884,
+    "lifted_m": -0.0012497609297245117,
+    "slip_m": 2.6740349048441097,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     5,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 84.10641268618996,
+    "lifted_m": 0.2866488349141089,
+    "slip_m": 0.005221954216846367,
+    "hold_force_n": 99.50359354146563,
+    "reason": "held, swings 84 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     26,
+     5,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 83.71192869353294,
+    "lifted_m": 0.3227419317554912,
+    "slip_m": 0.004810166665602232,
+    "hold_force_n": 102.35375424757584,
+    "reason": "held, swings 84 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     27,
+     5,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 81.16203497532929,
+    "lifted_m": 0.30658104196575414,
+    "slip_m": 0.0031884516467618608,
+    "hold_force_n": 109.13868360136958,
+    "reason": "held, swings 81 deg"
+   }
+  ],
+  "depth_cm": 0.1868683988045572
+ },
+ "cutting_board17": {
+  "spec": "cutting_board:17",
+  "unblocked": 18,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.0,
+  "width_cm": 39.99999999999987,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     25,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.01096911497965,
+    "lifted_m": -0.001004023793747479,
+    "slip_m": 0.5000164910819002,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.803355631082227,
+    "lifted_m": -0.0010037978479841905,
+    "slip_m": 0.5001796248344949,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     33,
+     1,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.2676290438914435,
+    "lifted_m": -0.0010038783010577895,
+    "slip_m": 0.5001691290494988,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     33,
+     25,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8842460796722986,
+    "lifted_m": -0.001003879110494212,
+    "slip_m": 0.5000460874250564,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.16399285982217,
+    "lifted_m": -0.0010037994594587242,
+    "slip_m": 0.5000128179372153,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "cutting_board7": {
+  "spec": "cutting_board:7",
+  "unblocked": 3,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.78,
+  "width_cm": 44.926080470474254,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     31,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.31002067024286867,
+    "lifted_m": -0.0010106086041287016,
+    "slip_m": 0.5000279058529207,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     32,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.6648433683788197,
+    "lifted_m": -0.001010659669296761,
+    "slip_m": 0.5000082125489305,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     22,
+     32,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5423795904311496,
+    "lifted_m": -0.0010106045005289638,
+    "slip_m": 0.5000134199399112,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 3.513579911046394e-06
+ },
+ "cutting_board16": {
+  "spec": "cutting_board:16",
+  "unblocked": 63,
+  "held": 34,
+  "success": 0,
+  "height_cm": 2.0,
+  "width_cm": 36.955556826876155,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     28,
+     7,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 17.8786806445713,
+    "lifted_m": -0.0010079083819775,
+    "slip_m": 0.5652793565024455,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     11,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.0325789147755464,
+    "lifted_m": -0.0010079065405298251,
+    "slip_m": 0.49997604383495137,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     29,
+     8,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 7.159879852135065,
+    "lifted_m": -0.0010079165052334325,
+    "slip_m": 0.5158651291945727,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     7,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 7.465145180221669,
+    "lifted_m": -0.001007912412615282,
+    "slip_m": 0.5269780346893587,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     27,
+     7,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.194305173417303,
+    "lifted_m": -0.0010079248805629666,
+    "slip_m": 0.49999999999999906,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     25,
+     7,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 79.89167015614711,
+    "lifted_m": 0.33414848140113546,
+    "slip_m": 0.015737685755200525,
+    "hold_force_n": 32.656529285331985,
+    "reason": "held, swings 80 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     26,
+     6,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 77.68791575723382,
+    "lifted_m": 0.30724826847393166,
+    "slip_m": 0.013563960621475583,
+    "hold_force_n": 32.50148485145364,
+    "reason": "held, swings 78 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     7,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 94.09994941445665,
+    "lifted_m": 0.28309651421709736,
+    "slip_m": 0.005636313736850572,
+    "hold_force_n": 33.194335650383444,
+    "reason": "held, swings 94 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     5,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 81.91396124536269,
+    "lifted_m": 0.2855937981026354,
+    "slip_m": 0.006548395412516819,
+    "hold_force_n": 32.09932909873004,
+    "reason": "held, swings 82 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     6,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 93.08690411974595,
+    "lifted_m": 0.29002304003685814,
+    "slip_m": 0.01050193580189063,
+    "hold_force_n": 31.680286575888665,
+    "reason": "held, swings 93 deg"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "cutting_board6": {
+  "spec": "cutting_board:6",
+  "unblocked": 10,
+  "held": 0,
+  "success": 0,
+  "height_cm": 0.8799999999999975,
+  "width_cm": 44.96400452097995,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     32,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.6655632516659882,
+    "lifted_m": -0.0010068161444077364,
+    "slip_m": 0.5000311545177794,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.05306353102662393,
+    "lifted_m": -0.0010068181342201676,
+    "slip_m": 0.5000227537457468,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     23,
+     1,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.12472434537192577,
+    "lifted_m": -0.0010068162557497536,
+    "slip_m": 0.49999442178582254,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     23,
+     32,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.08629672384545635,
+    "lifted_m": -0.0010068161465467155,
+    "slip_m": 0.5000347714207505,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5210394060740368,
+    "lifted_m": -0.0010068163201235438,
+    "slip_m": 0.4999967569588619,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 5.551115123125783e-15
+ },
+ "cutting_board14": {
+  "spec": "cutting_board:14",
+  "unblocked": 27,
+  "held": 7,
+  "success": 0,
+  "height_cm": 1.81,
+  "width_cm": 45.104157543182204,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     7,
+     31,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.383395084513224,
+    "lifted_m": -0.0010057224545651864,
+    "slip_m": 0.5015762305036504,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.004465537511938409,
+    "lifted_m": -0.0010057261948960058,
+    "slip_m": 0.5000022821522291,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     9,
+     31,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.6117572804299491,
+    "lifted_m": -0.0010057205695631032,
+    "slip_m": 0.5000991719387263,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     14,
+     23,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.8625233919670583,
+    "lifted_m": -0.0010057237700090513,
+    "slip_m": 0.5000965648548455,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     6,
+     32,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.75605363423268,
+    "lifted_m": -0.0010057220476625186,
+    "slip_m": 0.5004786092786848,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     26,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 81.84757649678504,
+    "lifted_m": 0.3275011009101847,
+    "slip_m": 0.0060057087713872,
+    "hold_force_n": 30.497484026645765,
+    "reason": "held, swings 82 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     28,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 85.14808685015271,
+    "lifted_m": 0.29749071871856847,
+    "slip_m": 0.0055743930518297475,
+    "hold_force_n": 30.854486356014583,
+    "reason": "held, swings 85 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     27,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 83.15071228151545,
+    "lifted_m": 0.3125639811612436,
+    "slip_m": 0.005755688173516605,
+    "hold_force_n": 30.240227979958423,
+    "reason": "held, swings 83 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     30,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 95.97365890280265,
+    "lifted_m": 0.25823818780177527,
+    "slip_m": 0.009718964503681737,
+    "hold_force_n": 32.155007042148476,
+    "reason": "held, swings 96 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     29,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 84.99031384783065,
+    "lifted_m": 0.28243350738025913,
+    "slip_m": 0.004267764069343628,
+    "hold_force_n": 31.850233212077807,
+    "reason": "held, swings 85 deg"
+   }
+  ],
+  "depth_cm": -3.469446951953614e-16
+ },
+ "cutting_board1": {
+  "spec": "cutting_board:1",
+  "unblocked": 21,
+  "held": 1,
+  "success": 0,
+  "height_cm": 1.9999999999999998,
+  "width_cm": 45.85989223885827,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     10,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 32.19151453106786,
+    "lifted_m": -0.0010018009200517663,
+    "slip_m": 0.5376356634529308,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.35584934936152623,
+    "lifted_m": -0.0010020125465948857,
+    "slip_m": 0.5000506898574314,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     13,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.2474082635623995,
+    "lifted_m": -0.0010017976853935167,
+    "slip_m": 0.5465651265987186,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     15,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 29.170241671059134,
+    "lifted_m": -0.0010018008530683267,
+    "slip_m": 0.5163208192636338,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     10,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.2538755137878628,
+    "lifted_m": -0.0010017993717387555,
+    "slip_m": 0.5415770318360671,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     32,
+     17,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 90.32371022077056,
+    "lifted_m": 0.27739124685062105,
+    "slip_m": 0.018981504979850135,
+    "hold_force_n": 31.60787409237958,
+    "reason": "held, swings 90 deg"
+   }
+  ],
+  "depth_cm": -2.0816681711721685e-15
+ },
+ "cutting_board18": {
+  "spec": "cutting_board:18",
+  "unblocked": 35,
+  "held": 6,
+  "success": 0,
+  "height_cm": 1.69,
+  "width_cm": 44.89853033750059,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     11,
+     1,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.10310473176204124,
+    "lifted_m": -0.0010062447674791496,
+    "slip_m": 0.510649850462454,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     0,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.762521436571245,
+    "lifted_m": -0.0010062216586894206,
+    "slip_m": 0.5000176836712915,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     14,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 31.510899987624065,
+    "lifted_m": -0.001006253621596568,
+    "slip_m": 0.5300778753246493,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     22,
+     31,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8606670583088459,
+    "lifted_m": -0.0010062179107073865,
+    "slip_m": 0.5000827960935296,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     11,
+     0,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.12431856554209897,
+    "lifted_m": -0.00100624293599442,
+    "slip_m": 0.5094927647208942,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     8,
+     1,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 92.76494297576434,
+    "lifted_m": 0.2900667796923366,
+    "slip_m": 0.019010043111792625,
+    "hold_force_n": 31.948479670587815,
+    "reason": "held, swings 93 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     10,
+     0,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 90.54709137308713,
+    "lifted_m": 0.2867687469308405,
+    "slip_m": 0.010266902779871275,
+    "hold_force_n": 32.51657805105089,
+    "reason": "held, swings 91 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     13,
+     1,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 93.67567582384974,
+    "lifted_m": 0.27654675465498685,
+    "slip_m": 0.008980984083422157,
+    "hold_force_n": 33.25792465495563,
+    "reason": "held, swings 94 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     15,
+     1,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 93.81361015698677,
+    "lifted_m": 0.28302339379340563,
+    "slip_m": 0.015633910062887172,
+    "hold_force_n": 31.354660763541357,
+    "reason": "held, swings 94 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     10,
+     1,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 90.92487404463829,
+    "lifted_m": 0.28582862927982877,
+    "slip_m": 0.009702340587682776,
+    "hold_force_n": 31.645398215742773,
+    "reason": "held, swings 91 deg"
+   }
+  ],
+  "depth_cm": 6.741589814174276e-07
+ },
+ "cutting_board12": {
+  "spec": "cutting_board:12",
+  "unblocked": 42,
+  "held": 21,
+  "success": 0,
+  "height_cm": 1.8600000000000005,
+  "width_cm": 44.90701306796428,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.7696302761020646,
+    "lifted_m": -0.0010051583205550798,
+    "slip_m": 0.5000846427243889,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     13,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.623876785219893,
+    "lifted_m": -0.001005158631618699,
+    "slip_m": 0.500070377160032,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     17,
+     1,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.39958265123954084,
+    "lifted_m": -0.0010051585573977364,
+    "slip_m": 0.5011951165961315,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     32,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5291513362447052,
+    "lifted_m": -0.0010052182845801585,
+    "slip_m": 0.5000159175892138,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     0,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5004723771985472,
+    "lifted_m": -0.0010060321104051022,
+    "slip_m": 0.5001567502921495,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     15,
+     6,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 83.2476997812228,
+    "lifted_m": 0.2779085950642873,
+    "slip_m": 0.005316543781042866,
+    "hold_force_n": 31.947822465497055,
+    "reason": "held, swings 83 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     15,
+     9,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 66.15369253312313,
+    "lifted_m": 0.3328372927129505,
+    "slip_m": 0.007169970562034128,
+    "hold_force_n": 90.13721037956958,
+    "reason": "held, swings 66 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     16,
+     9,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 58.29831667246786,
+    "lifted_m": 0.3437909003720279,
+    "slip_m": 0.008117070549098567,
+    "hold_force_n": 121.89598228236665,
+    "reason": "held, swings 58 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     16,
+     7,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 67.09860836601099,
+    "lifted_m": 0.3050661572685479,
+    "slip_m": 0.00809646000940954,
+    "hold_force_n": 93.15265032669355,
+    "reason": "held, swings 67 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     16,
+     5,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 74.17424701414926,
+    "lifted_m": 0.2689501202340246,
+    "slip_m": 0.008245937264068364,
+    "hold_force_n": 75.68664549860526,
+    "reason": "held, swings 74 deg"
+   }
+  ],
+  "depth_cm": 0.35249861339832766
+ },
+ "cutting_board11": {
+  "spec": "cutting_board:11",
+  "unblocked": 20,
+  "held": 8,
+  "success": 0,
+  "height_cm": 1.94,
+  "width_cm": 44.9503292960661,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     9,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 10.645475770824662,
+    "lifted_m": -0.0010040611575568067,
+    "slip_m": 0.5388783640209377,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     15,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.7339982697380785,
+    "lifted_m": -0.0010040466090134158,
+    "slip_m": 0.5000329584181077,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     7,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.3586363554632586,
+    "lifted_m": -0.0010037658455709572,
+    "slip_m": 0.5000268614210025,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     9,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.006258330217941,
+    "lifted_m": -0.00100376331035458,
+    "slip_m": 0.5004303657429915,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     8,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 11.709671109285997,
+    "lifted_m": -0.0010040771645995952,
+    "slip_m": 0.5419776586385141,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     9,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 76.860516943607,
+    "lifted_m": 0.29792183025989566,
+    "slip_m": 0.0153995427894622,
+    "hold_force_n": 37.193823444551526,
+    "reason": "held, swings 77 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     8,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 73.87053682298264,
+    "lifted_m": 0.28839333001777395,
+    "slip_m": 0.02467549609257076,
+    "hold_force_n": 49.74744260349425,
+    "reason": "held, swings 74 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     31,
+     8,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 86.78483599832941,
+    "lifted_m": 0.2531658624911221,
+    "slip_m": 0.0011058470034905953,
+    "hold_force_n": 33.174822029720424,
+    "reason": "held, swings 87 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     31,
+     9,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 88.24035143170875,
+    "lifted_m": 0.25243316839437197,
+    "slip_m": 0.0010773179641932562,
+    "hold_force_n": 33.2129391458022,
+    "reason": "held, swings 88 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     30,
+     8,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 88.39787271223533,
+    "lifted_m": 0.26297381216436344,
+    "slip_m": 0.018791590815977918,
+    "hold_force_n": 31.23100256438271,
+    "reason": "held, swings 88 deg"
+   }
+  ],
+  "depth_cm": -8.326672684688674e-15
+ },
+ "cutting_board9": {
+  "spec": "cutting_board:9",
+  "unblocked": 13,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.9999999999999998,
+  "width_cm": 31.255156368147478,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     29,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.6937502027824034,
+    "lifted_m": -0.0010466625212471256,
+    "slip_m": 0.5001265530304962,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     2,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.1312943484594626,
+    "lifted_m": -0.0010497021866923435,
+    "slip_m": 0.4999753027234336,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     1,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.42983938358565854,
+    "lifted_m": -0.0010526477892630944,
+    "slip_m": 0.5000692475488594,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     18,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.1837549547873656,
+    "lifted_m": -0.0010582161692678713,
+    "slip_m": 0.5000406261271713,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     18,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5722889782069775,
+    "lifted_m": -0.0010411077791692477,
+    "slip_m": 0.5001109826083292,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 5.786718642458721e-07
+ },
+ "cutting_board8": {
+  "spec": "cutting_board:8",
+  "unblocked": 8,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.14,
+  "width_cm": 45.09874247923993,
+  "mass": 2.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     0,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.45428706512413,
+    "lifted_m": -0.0010718208249167506,
+    "slip_m": 0.5001069131895879,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     15,
+     0,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.9327200172090664,
+    "lifted_m": -0.0010539581076759973,
+    "slip_m": 0.5000806693653723,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     1,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.9938645938772835,
+    "lifted_m": -0.001075972101209523,
+    "slip_m": 0.5001068193965407,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     32,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.1420644666675626,
+    "lifted_m": -0.001080527790559515,
+    "slip_m": 0.5003075879274184,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     15,
+     32,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.460860616482775,
+    "lifted_m": -0.0010794068972139644,
+    "slip_m": 0.5002471521538913,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 0.01292095209261268
+ },
+ "cutting_board5": {
+  "spec": "cutting_board:5",
+  "unblocked": 63,
+  "held": 36,
+  "success": 0,
+  "height_cm": 2.0,
+  "width_cm": 36.955556826876155,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     28,
+     7,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 13.003514462313424,
+    "lifted_m": -0.0010078899591568283,
+    "slip_m": 0.5244113505197042,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     2,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.233257151286422,
+    "lifted_m": -0.001007899932073085,
+    "slip_m": 0.5000125006814649,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     29,
+     8,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 8.2057060010851,
+    "lifted_m": -0.0010078900745549828,
+    "slip_m": 0.51307779053245,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     7,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.449687921968142,
+    "lifted_m": -0.0010078919427327637,
+    "slip_m": 0.5255754512396287,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     27,
+     7,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 13.110139754021548,
+    "lifted_m": -0.001007890240180883,
+    "slip_m": 0.5009549646832372,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     25,
+     6,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 76.94659009089865,
+    "lifted_m": 0.3380633236934113,
+    "slip_m": 0.01384052826669759,
+    "hold_force_n": 31.127000908913054,
+    "reason": "held, swings 77 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     26,
+     6,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 77.72914966778185,
+    "lifted_m": 0.30512935655319656,
+    "slip_m": 0.01324250720599198,
+    "hold_force_n": 32.18892231510333,
+    "reason": "held, swings 78 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     7,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 93.83344510249287,
+    "lifted_m": 0.2828837781220595,
+    "slip_m": 0.005692604918029727,
+    "hold_force_n": 32.953616467749114,
+    "reason": "held, swings 94 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     7,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 91.32149338516714,
+    "lifted_m": 0.29118528121559817,
+    "slip_m": 0.014882125591707214,
+    "hold_force_n": 32.97584445829473,
+    "reason": "held, swings 91 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     7,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 92.00812538575003,
+    "lifted_m": 0.27850167207148324,
+    "slip_m": 0.017137454447703034,
+    "hold_force_n": 32.965759532376396,
+    "reason": "held, swings 92 deg"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "cutting_board3": {
+  "spec": "cutting_board:3",
+  "unblocked": 29,
+  "held": 14,
+  "success": 0,
+  "height_cm": 1.18,
+  "width_cm": 44.82335227315753,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     9,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.21716293619928265,
+    "lifted_m": -0.0017350201714362804,
+    "slip_m": 0.6001885863325015,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8930046036618631,
+    "lifted_m": -0.0017359954604114379,
+    "slip_m": 0.5004404972024677,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     8,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.9267375847353667,
+    "lifted_m": -0.0017354273796422286,
+    "slip_m": 0.5000256510831819,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     11,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.101424826210947,
+    "lifted_m": -0.0017311842620001995,
+    "slip_m": 0.5000460965501757,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     8,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8963605372825125,
+    "lifted_m": -0.001735995460411456,
+    "slip_m": 0.5000410621680109,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     27,
+     10,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 89.1643975697173,
+    "lifted_m": 0.28577865036668093,
+    "slip_m": 0.020847604273031468,
+    "hold_force_n": 32.199334641265565,
+    "reason": "held, swings 89 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     10,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 90.88078584016343,
+    "lifted_m": 0.27146899351564885,
+    "slip_m": 0.022182962108381433,
+    "hold_force_n": 31.36221104819207,
+    "reason": "held, swings 91 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     32,
+     9,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 89.8020619937861,
+    "lifted_m": 0.22880860280484794,
+    "slip_m": 0.005400365474350198,
+    "hold_force_n": 32.0677270423126,
+    "reason": "held, swings 90 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     31,
+     10,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 85.64097599706827,
+    "lifted_m": 0.23232424838974933,
+    "slip_m": 0.014095102040176145,
+    "hold_force_n": 31.569334323775195,
+    "reason": "held, swings 86 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     30,
+     10,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 92.52907840303733,
+    "lifted_m": 0.24315890582874078,
+    "slip_m": 0.021620795532990258,
+    "hold_force_n": 31.46924401667674,
+    "reason": "held, swings 93 deg"
+   }
+  ],
+  "depth_cm": 0.0662082896772909
+ },
+ "cutting_board15": {
+  "spec": "cutting_board:15",
+  "unblocked": 14,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.0,
+  "width_cm": 39.99999999999987,
+  "mass": 1.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     25,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.05223465933480741,
+    "lifted_m": -0.001001539910578754,
+    "slip_m": 0.5000736152827969,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.2593470503686706,
+    "lifted_m": -0.0010014365803560441,
+    "slip_m": 0.5000360892381411,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     25,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.3376025025945798,
+    "lifted_m": -0.001001579719865241,
+    "slip_m": 0.5000406455961388,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     33,
+     23,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.4500630652501583,
+    "lifted_m": -0.0010015690098754415,
+    "slip_m": 0.5001654345581957,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.05031656323007661,
+    "lifted_m": -0.001001586664427092,
+    "slip_m": 0.5000864140857841,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": -1.734723475976807e-15
+ },
+ "plate0": {
+  "spec": "plate:0",
+  "unblocked": 0,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.2,
+  "width_cm": 25.496030466941633,
+  "mass": 0.5,
+  "rows": [],
+  "depth_cm": 1.025619091961748
+ },
+ "plate10": {
+  "spec": "plate:10",
+  "unblocked": 0,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.5200000000000002,
+  "width_cm": 30.065728436181484,
+  "mass": 0.5,
+  "rows": [],
+  "depth_cm": 0.8696215607332812
+ },
+ "cutting_board24": {
+  "spec": "cutting_board:24",
+  "unblocked": 30,
+  "held": 18,
+  "success": 3,
+  "height_cm": 3.309999999999999,
+  "width_cm": 44.960827209080804,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     28,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.6297764060219994,
+    "lifted_m": -0.0009996958194381407,
+    "slip_m": 0.5000771744349428,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     0,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.8400948497338311,
+    "lifted_m": -0.0009998448372015752,
+    "slip_m": 0.5001244109682448,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     4,
+     32,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.6236711490408875,
+    "lifted_m": -0.000999827477777382,
+    "slip_m": 0.5428251805982057,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     7,
+     0,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 179.9975403184284,
+    "lifted_m": -0.001000225243977887,
+    "slip_m": 0.5000000042930123,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     27,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.27740070908038394,
+    "lifted_m": -0.0009996960451646338,
+    "slip_m": 0.500221181200855,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     3,
+     30,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 68.48713528907604,
+    "lifted_m": 0.2923577375227509,
+    "slip_m": 0.02398330603494827,
+    "hold_force_n": 30.407468684357024,
+    "reason": "held, swings 68 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     3,
+     31,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 72.99669932120867,
+    "lifted_m": 0.28144503772453655,
+    "slip_m": 0.007831786691911114,
+    "hold_force_n": 32.29337353057046,
+    "reason": "held, swings 73 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     1,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 59.09745667967958,
+    "lifted_m": 0.31442045127804796,
+    "slip_m": 0.01764351273259292,
+    "hold_force_n": 31.590791677160027,
+    "reason": "held, swings 59 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     5,
+     31,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 72.76987411851047,
+    "lifted_m": 0.2809742535767425,
+    "slip_m": 0.007976241990982222,
+    "hold_force_n": 32.23837124364896,
+    "reason": "held, swings 73 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     5,
+     30,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 68.53887306680566,
+    "lifted_m": 0.2907190759077347,
+    "slip_m": 0.023774182494741898,
+    "hold_force_n": 30.35443249421864,
+    "reason": "held, swings 69 deg"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     1,
+     0,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 15.734863979058776,
+    "lifted_m": 0.4583245895418982,
+    "slip_m": 0.002560454638266829,
+    "hold_force_n": 41.31892699963563,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     1,
+     2,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 27.65396666953022,
+    "lifted_m": 0.4122372445293366,
+    "slip_m": 0.005769303620260711,
+    "hold_force_n": 32.178335723583025,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     7,
+     2,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 26.273847778917958,
+    "lifted_m": 0.41628085786405045,
+    "slip_m": 0.005479129347970549,
+    "hold_force_n": 32.82595071135414,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 8.326672684688674e-15
+ },
+ "plate21": {
+  "spec": "plate:21",
+  "unblocked": 0,
+  "held": 0,
+  "success": 0,
+  "height_cm": 1.4099999999999997,
+  "width_cm": 29.95783579865642,
+  "mass": 0.5,
+  "rows": [],
+  "depth_cm": 1.2051024330550715
+ },
+ "plate12": {
+  "spec": "plate:12",
+  "unblocked": 30,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.0000000000000004,
+  "width_cm": 18.498129064200793,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     3,
+     13,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.3237131736750851,
+    "lifted_m": -0.0011964917816139065,
+    "slip_m": 0.49984960431279096,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     13,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.7388426028926461,
+    "lifted_m": -0.0011964918023090743,
+    "slip_m": 0.4998698573081701,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     4,
+     11,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.2047919294864288,
+    "lifted_m": -0.001196508474751272,
+    "slip_m": 0.49992748513538204,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     9,
+     3,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.9237178527840715,
+    "lifted_m": -0.0011971592738941848,
+    "slip_m": 0.500007668650879,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     3,
+     13,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.13035369440439765,
+    "lifted_m": -0.0011964921388644655,
+    "slip_m": 0.49988962606226767,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 1.2926976991095116
+ },
+ "plate9": {
+  "spec": "plate:9",
+  "unblocked": 763,
+  "held": 0,
+  "success": 0,
+  "height_cm": 2.0,
+  "width_cm": 23.87410938083427,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     18,
+     3,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 6.888066729148926,
+    "lifted_m": -0.0010077601551908358,
+    "slip_m": 0.49987767228594504,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     18,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 9.83816090692305,
+    "lifted_m": -0.001007761398551946,
+    "slip_m": 0.49874393930732047,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     27,
+     27,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 14.068249498491863,
+    "lifted_m": -0.0010077641099907782,
+    "slip_m": 0.5001317005336111,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     15,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 12.527646718275987,
+    "lifted_m": -0.001007761363004853,
+    "slip_m": 0.4991622749293448,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     2,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.3137640054528443,
+    "lifted_m": -0.0010077625422936411,
+    "slip_m": 0.49920282428113044,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   }
+  ],
+  "depth_cm": 1.4367396189072883
+ },
+ "plate19": {
+  "spec": "plate:19",
+  "unblocked": 172,
+  "held": 36,
+  "success": 36,
+  "height_cm": 5.0,
+  "width_cm": 23.9909313228345,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     17,
+     13,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.6496199579458084,
+    "lifted_m": -0.0012078214179593212,
+    "slip_m": 0.4998163801641995,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     13,
+     13,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.78911437766194,
+    "lifted_m": -0.0012078449715998245,
+    "slip_m": 0.4998950893645385,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     18,
+     18,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.527342131915458,
+    "lifted_m": -0.0012078211466211713,
+    "slip_m": 0.4999105709660918,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     21,
+     21,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 6.13036868402721,
+    "lifted_m": -0.0012078402996010002,
+    "slip_m": 0.49991966824854117,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     19,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 5.536733867932406,
+    "lifted_m": -0.0012078206251308152,
+    "slip_m": 0.4999126228923311,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     17,
+     13,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 0.7748187845831612,
+    "lifted_m": 0.49776069356152386,
+    "slip_m": 0.0008627045123647699,
+    "hold_force_n": 31.597738652731763,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     17,
+     20,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 0.7049023266477251,
+    "lifted_m": 0.4985814675973147,
+    "slip_m": 2.4249721155908903e-05,
+    "hold_force_n": 31.313925157508592,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     23,
+     10,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 2.1353240273010448,
+    "lifted_m": 0.4966643805757991,
+    "slip_m": 0.0006349472911049092,
+    "hold_force_n": 35.61116024075957,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     22,
+     9,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.5182645565000759,
+    "lifted_m": 0.4976888528856185,
+    "slip_m": 0.0003690572917966178,
+    "hold_force_n": 73.06372623293989,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     21,
+     23,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.2309028298756328,
+    "lifted_m": 0.48566909471566777,
+    "slip_m": 0.01372617485526469,
+    "hold_force_n": 30.914175425305725,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 0.3746941349202129
+ },
+ "plate25": {
+  "spec": "plate:25",
+  "unblocked": 95,
+  "held": 1,
+  "success": 1,
+  "height_cm": 3.9599999999999995,
+  "width_cm": 15.981186228175757,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     5,
+     1,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 5.371900078979027,
+    "lifted_m": -0.0010162513935940073,
+    "slip_m": 0.5028023487303308,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     0,
+     26,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 10.299503886575952,
+    "lifted_m": -0.0010162660323612023,
+    "slip_m": 0.5059465898070324,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     28,
+     31,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.993529531188637,
+    "lifted_m": -0.001016185118501007,
+    "slip_m": 0.5021265070257457,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     26,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 5.192823576598485,
+    "lifted_m": -0.0010162506300847064,
+    "slip_m": 0.5064829589482328,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     4,
+     2,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 12.192176100300223,
+    "lifted_m": -0.00101626609776162,
+    "slip_m": 0.5031334808722829,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     25,
+     16,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 0.2766086488273792,
+    "lifted_m": 0.498744423652432,
+    "slip_m": 5.723209800412041e-05,
+    "hold_force_n": 32.07187939420717,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 0.6456627925171349
+ },
+ "plate13": {
+  "spec": "plate:13",
+  "unblocked": 775,
+  "held": 347,
+  "success": 0,
+  "height_cm": 2.0000000000000004,
+  "width_cm": 23.191554714393327,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     17,
+     31,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.5019001397227547,
+    "lifted_m": -0.001003798504999414,
+    "slip_m": 0.5002312071595525,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     12,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 6.200698092982155,
+    "lifted_m": -0.0010037986597803313,
+    "slip_m": 0.5000313238117514,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     28,
+     5,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 15.686943310874016,
+    "lifted_m": -0.0010037973188192634,
+    "slip_m": 0.5121396407144504,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     31,
+     20,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 7.047394810066152,
+    "lifted_m": -0.0010039174490523509,
+    "slip_m": 0.5000743379243258,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     30,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.611340787972208,
+    "lifted_m": -0.0010039162332281752,
+    "slip_m": 0.5000582821325237,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     29,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 86.98886832463496,
+    "lifted_m": 0.3897162273748214,
+    "slip_m": 0.01469087912697773,
+    "hold_force_n": 31.790901665091372,
+    "reason": "held, swings 87 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     13,
+     3,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 80.3099325431789,
+    "lifted_m": 0.39079700010379714,
+    "slip_m": 0.01524879409971273,
+    "hold_force_n": 30.96143082852671,
+    "reason": "held, swings 80 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     28,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 85.26806820718258,
+    "lifted_m": 0.3900646496878165,
+    "slip_m": 0.01687978675101331,
+    "hold_force_n": 32.37111964812191,
+    "reason": "held, swings 85 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     9,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 83.85116261121246,
+    "lifted_m": 0.38559939131817234,
+    "slip_m": 0.017838677888808448,
+    "hold_force_n": 32.406114625983165,
+    "reason": "held, swings 84 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     26,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 85.49313147718276,
+    "lifted_m": 0.38809315378940235,
+    "slip_m": 0.015196176841695884,
+    "hold_force_n": 32.531909998090015,
+    "reason": "held, swings 85 deg"
+   }
+  ],
+  "depth_cm": 1.5037757771075175
+ },
+ "plate1": {
+  "spec": "plate:1",
+  "unblocked": 0,
+  "held": 0,
+  "success": 0,
+  "height_cm": 5.0,
+  "width_cm": 29.965479522366223,
+  "mass": 0.5,
+  "rows": [],
+  "depth_cm": 0.07350372030887203
+ },
+ "plate5": {
+  "spec": "plate:5",
+  "unblocked": 453,
+  "held": 1,
+  "success": 0,
+  "height_cm": 2.79,
+  "width_cm": 29.97360287472094,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     29,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.0640427423524914,
+    "lifted_m": -0.0010056946001519018,
+    "slip_m": 0.5001129773117963,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     3,
+     12,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.082243385586898,
+    "lifted_m": -0.0010057146823322927,
+    "slip_m": 0.4999933953257867,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     26,
+     28,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 10.255418096840472,
+    "lifted_m": -0.0010057328214043808,
+    "slip_m": 0.49974338249188727,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     22,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.4027039838582867,
+    "lifted_m": -0.0010057083160387725,
+    "slip_m": 0.4999881884395199,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     14,
+     32,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.8269710233955982,
+    "lifted_m": -0.0010056978789423701,
+    "slip_m": 0.49976362243159644,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     26,
+     26,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 86.76571420776486,
+    "lifted_m": 0.3977727485232436,
+    "slip_m": 0.02269587015196847,
+    "hold_force_n": 33.15325573177002,
+    "reason": "held, swings 87 deg"
+   }
+  ],
+  "depth_cm": 2.0944668194058345
+ },
+ "plate23": {
+  "spec": "plate:23",
+  "unblocked": 33,
+  "held": 12,
+  "success": 12,
+  "height_cm": 2.0,
+  "width_cm": 25.231631406806944,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     9,
+     5,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.4286109794509373,
+    "lifted_m": -0.0010091079695378497,
+    "slip_m": 0.4989481593897585,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     5,
+     8,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 22.766263930213682,
+    "lifted_m": -0.001009069597608209,
+    "slip_m": 0.5000125734376186,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     11,
+     4,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 1.6179774098354411,
+    "lifted_m": -0.0010091725246848884,
+    "slip_m": 0.499961325598546,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     12,
+     3,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.9970058072414197,
+    "lifted_m": -0.0010091748796622682,
+    "slip_m": 0.4988590233363837,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     8,
+     26,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.7453646205096092,
+    "lifted_m": -0.0010092203137666757,
+    "slip_m": 0.4985355539929368,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     7,
+     25,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.322613236945502,
+    "lifted_m": 0.4970398987066046,
+    "slip_m": 0.0007083968703409112,
+    "hold_force_n": 32.23612255769734,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     8,
+     24,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 2.9846142220878162,
+    "lifted_m": 0.49336917131577773,
+    "slip_m": 0.003262836808741549,
+    "hold_force_n": 32.1476811024178,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     8,
+     7,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 2.0107252343645095,
+    "lifted_m": 0.4944385672547609,
+    "slip_m": 0.0024243944574540346,
+    "hold_force_n": 32.0876792576066,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     12,
+     4,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 11.941197166956748,
+    "lifted_m": 0.44611325852333056,
+    "slip_m": 0.035456461932754986,
+    "hold_force_n": 23.475717444478747,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     9,
+     25,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.3071625596759093,
+    "lifted_m": 0.4975952384029153,
+    "slip_m": 0.0005240732546388592,
+    "hold_force_n": 33.22042411171192,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 1.3434043223110352
+ },
+ "plate11": {
+  "spec": "plate:11",
+  "unblocked": 454,
+  "held": 347,
+  "success": 0,
+  "height_cm": 2.12,
+  "width_cm": 16.020931917651637,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     18,
+     1,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 30.646607314615984,
+    "lifted_m": -0.0010075907816493035,
+    "slip_m": 0.4995151063151018,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     13,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 38.71329391415785,
+    "lifted_m": -0.0010076738155669392,
+    "slip_m": 0.5021507932034233,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     29,
+     23,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 22.908232042201128,
+    "lifted_m": -0.0010075912201675166,
+    "slip_m": 0.4994460322682774,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     32,
+     15,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 16.077758254864083,
+    "lifted_m": -0.001007644935760811,
+    "slip_m": 0.5143074100372974,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     31,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 22.000299157150796,
+    "lifted_m": -0.0010074591880980185,
+    "slip_m": 0.5264254747344166,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     28,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 55.62391064362432,
+    "lifted_m": 0.4345457687084027,
+    "slip_m": 0.006195654490458375,
+    "hold_force_n": 32.284688074087946,
+    "reason": "held, swings 56 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     12,
+     30,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 56.443551966944256,
+    "lifted_m": 0.43478990740080115,
+    "slip_m": 0.006671666727279021,
+    "hold_force_n": 33.28140422620731,
+    "reason": "held, swings 56 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     5,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 56.583186505478295,
+    "lifted_m": 0.43480411750506254,
+    "slip_m": 0.0067111963081305515,
+    "hold_force_n": 32.42396540929488,
+    "reason": "held, swings 57 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     8,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 55.48026785800997,
+    "lifted_m": 0.4350619397235135,
+    "slip_m": 0.006672095237831586,
+    "hold_force_n": 31.385799637110896,
+    "reason": "held, swings 55 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     30,
+     8,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 69.48742484199182,
+    "lifted_m": 0.42628975774508054,
+    "slip_m": 0.007778750493118578,
+    "hold_force_n": 33.81587476511281,
+    "reason": "held, swings 69 deg"
+   }
+  ],
+  "depth_cm": 2.0130101983746433
+ },
+ "plate7": {
+  "spec": "plate:7",
+  "unblocked": 654,
+  "held": 460,
+  "success": 55,
+  "height_cm": 3.6800000000000006,
+  "width_cm": 15.990836537146318,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     15,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 2.919537692026881,
+    "lifted_m": -0.0012788267985162985,
+    "slip_m": 0.5000525556617169,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     16,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 16.682257891171435,
+    "lifted_m": -0.001278825120759549,
+    "slip_m": 0.5013336908920681,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     24,
+     29,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 23.181050878783157,
+    "lifted_m": -0.0012788395465705114,
+    "slip_m": 0.4956963013048633,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     28,
+     25,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 23.185616860885172,
+    "lifted_m": -0.001278930959469661,
+    "slip_m": 0.4969171164135778,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     15,
+     19,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5036953788497222,
+    "lifted_m": -0.0012788500576668173,
+    "slip_m": 0.4999434589843289,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     11,
+     1,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 62.654350131798516,
+    "lifted_m": 0.4262381179767226,
+    "slip_m": 0.010300667176357713,
+    "hold_force_n": 32.12255812234989,
+    "reason": "held, swings 63 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     15,
+     31,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 60.30429399655936,
+    "lifted_m": 0.43612559289403263,
+    "slip_m": 0.008111472546101272,
+    "hold_force_n": 32.8821164758268,
+    "reason": "held, swings 60 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     9,
+     3,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 52.482585433223825,
+    "lifted_m": 0.4373659656502775,
+    "slip_m": 0.006026120704143212,
+    "hold_force_n": 31.21321905588353,
+    "reason": "held, swings 52 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     13,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 63.84997717161568,
+    "lifted_m": 0.43579712708672125,
+    "slip_m": 0.011213887501438152,
+    "hold_force_n": 31.472951305478524,
+    "reason": "held, swings 64 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     29,
+     25,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 73.84087063315366,
+    "lifted_m": 0.4261929382607621,
+    "slip_m": 0.011644437875339435,
+    "hold_force_n": 34.23347569925735,
+    "reason": "held, swings 74 deg"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     12,
+     15,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.3509592340253262,
+    "lifted_m": 0.4986275929050323,
+    "slip_m": 9.000648032986004e-05,
+    "hold_force_n": 32.167999842565145,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     18,
+     16,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 0.8004402467348497,
+    "lifted_m": 0.49866516272348654,
+    "slip_m": 7.529613276245003e-05,
+    "hold_force_n": 33.70686056940505,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     13,
+     15,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 0.2551190150402007,
+    "lifted_m": 0.4986435630490524,
+    "slip_m": 3.6784841454382516e-05,
+    "hold_force_n": 32.190875643363405,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     17,
+     16,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 0.4583648095875214,
+    "lifted_m": 0.49870342130684214,
+    "slip_m": 6.760700625552962e-06,
+    "hold_force_n": 32.02470359093689,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     17,
+     18,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.158667581428397,
+    "lifted_m": 0.49834009347491887,
+    "slip_m": 0.00025691419904693737,
+    "hold_force_n": 32.290037573160575,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 0.9923466511931052
+ },
+ "plate14": {
+  "spec": "plate:14",
+  "unblocked": 208,
+  "held": 140,
+  "success": 133,
+  "height_cm": 5.409999999999999,
+  "width_cm": 15.991802566242946,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     15,
+     18,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.7928306809600953,
+    "lifted_m": -0.0014167497459719805,
+    "slip_m": 0.4999983049802688,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     2,
+     24,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.1632539819711174,
+    "lifted_m": -0.001416988920204915,
+    "slip_m": 0.501873744048222,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     18,
+     20,
+     1
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 6.599645982520656,
+    "lifted_m": -0.0014167318436198069,
+    "slip_m": 0.4997301050538781,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     21,
+     15,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 6.273650454571935,
+    "lifted_m": -0.001417205610944371,
+    "slip_m": 0.49920305505719154,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     15,
+     16,
+     2
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.1159034729059716,
+    "lifted_m": -0.0014167159089294168,
+    "slip_m": 0.4998680053359604,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     5,
+     16,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 32.737138639228334,
+    "lifted_m": 0.49729491539105475,
+    "slip_m": 0.0009452447541227817,
+    "hold_force_n": 31.918518508340263,
+    "reason": "held, swings 33 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     7,
+     16,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 32.81538058712686,
+    "lifted_m": 0.49663668282047857,
+    "slip_m": 0.00045480916335715525,
+    "hold_force_n": 32.32920438785189,
+    "reason": "held, swings 33 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     16,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 32.84588237081296,
+    "lifted_m": 0.49801217018151833,
+    "slip_m": 0.0004184562935600521,
+    "hold_force_n": 31.960881952311155,
+    "reason": "held, swings 33 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     9,
+     16,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 58.729154224528735,
+    "lifted_m": 0.4976875921693321,
+    "slip_m": 0.003337018926267864,
+    "hold_force_n": 32.24042960850239,
+    "reason": "held, swings 59 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     8,
+     16,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 57.72108334244352,
+    "lifted_m": 0.4969674136806035,
+    "slip_m": 0.002693540969751437,
+    "hold_force_n": 32.60860630450246,
+    "reason": "held, swings 58 deg"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     5,
+     16,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 4.32795580806739,
+    "lifted_m": 0.49824522267724436,
+    "slip_m": 0.00018641442309221044,
+    "hold_force_n": 31.659748276310363,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     18,
+     18,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.374502184651698,
+    "lifted_m": 0.4986458970062493,
+    "slip_m": 0.00018628947675363358,
+    "hold_force_n": 31.803894105386508,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     7,
+     16,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 4.162781762486055,
+    "lifted_m": 0.4987803295976372,
+    "slip_m": 0.00047812483064238654,
+    "hold_force_n": 30.277302532302485,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     17,
+     17,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 7.97646154333643,
+    "lifted_m": 0.49867493012201103,
+    "slip_m": 6.794171992184082e-05,
+    "hold_force_n": 33.10797935990679,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     18,
+     19,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 1.0678227131239424,
+    "lifted_m": 0.49841723658493986,
+    "slip_m": 0.00021622390528831288,
+    "hold_force_n": 37.77807759132673,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 2.2980265292653796
+ },
+ "plate4": {
+  "spec": "plate:4",
+  "unblocked": 191,
+  "held": 34,
+  "success": 0,
+  "height_cm": 2.1,
+  "width_cm": 15.974580589003345,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     16,
+     30,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.25773510386126425,
+    "lifted_m": -0.0010086524519335813,
+    "slip_m": 0.4972731656751173,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     1,
+     17,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.5957866048843293,
+    "lifted_m": -0.001008700782377317,
+    "slip_m": 0.4966415921469895,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     27,
+     25,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 179.99714266156525,
+    "lifted_m": -0.0042734445396279234,
+    "slip_m": 0.5108230610000605,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     30,
+     23,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 4.764003166068586,
+    "lifted_m": -0.0010086344195889187,
+    "slip_m": 0.4921359381326118,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     13,
+     1,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 12.10359982614492,
+    "lifted_m": -0.0010086974910099421,
+    "slip_m": 0.504987196695914,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     4,
+     15,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 89.12222843094109,
+    "lifted_m": 0.42092682136042164,
+    "slip_m": 0.02003449740428034,
+    "hold_force_n": 32.63127110032436,
+    "reason": "held, swings 89 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     7,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 88.72580497604521,
+    "lifted_m": 0.41913026467750714,
+    "slip_m": 0.01588222151374886,
+    "hold_force_n": 33.464022474538574,
+    "reason": "held, swings 89 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     28,
+     11,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 89.09119583288029,
+    "lifted_m": 0.42064783087308905,
+    "slip_m": 0.016881482740875087,
+    "hold_force_n": 32.929464173770924,
+    "reason": "held, swings 89 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     24,
+     27,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 91.29181560766003,
+    "lifted_m": 0.42228847656684465,
+    "slip_m": 0.014084770964808101,
+    "hold_force_n": 30.54357737157589,
+    "reason": "held, swings 91 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     24,
+     5,
+     2
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 91.15876378389508,
+    "lifted_m": 0.42051864023280006,
+    "slip_m": 0.01766877252379069,
+    "hold_force_n": 30.926269420067506,
+    "reason": "held, swings 91 deg"
+   }
+  ],
+  "depth_cm": 1.4546458665413025
+ },
+ "plate22": {
+  "spec": "plate:22",
+  "unblocked": 72,
+  "held": 36,
+  "success": 31,
+  "height_cm": 3.0,
+  "width_cm": 24.53273128819128,
+  "mass": 0.5,
+  "rows": [
+   {
+    "stratum": "not_held",
+    "cell": [
+     7,
+     27,
+     3
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 21.54939326153375,
+    "lifted_m": -0.0010019139539347664,
+    "slip_m": 0.500369277999859,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     5,
+     28,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 3.8413466669746317,
+    "lifted_m": -0.0010018734681052893,
+    "slip_m": 0.4997913354215153,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     9,
+     24,
+     0
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 11.224575753349276,
+    "lifted_m": -0.0010019762234888853,
+    "slip_m": 0.5000007528755277,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     11,
+     22,
+     4
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.946499979968109,
+    "lifted_m": -0.0010019781307173056,
+    "slip_m": 0.5000042526857075,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "not_held",
+    "cell": [
+     7,
+     26,
+     5
+    ],
+    "stored_held": false,
+    "replay_held": false,
+    "swing": 0.37881798967143476,
+    "lifted_m": -0.0010019488416631722,
+    "slip_m": 0.4992357882363836,
+    "hold_force_n": 0.0,
+    "reason": "not lifted (<5 cm)"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     4,
+     28,
+     5
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 58.57845667787287,
+    "lifted_m": 0.3933963556515566,
+    "slip_m": 0.002018284883414952,
+    "hold_force_n": 32.02150606111385,
+    "reason": "held, swings 59 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     26,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 67.42414765975776,
+    "lifted_m": 0.3903714077032895,
+    "slip_m": 0.018233790650122865,
+    "hold_force_n": 30.7781948038386,
+    "reason": "held, swings 67 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     27,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 67.00660076896388,
+    "lifted_m": 0.39137914461638906,
+    "slip_m": 0.01783283449483329,
+    "hold_force_n": 30.8430338440861,
+    "reason": "held, swings 67 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     5,
+     26,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 70.83353891464064,
+    "lifted_m": 0.38925036319288503,
+    "slip_m": 0.01929984988832927,
+    "hold_force_n": 30.574135282466404,
+    "reason": "held, swings 71 deg"
+   },
+   {
+    "stratum": "held_notlevel",
+    "cell": [
+     6,
+     28,
+     3
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 67.19375771813101,
+    "lifted_m": 0.3915070098121816,
+    "slip_m": 0.018580335429438488,
+    "hold_force_n": 31.370465280794065,
+    "reason": "held, swings 67 deg"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     5,
+     28,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 3.4201595258590047,
+    "lifted_m": 0.4941292123397662,
+    "slip_m": 0.0008419048178139529,
+    "hold_force_n": 30.41526477612068,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     7,
+     27,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 12.642931155960534,
+    "lifted_m": 0.4947308831479042,
+    "slip_m": 0.00407051989328779,
+    "hold_force_n": 31.52300740307028,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     9,
+     22,
+     4
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 27.515066908245647,
+    "lifted_m": 0.4907804206600746,
+    "slip_m": 0.0047488038558289826,
+    "hold_force_n": 32.439574477568385,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     5,
+     26,
+     0
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 2.7185807953783376,
+    "lifted_m": 0.49762155493417176,
+    "slip_m": 0.00020580261653131422,
+    "hold_force_n": 32.71430709747504,
+    "reason": "held level"
+   },
+   {
+    "stratum": "success",
+    "cell": [
+     8,
+     26,
+     1
+    ],
+    "stored_held": true,
+    "replay_held": true,
+    "swing": 26.969807297908137,
+    "lifted_m": 0.48300007046142057,
+    "slip_m": 0.011988088073315858,
+    "hold_force_n": 31.389787383017005,
+    "reason": "held level"
+   }
+  ],
+  "depth_cm": 0.9412440410686534
+ }
+}

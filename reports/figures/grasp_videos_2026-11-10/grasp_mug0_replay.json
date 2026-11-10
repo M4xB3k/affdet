@@ -1,0 +1,86 @@
+[
+ {
+  "label": "held and level (success)",
+  "cell": [
+   0.02141487633410287,
+   -0.02604711344092287,
+   60.0
+  ],
+  "stored": {
+   "success": true,
+   "held": true,
+   "swing_deg": 0.39808114025193325,
+   "lifted_m": 0.49920030729416653
+  },
+  "replay": {
+   "success": true,
+   "held": true,
+   "swing_deg": 0.39808114025193325,
+   "lifted_m": 0.49920030729416653
+  },
+  "match": true
+ },
+ {
+  "label": "held but swings past 30 deg",
+  "cell": [
+   -0.0585851236658972,
+   -0.02604711344092287,
+   150.0
+  ],
+  "stored": {
+   "success": false,
+   "held": true,
+   "swing_deg": 52.513215298424264,
+   "lifted_m": 0.532611983958093
+  },
+  "replay": {
+   "success": false,
+   "held": true,
+   "swing_deg": 52.513215298424264,
+   "lifted_m": 0.532611983958093
+  },
+  "match": true
+ },
+ {
+  "label": "not held (drops or slips)",
+  "cell": [
+   -0.018585123665897166,
+   -0.046047113440922854,
+   90.0
+  ],
+  "stored": {
+   "success": false,
+   "held": false,
+   "swing_deg": 97.45832528068375,
+   "lifted_m": -0.008682562019298505
+  },
+  "replay": {
+   "success": false,
+   "held": false,
+   "swing_deg": 97.45832528068375,
+   "lifted_m": -0.008682562019298505
+  },
+  "match": true
+ },
+ {
+  "label": "not held, largest slip",
+  "cell": [
+   -0.02258512366589717,
+   -0.046047113440922854,
+   90.0
+  ],
+  "stored": {
+   "success": false,
+   "held": false,
+   "swing_deg": 175.33286081455745,
+   "lifted_m": -0.008239674123294932
+  },
+  "replay": {
+   "success": false,
+   "held": false,
+   "swing_deg": 175.33286081455745,
+   "lifted_m": -0.008239674123294932
+  },
+  "match": true
+ }
+]
