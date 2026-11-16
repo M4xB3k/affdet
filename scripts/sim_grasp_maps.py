@@ -1,7 +1,7 @@
 """Grasp actionability maps (a top-down parallel-jaw gripper, see affdet/sim/grasp_map.py) for object specs.
 
     python scripts/sim_grasp_maps.py PICKS_JSON GLB_DIR OUT_DIR --specs frying_pan:0 mug:1 shaker:86450daa [--cells 16 | --step 0.02] [--procs 8]
-        [--shaker-csv docs/objaverse/salt_shaker_set.csv]
+        [--shaker-csv docs/objaverse/salt_shaker_set.csv] [--settle 0.3]
 
 `--cells N` sets the grid step to the object's longer footprint side / N (at least 4 mm); `--step` fixes it. Specs as in affdet/sim/registry.py.
 Writes OUT_DIR/grasp_<name>.pkl, `name` as in registry.spec_name.
@@ -33,8 +33,10 @@ def main():
     g.add_argument("--force", type=float); g.add_argument("--pad-half", type=float, nargs=3); g.add_argument("--pad-friction", type=float, nargs=3)
     g.add_argument("--pad-priority", type=int, help="1: the pad's friction is the contact friction (0: max of pad and object)")
     g.add_argument("--lift", type=float); g.add_argument("--hold", type=float); g.add_argument("--pad-below-top", type=float)
+    g.add_argument("--settle", type=float, help="wait (s) between both pads reaching the force and the lift (default 0.1; 0.3 lets the squeeze settle)")
+    g.add_argument("--min-clearance", type=float, help="a pad must reach this far (m) below the pinched surface, else the cell is blocked")
     a = ap.parse_args()
-    over = {k: getattr(a, k) for k in ("force", "pad_half", "pad_friction", "pad_priority", "lift", "hold", "pad_below_top") if getattr(a, k) is not None}
+    over = {k: getattr(a, k) for k in ("force", "pad_half", "pad_friction", "pad_priority", "lift", "hold", "pad_below_top", "settle", "min_clearance") if getattr(a, k) is not None}
     params = grasp_params(**over)
     print("grasp settings", params, flush=True)
     os.makedirs(a.out, exist_ok=True)
@@ -55,6 +57,7 @@ def main():
         print(spec, "grid", m["score"].shape, "step", step, "held cells %.0f%%" % (100 * m["held"].any(2).mean()), "stable cells %.0f%%" % (100 * (m["held"] & (m["swing_deg"] < 30)).any(2).mean()),
               "blocked %.0f%%" % (100 * m["blocked"].all(2).mean()), "success on object %.0f%%" % (100 * m["success"][on].mean() if on.any() else 0),
               "hold force %.1f N" % (hf.mean() if hf.size else 0), "%.0fs" % (time.time() - t0), flush=True)
+        print("   stages (cells with any yaw): clamp %.0f%%  lift %.0f%%  level %.0f%%" % tuple(100 * m[k].any(2).mean() for k in ("clamp", "lift", "level")), flush=True)
 
 
 if __name__ == "__main__":

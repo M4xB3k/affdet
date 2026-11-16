@@ -2,7 +2,7 @@
 
 For each grasp centre (x, y) on a grid over the object's footprint, and each gripper yaw, a two-finger gripper
 (fingers at table height, closing horizontally, as when picking a flat object from above) closes with a limited
-force, lifts it 35 cm and holds. The label is physical:
+force, lifts it 50 cm and holds. The label is physical:
 
 - `held`: the object is clear of the table at the end and has not slipped in the grip.
 - `swing_deg`: how far the object rotated relative to its starting pose (a pan held far from its centre of mass
@@ -18,7 +18,8 @@ from __future__ import annotations
 import math
 import os
 import tempfile
-from multiprocessing import Pool
+import multiprocessing as mp
+from concurrent.futures import ProcessPoolExecutor
 
 import numpy as np
 
@@ -41,7 +42,20 @@ PAD_FRICTION = (1.0, 0.01, 0.001)  # sliding, torsional (m), rolling (m)
 # pad_priority 0 the pad's 1.0 wins over the objects' 0.6: lowering grasp friction needs pad_priority 1 (the pad's value is used).
 DEFAULTS = dict(force=FORCE_N, pad_half=PAD["half"], open_half=PAD["open_half"], travel=PAD["travel"], pad_friction=PAD_FRICTION,
                 pad_priority=0, pad_mass=PAD_MASS_KG, pad_below_top=PAD_BELOW_TOP_M, lift=LIFT_M, lift_time=PHASES["lift"],
-                hold=PHASES["hold"], close_max=PHASES["close_max"])
+                hold=PHASES["hold"], close_max=PHASES["close_max"],
+                settle=0.1,           # s between "both pads at full force" (or the closing time running out) and the lift: the clamp is judged here
+                min_clearance=0.008)  # m of the pinched surface a pad must be able to reach below its top, else the cell is blocked
+
+# What a test measures besides the old outcome fields (grasp_stages turns these into clamp / lift / level). NaN where no physics ran.
+STILL_S = 0.1  # the clamp is judged on the last STILL_S seconds of the settle window (all of it at the default settle)
+RAW_FLOAT = ("clearance_m", "t_clamp_s", "f_l_min", "f_r_min", "f_l_max", "f_r_max", "gap_m", "closure_drift_m", "clamp_creep_m", "clamp_rot_deg",
+             "slip_max_m", "tilt_max_deg", "tilt_end_deg", "tilt_lift_max_deg", "rot_max_deg", "lifted_max_m", "t_contact_lost_s")
+RAW_BOOL = ("force_reached", "at_travel", "on_table_end")
+
+
+def _angle(Ra, Rb):
+    """Rotation angle (deg) between two orientations."""
+    return math.degrees(math.acos(np.clip((np.trace(Ra.T @ Rb) - 1) / 2, -1, 1)))
 
 
 def grasp_params(**over) -> dict:
@@ -99,7 +113,7 @@ def _pad_force(m, data, body_id, obj_id):
 def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: float = 30.0, record=None, params=None) -> dict:
     """One grasp: close at (x, y) with the gripper yawed `yaw_deg` about z, lift, hold.
 
-    The two pads are moved kinematically (mocap): each closes at 5 cm/s until its contact force with the object
+    The two pads are moved kinematically (mocap): each closes at 10 cm/s until its contact force with the object
     reaches the target force, then regulates it (a force-limited gripper). The object is then lifted and held.
     `params` (see grasp_params; None = DEFAULTS) sets force, pad size and friction, lift and hold. `record(m, data)`
     is called every step (for rendering)."""
@@ -146,9 +160,9 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
             for b_ in (-hy, 0.0, hy):
                 floor = max(floor, top_at(cx + a_ * t[0] + b_ * u[0], cy + a_ * t[1] + b_ * u[1]))
     z0 = max(z0, floor + 0.001)
-    if z0 > z_top - 0.008:
+    if z0 > z_top - p["min_clearance"]:
         return {"x": x, "y": y, "yaw": yaw_deg, "held": False, "lifted_m": 0.0, "swing_deg": 0.0, "slip_m": 0.0,
-                "success": False, "com0": data.xipos[oid].copy(), "on_object": True, "blocked": True}
+                "success": False, "com0": data.xipos[oid].copy(), "on_object": True, "blocked": True, "clearance_m": float(z_top - z0)}
     for i in (il, ir):
         data.mocap_pos[i][2] = z0
     for name in ("fl", "fr"):  # start the pads at their targets: spawning them at table height buries them in the object's hulls
@@ -164,12 +178,24 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
     rel0 = None
     t_start = None  # time the lift starts: both pads at full force, or the closing time ran out
     f_hold = []    # pad forces during the hold (to check the regulated force)
+    # raw quantities for the stages. Reading them does not touch the simulation: the old fields come out the same.
+    t_clamp, reached, t_lost = None, False, float("nan")
+    win = []  # settle window, one entry per step: (t, force left, force right, pinch point in the object's frame, orientation,
+    #          pad closure sum, larger pad closure)
+    Rs = None                             # orientation when the lift starts: tilt is measured against it
+    slip_max = tilt_max = tilt_lift_max = rot_max = 0.0
+    up0 = R0[:, 2].copy()                 # the up axis at rest, before the pads close: `level` is judged against it
+    lifted_max = -float("inf")
     k = 0
     while True:
         t = k * dt
         fl_, fr_ = _pad_force(m, data, bl, oid), _pad_force(m, data, br, oid)
         if t_start is None and ((fl_ >= F and fr_ >= F) or t >= t_close_max):
-            t_start = t + 0.1  # let the squeeze settle
+            t_clamp, reached = t, bool(fl_ >= F and fr_ >= F)  # False: the closing time ran out before both pads felt F
+            t_start = t + p["settle"]  # let the squeeze settle
+        in_win = t_start is not None and t < t_start
+        if not in_win and t_start is not None and t_lost != t_lost and min(fl_, fr_) < 1.0:
+            t_lost = t  # first time a pad lets go of the object after the lift started
         if t_start is not None and t > t_start + t_lift:
             f_hold.append(0.5 * (fl_ + fr_))
         sl = _regulate(sl, fl_, v, dt, F, p["travel"])
@@ -180,9 +206,19 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
         lift = p["lift"] * (3 * s_ * s_ - 2 * s_ ** 3)
         data.mocap_pos[il][2] = data.mocap_pos[ir][2] = z0 + lift
         mujoco.mj_step(m, data)
+        Rk = data.xmat[oid].reshape(3, 3)
+        pinch = Rk.T @ (0.5 * (data.xpos[bl] + data.xpos[br]) - data.xipos[oid])
+        if in_win:
+            win.append((t, fl_, fr_, pinch.copy(), Rk.copy(), sl + sr, max(sl, sr)))
         if rel0 is None and t_start is not None and t >= t_start:
             # the pinch point in the object's own frame: it must not move if the object does not slip in the grip
-            rel0 = data.xmat[oid].reshape(3, 3).T @ (0.5 * (data.xpos[bl] + data.xpos[br]) - data.xipos[oid])
+            rel0, Rs = pinch.copy(), Rk.copy()
+        elif rel0 is not None:
+            slip_max = max(slip_max, float(np.linalg.norm(pinch - rel0)))
+            tilt_max = max(tilt_max, math.degrees(math.acos(np.clip(up0 @ Rk[:, 2], -1, 1))))
+            tilt_lift_max = max(tilt_lift_max, math.degrees(math.acos(np.clip(Rs[:, 2] @ Rk[:, 2], -1, 1))))
+            rot_max = max(rot_max, _angle(Rs, Rk))
+            lifted_max = max(lifted_max, float(data.xipos[oid][2] - com0[2]))
         if record is not None:
             record(m, data)
         k += 1
@@ -197,9 +233,24 @@ def grasp_test(body: Body, x: float, y: float, yaw_deg: float, max_swing_deg: fl
     on_table = any({data.contact[i].geom1, data.contact[i].geom2} & {0} and oid in (m.geom_bodyid[data.contact[i].geom1],
                    m.geom_bodyid[data.contact[i].geom2]) for i in range(data.ncon))
     held = bool(np.isfinite(com1).all()) and not on_table and lifted > 0.05 and slip < 0.05
+    win = [w for w in win if w[0] >= t_start - STILL_S - 1e-9]
+    win0, win1 = (win[0], win[-1]) if win else (None, None)
+    nan = float("nan")
     return {"x": x, "y": y, "yaw": yaw_deg, "held": bool(held), "lifted_m": lifted, "swing_deg": swing, "slip_m": slip,
             "success": bool(held and swing < max_swing_deg), "com0": com0, "on_object": True,
-            "hold_force_n": float(np.mean(f_hold)) if f_hold else 0.0, "params": dict(p)}
+            "hold_force_n": float(np.mean(f_hold)) if f_hold else 0.0, "params": dict(p),
+            "clearance_m": float(z_top - z0), "t_clamp_s": float(t_clamp), "force_reached": reached,
+            "f_l_min": min(w[1] for w in win) if win else nan, "f_r_min": min(w[2] for w in win) if win else nan,
+            "f_l_max": max(w[1] for w in win) if win else nan, "f_r_max": max(w[2] for w in win) if win else nan,
+            "gap_m": float(2 * p["open_half"] - win1[5]) if win else nan,
+            "at_travel": bool(win1[6] >= p["travel"] - 1e-9) if win else False,  # end of the clamp window, not after the lift
+            "closure_drift_m": float(abs(win1[5] - win0[5])) if win else nan,
+            "clamp_creep_m": float(np.linalg.norm(win1[3] - win0[3])) if win else nan,
+            "clamp_rot_deg": _angle(win0[4], win1[4]) if win else nan,
+            "slip_max_m": max(slip_max, slip), "tilt_max_deg": tilt_max,
+            "tilt_end_deg": math.degrees(math.acos(np.clip(up0 @ R1[:, 2], -1, 1))), "tilt_lift_max_deg": tilt_lift_max,
+            "rot_max_deg": rot_max,
+            "lifted_max_m": lifted_max, "on_table_end": bool(on_table), "t_contact_lost_s": t_lost}
 
 
 _G = {}
@@ -221,8 +272,10 @@ def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150),
     xs = np.arange(-extent_xy[0] / 2, extent_xy[0] / 2 + 1e-9, step)
     ys = np.arange(-extent_xy[1] / 2, extent_xy[1] / 2 + 1e-9, step)
     jobs = [(x, y, yaw, max_swing_deg) for y in ys for x in xs for yaw in yaws]
-    with Pool(procs, initializer=_init, initargs=(body, params)) as p:
-        res = p.map(_one, jobs, chunksize=4)
+    # an executor, not multiprocessing.Pool: when a worker dies without an exception (a native crash in MuJoCo), Pool.map
+    # waits forever, the executor raises BrokenProcessPool. Fork, as before: workers inherit the parent's modules.
+    with ProcessPoolExecutor(procs, mp_context=mp.get_context("fork"), initializer=_init, initargs=(body, params)) as ex:
+        res = list(ex.map(_one, jobs, chunksize=4))
     used = {r["params"].__repr__() for r in res if "params" in r}
     if len(used) > 1 or (used and next(iter(used)) != dict(params).__repr__()):
         raise RuntimeError(f"workers ran with other grasp settings than requested: {used}")
@@ -235,6 +288,12 @@ def grasp_map(body: Body, extent_xy, step=0.015, yaws=(0, 30, 60, 90, 120, 150),
     slip = np.array([r["slip_m"] for r in res]).reshape(shape)
     on_obj = np.array([r["on_object"] for r in res]).reshape(shape)
     hold_f = np.array([r.get("hold_force_n", 0.0) for r in res]).reshape(shape)
-    return {"xs": xs, "ys": ys, "yaws": list(yaws), "success": ok, "held": held, "swing_deg": swing,
+    raw = {k: np.array([r.get(k, np.nan) for r in res], np.float32).reshape(shape) for k in RAW_FLOAT}
+    raw.update({k: np.array([r.get(k, False) for r in res], bool).reshape(shape) for k in RAW_BOOL})
+    from affdet.sim.grasp_stages import stages
+    st = stages({**raw, "lifted_m": lifted, "on_object": on_obj, "blocked": blocked, "params": params})
+    raw.update({k: st[k] for k in ("clamp", "lift", "level", "fail_stage")})
+    raw.update(schema=2, thresholds=st["thresholds"])
+    return {**raw, "xs": xs, "ys": ys, "yaws": list(yaws), "success": ok, "held": held, "swing_deg": swing,
             "blocked": blocked, "lifted_m": lifted, "slip_m": slip, "score": ok.mean(2), "best_yaw_idx": ok.argmax(2), "com": res[0]["com0"], "step": step,
             "on_object": on_obj, "hold_force_n": hold_f, "params": dict(params)}

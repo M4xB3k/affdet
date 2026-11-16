@@ -335,3 +335,132 @@ def test_grasp_map_workers_run_with_the_requested_settings():
     m = grasp_map(bar, (0.02, 0.0), step=0.02, yaws=(0,), procs=2, params=grasp_params(force=70.0))
     assert m["params"]["force"] == 70.0
     assert m["held"].any() and 60 < m["hold_force_n"][m["held"]].mean() < 82
+
+
+# ---- clamp / lift / level: raw quantities recorded by one grasp test (affdet.sim.grasp_stages decides from them)
+
+def _bar():
+    return Body("bar", [_on_table(trimesh.creation.box([0.2, 0.03, 0.02]))], 1.2)
+
+
+_SETTLED = {"settle": 0.3}  # see test_the_old_settle_time_lifts_before_the_squeeze_has_come_down
+
+
+def test_the_old_settle_time_lifts_before_the_squeeze_has_come_down():
+    """The pads close at 10 cm/s and overshoot the 30 N target on contact; the regulator then backs off at 1 cm/s. After the
+    old 0.1 s wait the pads still press with about 300 N when the lift starts; after 0.3 s they are at the target. So the
+    clamp can only be judged with the longer wait, and with the old one the stage reports that the force is not settled."""
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    from affdet.sim.grasp_stages import FAIL, stages
+    old = grasp_test(_bar(), 0.0, 0.0, 0.0)
+    assert min(old["f_l_min"], old["f_r_min"]) > 5 * 30.0
+    assert stages(old)["fail_stage"] == FAIL["clamp_unstable"] and stages(old)["lift_raw"]
+    new = grasp_test(_bar(), 0.0, 0.0, 0.0, params=grasp_params(**_SETTLED))
+    assert max(new["f_l_max"], new["f_r_max"]) < 1.5 * 30.0
+
+
+def test_recording_the_raw_quantities_leaves_the_old_outcome_unchanged():
+    """Values of the old fields before the recording was added (2026-11-16, MuJoCo 4.0.1). On the same machine they came out
+    bit-identical after the change; the tolerances only allow for another platform."""
+    from affdet.sim.grasp_map import grasp_test
+    old = {0.0: (True, 0.4991, 0.377, 0.00012), 0.05: (True, 0.4983, 0.961, 0.00009), 0.095: (True, 0.4162, 52.65, 0.00532)}
+    for d, (held, lifted, swing, slip) in old.items():
+        r = grasp_test(_bar(), d, 0.0, 0.0)
+        assert r["held"] == held
+        assert r["lifted_m"] == pytest.approx(lifted, abs=2e-3)
+        assert r["swing_deg"] == pytest.approx(swing, abs=0.5)
+        assert r["slip_m"] == pytest.approx(slip, abs=1e-3)
+
+
+def test_a_bar_pinched_at_its_centre_is_clamped_lifted_and_level():
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    from affdet.sim.grasp_stages import FAIL, stages
+    r = grasp_test(_bar(), 0.0, 0.0, 0.0, params=grasp_params(**_SETTLED))
+    assert r["force_reached"] and not r["at_travel"] and not r["on_table_end"]
+    assert 0.8 * 30.0 <= min(r["f_l_min"], r["f_r_min"]) and max(r["f_l_max"], r["f_r_max"]) <= 1.5 * 30.0  # squeezing at the target
+    assert r["gap_m"] == pytest.approx(0.03, abs=0.003)       # the bar is 3 cm wide
+    assert r["clamp_creep_m"] < 1e-3 and r["clamp_rot_deg"] < 1.0 and r["closure_drift_m"] < 1e-3
+    assert r["tilt_max_deg"] < 3 and r["slip_max_m"] < 0.005 and r["t_contact_lost_s"] != r["t_contact_lost_s"]
+    s = stages(r)
+    assert s["clamp"] and s["lift"] and s["level"] and s["fail_stage"] == FAIL["success"]
+
+
+def test_a_bar_pinched_near_its_end_is_clamped_and_lifted_but_not_level():
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    from affdet.sim.grasp_stages import FAIL, stages
+    r = grasp_test(_bar(), 0.095, 0.0, 0.0, params=grasp_params(**_SETTLED))
+    s = stages(r)
+    assert s["clamp"] and s["lift"] and not s["level"] and s["fail_stage"] == FAIL["not_level"]
+    assert r["tilt_max_deg"] >= r["tilt_end_deg"] - 1e-6 and r["tilt_max_deg"] > 30
+    assert stages(r, max_tilt_deg=80.0)["level"]  # the limit is applied afterwards: no new simulation
+
+
+def test_slippery_pads_clamp_the_bar_on_the_table_but_cannot_lift_it():
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    from affdet.sim.grasp_stages import FAIL, stages
+    r = grasp_test(_bar(), 0.0, 0.0, 0.0, params=grasp_params(pad_friction=(0.05, 0.01, 0.001), pad_priority=1, **_SETTLED))
+    s = stages(r)
+    assert s["clamp"] and not s["lift"] and s["fail_stage"] == FAIL["lift"]
+    assert r["on_table_end"] and r["t_contact_lost_s"] == r["t_contact_lost_s"]  # the pads slid off the bar: a time is recorded
+
+
+def test_cells_without_physics_carry_no_measurements():
+    from affdet.sim.grasp_map import grasp_test
+    from affdet.sim.grasp_stages import FAIL, stages
+    off = grasp_test(_bar(), 0.3, 0.0, 0.0)
+    assert not off["on_object"] and "force_reached" not in off
+    ledge = trimesh.creation.box([0.12, 0.1, 0.02]); ledge.apply_translation([-0.05, 0, 0.01])
+    wall = trimesh.creation.box([0.01, 0.1, 0.05]); wall.apply_translation([0.03, 0, 0.025])
+    b = grasp_test(Body("ledge", [ledge, wall], 0.3), -0.015, 0.0, 90.0)
+    assert b["blocked"] and b["clearance_m"] < 0.008
+
+
+def test_grasp_map_stores_raw_quantities_and_stage_verdicts():
+    from affdet.sim.grasp_map import RAW_BOOL, RAW_FLOAT, grasp_map
+    from affdet.sim.grasp_stages import FAIL, stages
+    from affdet.sim.grasp_map import grasp_params
+    m = grasp_map(_bar(), (0.4, 0.0), step=0.1, yaws=(0, 90), procs=2, params=grasp_params(**_SETTLED))  # x = -0.2 .. 0.2: the ends are off the bar
+    shape = (1, 5, 2)
+    assert m["schema"] == 2 and all(m[k].shape == shape for k in RAW_FLOAT + RAW_BOOL + ("clamp", "lift", "level", "fail_stage"))
+    assert m["held"].shape == shape and m["success"].shape == shape  # the old fields are still there
+    centre = m["fail_stage"][0, 2, 0]
+    assert centre == FAIL["success"] and m["level"][0, 2, 0]
+    assert np.isnan(m["tilt_max_deg"][~m["on_object"]]).all()
+    again = stages(m)
+    assert all((again[k] == m[k]).all() for k in ("clamp", "lift", "level", "fail_stage"))  # re-scoring reproduces the stored verdicts
+
+
+def test_grasp_map_raises_when_a_worker_dies(monkeypatch):
+    """A native crash in one worker hung the old Pool.map for hours (hold2 run). The map must fail instead."""
+    import os
+    import signal
+    from concurrent.futures.process import BrokenProcessPool
+    import affdet.sim.grasp_map as gm
+
+    def crash(*a, **k):
+        os._exit(3)  # what a segfault in MuJoCo looks like from the parent: the process is gone, no exception
+
+    monkeypatch.setattr(gm, "grasp_test", crash)  # workers are forked, so they see the patched module
+    signal.signal(signal.SIGALRM, lambda *a: (_ for _ in ()).throw(TimeoutError("grasp_map hung on a dead worker")))
+    signal.alarm(60)
+    try:
+        with pytest.raises(BrokenProcessPool):
+            gm.grasp_map(_bar(), (0.1, 0.0), step=0.05, yaws=(0,), procs=2)
+    finally:
+        signal.alarm(0)
+
+
+def test_level_is_the_tilt_from_the_resting_pose_not_the_spin():
+    """`level` asks whether the object stays upright. A spin about the vertical (pads turning a bar or a mug to line up with
+    them) is not a tilt; a tilt during closing (a bowl wall pinched and lifted on one side) is, so tilt is measured from the
+    pose before the pads close, as the maximum over lift and hold."""
+    import math
+    from affdet.sim.grasp_map import grasp_params, grasp_test
+    R = []
+    r = grasp_test(_bar(), 0.0, 0.0, 30.0, params=grasp_params(**_SETTLED),
+                   record=lambda m, d: R.append((d.time, d.xmat[m.body("bar").id].reshape(3, 3).copy())))
+    assert r["swing_deg"] > 20 and r["tilt_max_deg"] < 2  # spun about 25 deg, stayed upright
+    t_lift = r["t_clamp_s"] + _SETTLED["settle"]
+    tilt = [math.degrees(math.acos(np.clip(R[0][1][:, 2] @ Rk[:, 2], -1, 1))) for t, Rk in R if t >= t_lift]
+    assert abs(max(tilt) - r["tilt_max_deg"]) < 0.05  # the same number, measured against the resting pose
+    assert r["tilt_lift_max_deg"] <= r["tilt_max_deg"] + 0.5  # the tilt since lift start is kept for reference
