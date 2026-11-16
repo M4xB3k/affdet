@@ -18,8 +18,8 @@ AnyGrasp is a grasp perception system for parallel-jaw grippers that outputs den
 - Geometry processing module: GSNet [11] (the paper refers to it, I did not read it). A 3D-convolutional backbone gives per-point features, then MLP heads for objectness and graspable heatmap, graspable farthest point sampling for the M seeds, graspable probabilistic view selection (300 views), cylinder grouping of the local features along the selected view, and MLP blocks for scores and widths.
 - Loss for geometry: softmax loss for objectness and smooth-L1 for the heatmaps and pose parameters (as in GSNet).
 - Temporal association: MLP blocks with pooling for the colour features (K = 16 points per cylinder), concatenation of colour, seed features, grasp features and the 12-number pose (rotation 9 + translation 3), then an MLP. Trained with supervised contrastive loss (sigma = 0.1 for the pose distance threshold, temperature tau = 0.1). Two grasps count as the same if their distance d <= sigma, where d = delta_t / w_max + gamma x delta_R / pi with w_max = 0.01 m and gamma = 0.1.
-- Training: geometry module first from scratch (batch size 4), then the geometry weights are frozen and the temporal module is trained (the paper says it is trained "jointly with it"); Adam, learning rate 0.001, "poly" decay (power 0.9), one RTX 2080 Ti. Augmentation: horizontal flip, rotation within +/-30 degrees about Z, translation, random object removal (probability 0.2).
-- Post-processing: collision check on the top-100 grasps with a gripper simplified to three cubes, and a gripper-centring step so both fingertips travel the same distance. Together 80 ms for 100 grasps. Perception alone about 100 ms per frame; the system runs at 7 Hz on an RTX 2060.
+- Training: geometry module first from scratch (batch size 4), then the geometry weights are frozen and the temporal module is trained (the paper says it is trained "jointly with it"); Adam, learning rate 0.001, "poly" decay (power 0.9), one 2080 Ti. Augmentation: horizontal flip, rotation within +/-30 degrees about Z, translation, random object removal (probability 0.2).
+- Post-processing: collision check on the top-100 grasps with a gripper simplified to three cubes, and a gripper-centring step so both fingertips travel the same distance. Together 80 ms for 100 grasps. Perception alone about 100 ms per frame; the system runs at 7 Hz on an Nvidia 2060.
 
 ## How grasp labels are made
 - Source: analytic antipodal scores on 3D scanned object meshes (the GraspNet-1Billion pipeline), projected into real scenes using hand-annotated object 6D poses. No physics simulation. The paper deliberately argues for real-world perception data over simulation.
@@ -52,6 +52,10 @@ AnyGrasp is a grasp perception system for parallel-jaw grippers that outputs den
 - GSNet backbone details (3D convolution type, channel widths): the paper refers to GSNet [11] and I did not read that paper.
 - The exact value of the AnyGrasp row and the DexNet 4.0 row in the paper's Table I beyond the 93.3% overall and 93.9% human figures.
 - Peer-reviewed publication details (volume, pages) of the T-RO version.
+
+## Verification (second read, 2026-11-16)
+Checked against the ar5iv full text by a second reader. Confirmed: 5 mm voxels, 1024 seeds, 300 views, 12 rotations x 5 depths (0.5 cm added here), the stable score and its use at inference, 268 scenes / 144 objects, analytic antipodal labels, 93.3 % against 93.9 % for humans, over 900 picks per hour, UR5 + Robotiq-85 + RealSense, 75.5 % on moving fish (baseline 62.5 %), the 16 against 11 slips, 7 Hz, the training settings, the sim against real finding, T-RO.
+Wording: the paper describes no simulation step in labelling but never says "no physics simulation"; that is our reading.
 
 ## BibTeX
 ```bibtex

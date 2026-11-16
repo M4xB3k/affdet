@@ -21,7 +21,7 @@ Block and network (Fig. 3, Fig. 4):
 - Point transformer block: linear, point transformer layer, linear, with a residual connection.
 - Five stages with downsampling rates [1, 4, 4, 4, 4], so the point counts are N, N/4, N/16, N/64, N/256. Channel widths read from the figure labels: 32, 64, 128, 256, 512. The number of blocks per stage is not stated in the text I read.
 - Transition down: farthest point sampling picks the subset; features go through linear, batch norm, ReLU, then max pooling over the k nearest neighbours onto each kept point.
-- Transition up: linear, batch norm, ReLU, then "trilinear interpolation" onto the denser point set, summed with the skip connection from the encoder.
+- Transition up: linear, batch norm, ReLU, then "trilinear interpolation" onto the denser point set, then combined with the encoder features from the skip connection (the paper's word is "summarized"; it does not say whether this is a sum).
 - Output head: MLP for segmentation. For classification, global average pooling (to a 1 x 512 vector) then an MLP.
 - Parameters: 4.9 M for the S3DIS segmentation model (stated in the text, against 14.9 M for KPConv and 30.1 M for SparseConv).
 - Inference (appendix, one Quadro RTX 6000): 44 ms, 86 ms, 222 ms, 719 ms for 10k, 20k, 40k, 80k points.
@@ -56,6 +56,11 @@ Training: SGD, momentum 0.9, weight decay 0.0001. S3DIS: 40K iterations, learnin
 - Loss function: not stated.
 - Number of blocks per stage: not stated; the channel widths 32 to 512 come from figure labels.
 - Input point count per sample for S3DIS and ModelNet40: not stated in the text I read.
+
+## Verification (second read, 2026-11-16)
+Checked against the ar5iv full text by a second reader. Confirmed: Eq. 3 and the two-layer MLPs, k = 16, the rates [1, 4, 4, 4, 4], transition down, 4.9 M parameters (KPConv 14.9 M, SparseConv 30.1 M), all numbers of Tables 1 to 7 quoted above, the SGD settings and the inference times.
+Corrected above: the paper does not say the skip connection is summed.
+Still not in the text: channel widths (figure only), blocks per stage, the loss, the input point count, the venue.
 
 ## BibTeX
 ```bibtex

@@ -48,6 +48,9 @@ Values from the paper's Table 1:
 ## Not verified
 - Parameter count, training set size, training compute, marching cubes resolution, how the input is segmented, how scale was treated in the authors' evaluation, and any statement on thin or flat objects.
 
+## Verification (second read, 2026-11-16)
+Checked against the arXiv HTML text by a second reader. Every number of Tables 1 to 3 quoted above is confirmed, as are the "guess the camera" sentence, the loss, the 128 x 128 patches, the optimiser, the rotation search plus ICP, and the Objaverse CC-BY subset. Marching cubes resolution, parameter count and training set size are indeed not in the paper.
+
 ## BibTeX
 ```bibtex
 @article{tochilkin2024triposr,
