@@ -59,6 +59,19 @@ The cutting-board level column rests on very few objects (almost no board positi
 Mugs are where the model loses most against the rule (0.80 against 0.96), with every encoder. That is the place to look
 next, not the backbone.
 
+### From a camera (every held-out object, 3 seeds; model AUC held_any / level30_any / best point)
+
+| input | kNN 16 (reference) | ball 15 mm |
+|---|---|---|
+| perfect mesh points | 0.871 / 0.832 / 0.81 | 0.872 / 0.838 / 0.82 |
+| one perfect RGB-D view | 0.860 / 0.815 / 0.78 | 0.865 / 0.820 / 0.83 |
+| TripoSR from one RGB image (true size and pose given) | 0.817 / 0.793 / 0.76 | 0.813 / 0.791 / 0.76 |
+| monocular depth | 0.538 / 0.533 / 0.63 | 0.537 / 0.549 / 0.63 |
+
+On camera clouds the ball's advantage is small: a little better from an RGB-D view (best point 0.83 against 0.78), no
+better from TripoSR. So the choice of neighbourhood is not what limits the camera route; the reconstruction is.
+(Table file: `backbone_table_r15cam.md`.)
+
 ## 2. Clamp / lift / level on all 185 objects
 
 New maps: the same 185 objects, 32 cells, 6 yaws, 0.5 s wait before the lift, stages recorded. 177 objects have at least one
@@ -139,6 +152,6 @@ To do for the user: report gc16 to the cluster admins, and add `--exclude=gc16` 
 
 ## 6. Not done
 - No tuning of the PointNet++ style encoder; no pretrained backbone row.
-- The camera arms (RGB-D view, TripoSR) were not re-run for the new rows.
+- The camera arms were re-run for the 15 mm ball only, not for the other rows or the stage-label models.
 - The recipe (loss weight, epochs) is still the one chosen on these same folds.
 - 7 literature notes still unchecked: PoinTr, Minkowski, Depth Anything V2, LRM, TRELLIS, InstantMesh, single-view-ready. Checked tonight: Point Transformer, PTv3, AnyGrasp, TripoSR.
